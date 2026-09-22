@@ -1,8 +1,8 @@
-# Bir serverda bir nechta domen / loyiha (Nginx + weblinker)
+# Bir serverda bir nechta domen / loyiha (Nginx + paylinker)
 
-`ERR_NAME_NOT_RESOLVED` (api.weblinker.uz) — DNS da `api` yo‘q. Loyihada brauzer endi **bir xil domen**dan chaqiradi; Nginx da `/auth`, `/vizitka` proxy bo‘lsin ([nginx-weblinker.conf.example](./nginx-weblinker.conf.example)). **443** bloki ham.
+`ERR_NAME_NOT_RESOLVED` (api.paylinker.uz) — DNS da `api` yo‘q. Loyihada brauzer endi **bir xil domen**dan chaqiradi; Nginx da `/auth`, `/vizitka` proxy bo‘lsin ([nginx-paylinker.conf.example](./nginx-paylinker.conf.example)). **443** bloki ham.
 
-Agar `weblinker.uz` ochilganda **boshqa sayt** yoki **boshqa loyiha** fronti chiqsa, odatda sabab quyidagilardan biri.
+Agar `web.paylinker.uz` ochilganda **boshqa sayt** yoki **boshqa loyiha** fronti chiqsa, odatda sabab quyidagilardan biri.
 
 ## 1. `default_server` — noto‘g‘ri “standart” sayt
 
@@ -14,17 +14,17 @@ Agar `weblinker.uz` ochilganda **boshqa sayt** yoki **boshqa loyiha** fronti chi
 sudo grep -R "default_server" /etc/nginx/sites-enabled/
 ```
 
-Agar weblinker faylida `default_server` **kerak emas** — olib tashlang. Asosiy “default” faqat bitta sayt (masalan, texnik domen) uchun qolsin.
+Agar paylinker faylida `default_server` **kerak emas** — olib tashlang. Asosiy “default” faqat bitta sayt (masalan, texnik domen) uchun qolsin.
 
 ## 2. `server_name` mos kelmayapti
 
-Har bir domen uchun **alohida** `server { ... server_name example.com; }` bo‘lishi kerak. `weblinker.uz` uchun:
+Har bir domen uchun **alohida** `server { ... server_name example.com; }` bo‘lishi kerak. `web.paylinker.uz` uchun:
 
 ```nginx
-server_name weblinker.uz www.weblinker.uz;
+server_name web.paylinker.uz;
 ```
 
-Brauzer `Host: weblinker.uz` yuboradi; bu bilan mos bo‘lmagan blok tanlanmasligi kerak.
+Brauzer `Host: web.paylinker.uz` yuboradi; bu bilan mos bo‘lmagan blok tanlanmasligi kerak.
 
 **Tekshiruv (butun konfig):**
 
@@ -32,29 +32,29 @@ Brauzer `Host: weblinker.uz` yuboradi; bu bilan mos bo‘lmagan blok tanlanmasli
 sudo nginx -T 2>/dev/null | grep -E "server_name|listen 80|listen 443"
 ```
 
-`weblinker.uz` faqat **weblinker** faylida bo‘lishi kerak (yoki shu domen boshqa faylda takrorlanmasin).
+`web.paylinker.uz` faqat **paylinker** faylida bo‘lishi kerak (yoki shu domen boshqa faylda takrorlanmasin).
 
 ## 3. Bir xil port — ikki PM2 / ikki Next
 
-Weblinker Next odatda **`127.0.0.1:8000`**, API **`8001`**. Agar boshqa loyiha ham **`8000`** ni band qilgan bo‘lsa, bir vaqtning o‘zida faqat **bittasi** tinglashi mumkin. **`weblinker-web`** PM2 da koʻp **`↺` restart** bo‘lsa — odatda port ziddiyati.
+Paylinker Next odatda **`127.0.0.1:8000`**, API **`8001`**. Agar boshqa loyiha ham **`8000`** ni band qilgan bo‘lsa, bir vaqtning o‘zida faqat **bittasi** tinglashi mumkin. **`paylinker-web`** PM2 da koʻp **`↺` restart** bo‘lsa — odatda port ziddiyati.
 
 **Yechim:**
 
 1. Loyiha ildizidagi `.env` da boshqa port (masalan `8010`):
 
    ```env
-   WEBLINKER_WEB_PORT=8010
-   WEBLINKER_API_PORT=8001
+   PAYLINKER_WEB_PORT=8010
+   PAYLINKER_API_PORT=8001
    INTERNAL_API_URL=http://127.0.0.1:8001
    ```
 
-2. **`/etc/nginx/...` weblinker** faylida `upstream weblinker_next` → **`127.0.0.1:8010`** (443 blokda ham).
+2. **`/etc/nginx/...` paylinker** faylida `upstream paylinker_next` → **`127.0.0.1:8010`** (443 blokda ham).
 
 3. `sudo nginx -t && sudo systemctl reload nginx`
 
-4. `cd ~/weblinker-frontend && npm ci && pm2 delete weblinker-web weblinker-api && pm2 start weblinker.config.cjs && pm2 save`
+4. `cd ~/paylinker-frontend && npm ci && pm2 delete paylinker-web paylinker-api && pm2 start paylinker.config.cjs && pm2 save`
 
-`weblinker.config.cjs` `.env` dan `WEBLINKER_WEB_PORT` ni o‘qiydi (`dotenv` paketi).
+`paylinker.config.cjs` `.env` dan `PAYLINKER_WEB_PORT` ni o‘qiydi (`dotenv` paketi).
 
 **Tekshiruv:**
 
@@ -63,11 +63,11 @@ ss -tlnp | grep -E ':8000|:8001'
 pm2 list
 ```
 
-**Yechim (API porti ham ziddiyat bo‘lsa):** weblinker uchun **boshqa juft** portlar (masalan Next `8010`, API `8011`), keyin:
+**Yechim (API porti ham ziddiyat bo‘lsa):** paylinker uchun **boshqa juft** portlar (masalan Next `8010`, API `8011`), keyin:
 
-1. `.env` da `WEBLINKER_WEB_PORT` / `WEBLINKER_API_PORT` va `INTERNAL_API_URL` ni moslang.
+1. `.env` da `PAYLINKER_WEB_PORT` / `PAYLINKER_API_PORT` va `INTERNAL_API_URL` ni moslang.
 2. Nginx `upstream` lar ham xuddi shu portlarga.
-3. `npm run build:all` va `pm2 restart weblinker-web weblinker-api`
+3. `npm run build:all` va `pm2 restart paylinker-web paylinker-api`
 
 ## 4. Noto‘g‘ri `sites-enabled` tartibi
 
@@ -84,13 +84,13 @@ Ba’zan eski HTML keshdan chiqadi. **Ctrl+F5** yoki boshqa brauzerda sinang.
 ## 6. Tez test (server ichida)
 
 ```bash
-curl -sI -H "Host: weblinker.uz" http://127.0.0.1/ | head -5
+curl -sI -H "Host: web.paylinker.uz" http://127.0.0.1/ | head -5
 ```
 
-(Bu faqat Nginx `localhost` da 80 ni tinglayotgan bo‘lsa ishlaydi; ko‘pincha `curl -sI https://weblinker.uz` yaxshiroq.)
+(Bu faqat Nginx `localhost` da 80 ni tinglayotgan bo‘lsa ishlaydi; ko‘pincha `curl -sI https://web.paylinker.uz` yaxshiroq.)
 
 ---
 
-**Xulosa:** weblinker uchun **alohida** nginx fayl (`sites-available/weblinker`), aniq **`server_name weblinker.uz`**, **`proxy_pass`** faqat shu loyiha portlariga (odat **8000** / **8001**), va boshqa loyiha bilan **shu portlarni ulashmaslik**.
+**Xulosa:** paylinker uchun **alohida** nginx fayl (`sites-available/paylinker`), aniq **`server_name web.paylinker.uz`**, **`proxy_pass`** faqat shu loyiha portlariga (odat **8000** / **8001**), va boshqa loyiha bilan **shu portlarni ulashmaslik**.
 
-Namuna upstream: [nginx-weblinker.conf.example](./nginx-weblinker.conf.example).
+Namuna upstream: [nginx-paylinker.conf.example](./nginx-paylinker.conf.example).

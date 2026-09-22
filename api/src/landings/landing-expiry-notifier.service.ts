@@ -75,7 +75,7 @@ export class LandingExpiryNotifierService {
       }
 
       const text =
-        `Weblinker: "${title}" (${slug}) landing obunasi tugadi. ` +
+        `Paylinker: "${title}" (${slug}) landing obunasi tugadi. ` +
         `Sayt vaqtincha yopildi. Obunani uzaytirish: ${renewUrl}`;
 
       const ok = await this.sms.sendText(phone, text);

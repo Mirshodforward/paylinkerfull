@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { SITE_DOMAIN, siteFileName, siteUrl } from "@/lib/brand";
 import {
   ColorThemeId,
   FaqItem,
@@ -440,7 +441,7 @@ export function Editor({
                 hint="Sayt havolasi (slug), jismoniy manzil emas"
               >
                 <TextInput
-                  prefix="weblinker.uz/"
+                  prefix={`${SITE_DOMAIN}/`}
                   value={slugInput}
                   onChange={(v) => setSlugInput(normalizeSlug(v))}
                 />
@@ -531,7 +532,7 @@ export function Editor({
             >
               <SiteQRCode
                 url={buildSiteUrl(draft.slug)}
-                filename={`weblinker-${draft.slug}`}
+                filename={siteFileName(draft.slug)}
               />
             </Section>
 
@@ -628,7 +629,7 @@ function EditorHeader({
             {site.content.businessName}
           </p>
           <p className="truncate text-[11px] text-neutral-500">
-            weblinker.uz/<span className="font-mono">{site.slug}</span>
+            {SITE_DOMAIN}/<span className="font-mono">{site.slug}</span>
           </p>
         </div>
       </div>
@@ -711,7 +712,7 @@ function PreviewToolbar({
       </div>
       <div className="flex flex-col items-center gap-0.5 sm:flex-row sm:gap-2">
         <span className="flex h-6 items-center gap-1.5 rounded border border-[color:var(--border)] bg-neutral-50 px-2 font-mono">
-          weblinker.uz/{slug}
+          {SITE_DOMAIN}/{slug}
         </span>
         {variant === "landing" ? (
           <span className="hidden text-[10px] text-neutral-500 sm:inline">
@@ -1667,6 +1668,6 @@ function buildSiteUrl(slug: string): string {
   if (typeof window !== "undefined") {
     return `${window.location.origin}/${slug}`;
   }
-  return `https://weblinker.uz/${slug}`;
+  return siteUrl(slug);
 }
 

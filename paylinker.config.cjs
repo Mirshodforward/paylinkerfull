@@ -10,34 +10,34 @@ try {
 
 /**
  * Portlar: ildizdagi .env
- *   WEBLINKER_WEB_PORT  — Next (odat 8000)
- *   WEBLINKER_API_PORT  — Nest (odat 8001)
+ *   PAYLINKER_WEB_PORT  — Next (odat 8000)
+ *   PAYLINKER_API_PORT  — Nest (odat 8001)
  * Nginx dagi upstream ham shu portlarga mos bo'lsin.
  */
 const webPort = String(
-  process.env.WEBLINKER_WEB_PORT || process.env.PORT || "8000",
+  process.env.PAYLINKER_WEB_PORT || process.env.PORT || "8000",
 );
 const apiPort = String(
-  process.env.WEBLINKER_API_PORT || process.env.API_PORT || "8001",
+  process.env.PAYLINKER_API_PORT || process.env.API_PORT || "8001",
 );
 
 /**
  * Bitta buyruq — frontend (Next) + backend (Nest):
  *
  *   npm run build:all
- *   pm2 start weblinker.config.cjs
+ *   pm2 start paylinker.config.cjs
  *
  * yoki: npm run pm2
  *
- * To‘xtatish: pm2 stop weblinker-web weblinker-api
- * Qayta ishga tushirish: pm2 restart weblinker-web weblinker-api
+ * To‘xtatish: pm2 stop paylinker-web paylinker-api
+ * Qayta ishga tushirish: pm2 restart paylinker-web paylinker-api
  *
  * .env loyiha ildizida (root) bo‘lishi kerak.
  */
 module.exports = {
   apps: [
     {
-      name: "weblinker-web",
+      name: "paylinker-web",
       cwd: root,
       script: "npm",
       args: `run start -- --hostname 127.0.0.1 --port ${webPort}`,
@@ -50,7 +50,7 @@ module.exports = {
       },
     },
     {
-      name: "weblinker-api",
+      name: "paylinker-api",
       cwd: path.join(root, "api"),
       script: "dist/main.js",
       instances: 1,

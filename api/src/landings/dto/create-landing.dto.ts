@@ -15,7 +15,7 @@ import {
  * Mijoz bir martada tahrirlangan kontentni ham, manzilni ham yuborishi mumkin.
  */
 export class CreateLandingDto {
-  /** weblinker.uz/{name} */
+  /** paylinker.uz/{name} */
   @IsString()
   @IsNotEmpty()
   @MinLength(3)

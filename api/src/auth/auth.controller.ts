@@ -15,7 +15,7 @@ export class AuthController {
     return {
       ok: true,
       ...v,
-      bot: process.env.NEXT_PUBLIC_TELEGRAM_BOT ?? "weblinkeruz_bot",
+      bot: process.env.NEXT_PUBLIC_TELEGRAM_BOT ?? "paylinkeruz_bot",
     };
   }
 

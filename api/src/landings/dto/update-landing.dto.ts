@@ -10,7 +10,7 @@ import {
 
 /** Hamma maydon ixtiyoriy — sahifa qismlarini bo‘lib saqlash uchun */
 export class UpdateLandingDto {
-  /** weblinker.uz/{name} — manzilni o‘zgartirish */
+  /** paylinker.uz/{name} — manzilni o‘zgartirish */
   @IsOptional()
   @IsString()
   @MinLength(3)

@@ -1,8 +1,9 @@
 import Image from "next/image";
 import { LoginForm } from "@/components/auth/login-form";
+import { BRAND_NAME, LOGO_SRC } from "@/lib/brand";
 
 export const metadata = {
-  title: "Kirish — Weblinker",
+  title: `Kirish — ${BRAND_NAME}`,
   description: "Telegram orqali tezkor kirish",
 };
 
@@ -12,8 +13,8 @@ export default function LoginPage() {
       <div className="w-full max-w-md rounded-2xl border border-[color:var(--border)] bg-white p-6 shadow-sm sm:p-8">
         <div className="flex flex-col items-center text-center">
           <Image
-            src="/weblinker-logo-transparent.png"
-            alt="Weblinker"
+            src={LOGO_SRC}
+            alt={BRAND_NAME}
             width={88}
             height={88}
             className="h-[88px] w-[88px] object-contain"

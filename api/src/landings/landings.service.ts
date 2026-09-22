@@ -185,7 +185,7 @@ export class LandingsService {
     return { landing };
   }
 
-  /** Ommaviy domen — auth shart emas. `weblinker.uz/{name}` ochilganda chaqiriladi. */
+  /** Ommaviy domen — auth shart emas. `paylinker.uz/{name}` ochilganda chaqiriladi. */
   async getPublic(
     name: string,
   ): Promise<

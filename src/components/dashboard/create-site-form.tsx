@@ -12,6 +12,7 @@ import {
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
+import { SITE_DOMAIN } from "@/lib/brand";
 import {
   createSite,
   normalizeSlug,
@@ -125,11 +126,11 @@ function useClientReady(): boolean {
 }
 
 /** CLICK dan qaytganda — vizitka oy paketi */
-const SESSION_SUB_MONTHS = "weblinker.newSite.subscriptionMonths";
+const SESSION_SUB_MONTHS = "paylinker.newSite.subscriptionMonths";
 /** CLICK dan qaytganda — landing oy paketi */
-const SESSION_LANDING_SUB_MONTHS = "weblinker.newSite.landingSubscriptionMonths";
+const SESSION_LANDING_SUB_MONTHS = "paylinker.newSite.landingSubscriptionMonths";
 /** CLICK dan qaytgan — landing AI paketi uchun balans to‘ldirish */
-const SESSION_LANDING_AI_PENDING = "weblinker.newSite.landingAiPending";
+const SESSION_LANDING_AI_PENDING = "paylinker.newSite.landingAiPending";
 
 const COMMON_CATEGORIES = [
   "Chayxana",
@@ -1579,10 +1580,10 @@ function StepOne({
         <Field
           label="Veb-manzil"
           error={slugError}
-          hint="Sayt havolasi: weblinker.uz/… (bu jismoniy manzil emas)"
+          hint={`Sayt havolasi: ${SITE_DOMAIN}/… (bu jismoniy manzil emas)`}
         >
           <TextInput
-            prefix="weblinker.uz/"
+            prefix={`${SITE_DOMAIN}/`}
             value={slug}
             onChange={setSlug}
             placeholder="chayxana-alisher"

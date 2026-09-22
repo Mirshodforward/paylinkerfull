@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Logo } from "@/components/marketing/logo";
+import { BRAND_NAME, SITE_DOMAIN } from "@/lib/brand";
 
 export function NotFoundPublic({ slug }: { slug?: string }) {
   const displaySlug = slug?.trim() || "name";
@@ -22,14 +23,14 @@ export function NotFoundPublic({ slug }: { slug?: string }) {
       <div className="relative z-10 w-full max-w-md">
         <div className="rounded-[28px] border border-white/80 bg-white/85 p-8 text-center shadow-[0_24px_80px_-32px_rgba(0,0,0,0.2)] backdrop-blur-sm sm:p-10">
           <p className="text-xs uppercase tracking-[0.18em] text-neutral-500">
-            404 · weblinker.uz
+            404 · {SITE_DOMAIN}
           </p>
           <h1 className="mt-4 text-3xl font-semibold tracking-tight text-black sm:text-4xl">
             Bunday sayt topilmadi
           </h1>
           <p className="mt-4 text-sm leading-relaxed text-neutral-600">
             <span className="font-mono text-neutral-800">
-              weblinker.uz/{displaySlug}
+              {SITE_DOMAIN}/{displaySlug}
             </span>{" "}
             manzilida hozircha hech qanday sayt yo&apos;q. Bu nom ostida sizning
             saytingiz bo&apos;lishi mumkin.
@@ -39,7 +40,7 @@ export function NotFoundPublic({ slug }: { slug?: string }) {
               href="/"
               className="inline-flex h-11 w-full items-center justify-center rounded-xl bg-black px-5 text-sm font-medium text-white transition hover:bg-neutral-800 sm:w-auto"
             >
-              Weblinker haqida
+              {BRAND_NAME} haqida
             </Link>
             <Link
               href="/dashboard/sites/new"

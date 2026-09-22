@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
+import { BRAND_NAME, LOGO_SRC } from "@/lib/brand";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/cn";
 
@@ -138,11 +140,15 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
         <div className="relative flex flex-1 flex-col px-4 pb-8 pt-10">
           <div className="px-3">
             <div className="flex items-center gap-2">
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-teal-500/20 text-sm font-bold text-teal-400">
-                W
-              </span>
+              <Image
+                src={LOGO_SRC}
+                alt=""
+                width={36}
+                height={36}
+                className="h-9 w-9 shrink-0 rounded-xl bg-white/10 object-contain p-1"
+              />
               <div>
-                <p className="text-[13px] font-semibold tracking-tight text-white">Weblinker</p>
+                <p className="text-[13px] font-semibold tracking-tight text-white">{BRAND_NAME}</p>
                 <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-zinc-500">
                   Admin
                 </p>
@@ -177,12 +183,16 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-30 border-b border-[color:var(--border)] bg-white/90 backdrop-blur-md lg:hidden">
           <div className="flex h-14 items-center gap-3 px-4">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-500/15 text-xs font-bold text-teal-700">
-              W
-            </span>
+            <Image
+              src={LOGO_SRC}
+              alt=""
+              width={32}
+              height={32}
+              className="h-8 w-8 shrink-0 rounded-lg object-contain"
+            />
             <div className="min-w-0">
               <p className="truncate text-sm font-semibold text-zinc-900">Admin</p>
-              <p className="truncate text-[11px] text-zinc-500">Weblinker boshqaruvi</p>
+              <p className="truncate text-[11px] text-zinc-500">{BRAND_NAME} boshqaruvi</p>
             </div>
           </div>
           <nav

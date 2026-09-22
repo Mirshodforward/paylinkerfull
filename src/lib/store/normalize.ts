@@ -121,7 +121,7 @@ function normalizeVizitka(content: VizitkaContent): VizitkaContent {
     hoursLine: content.hoursLine ?? defaults.hoursLine,
     social: normalizeSocial(content.social),
     accentInitials:
-      content.accentInitials || deriveInitials(content.businessName || "Weblinker"),
+      content.accentInitials || deriveInitials(content.businessName || "Paylinker"),
     heroImage: content.heroImage,
     logoImage: content.logoImage,
     colorTheme: content.colorTheme ?? "mono",

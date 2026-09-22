@@ -1,79 +1,65 @@
+import Image from "next/image";
 import Link from "next/link";
+import { BRAND_NAME, LOGO_SRC } from "@/lib/brand";
 import { cn } from "@/lib/cn";
 
+/** @deprecated Logo endi bitta rasm — variantlar saqlanib qolgan (chaqiruvchilar buzilmasin uchun) */
 export type LogoVariantKey = "v1" | "v2" | "v3";
 
 type LogoProps = {
   className?: string;
   variant?: "default" | "inverse";
   mark?: LogoVariantKey;
+  /** Belgi o'lchami (px) */
+  size?: number;
+  /** Faqat belgi — yozuvsiz */
+  markOnly?: boolean;
 };
 
-export function Logo({ className, variant = "default", mark = "v2" }: LogoProps) {
+export function Logo({
+  className,
+  variant = "default",
+  size = 26,
+  markOnly = false,
+}: LogoProps) {
   const inverse = variant === "inverse";
   return (
     <Link
       href="/"
-      aria-label="Weblinker bosh sahifa"
+      aria-label={`${BRAND_NAME} bosh sahifa`}
       className={cn(
-        "inline-flex items-center gap-2.5 text-[16px] font-semibold tracking-tight",
+        "inline-flex items-center gap-2 text-[16px] font-semibold tracking-tight",
         inverse ? "text-white" : "text-black",
         className,
       )}
     >
-      <LogoMark variant={mark} inverse={inverse} size={24} />
-      <span>Weblinker</span>
+      <LogoMark size={size} />
+      {markOnly ? null : <span>{BRAND_NAME}</span>}
     </Link>
   );
 }
 
 export function LogoMark({
-  variant = "v1",
-  inverse = false,
   size = 24,
+  className,
 }: {
+  /** @deprecated endi ta'sir qilmaydi */
   variant?: LogoVariantKey;
+  /** @deprecated logo rangli — inversiya shart emas */
   inverse?: boolean;
   size?: number;
+  className?: string;
 }) {
-  const viewBox = 24;
-  const insetMap: Record<LogoVariantKey, number> = {
-    v1: 4,
-    v2: 5,
-    v3: 6,
-  };
-  const inset = insetMap[variant];
-  const outerRx = 5;
-  const innerRx = Math.max(0.5, outerRx - inset * 0.7);
-
-  const outerFill = inverse ? "#ffffff" : "#000000";
-  const innerFill = inverse ? "#000000" : "#ffffff";
-
   return (
-    <svg
+    <Image
+      src={LOGO_SRC}
+      alt=""
       width={size}
       height={size}
-      viewBox={`0 0 ${viewBox} ${viewBox}`}
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
+      style={{ width: size, height: size }}
+      className={cn("shrink-0 object-contain", className)}
+      priority
       aria-hidden
-    >
-      <rect
-        x="0"
-        y="0"
-        width={viewBox}
-        height={viewBox}
-        rx={outerRx}
-        fill={outerFill}
-      />
-      <rect
-        x={inset}
-        y={inset}
-        width={viewBox - inset * 2}
-        height={viewBox - inset * 2}
-        rx={innerRx}
-        fill={innerFill}
-      />
-    </svg>
+    />
   );
 }

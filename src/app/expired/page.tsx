@@ -3,7 +3,7 @@ import { ExpiredPublicContent } from "@/components/sites/expired-public-content"
 import { ExpiredPageView } from "@/components/sites/expired-page-view";
 
 export const metadata: Metadata = {
-  title: "Vaqtincha to'xtatilgan — Weblinker",
+  title: "Vaqtincha to'xtatilgan — Paylinker",
   description:
     "Bu nomdagi sayt vaqtincha to'xtatilgan.",
 };

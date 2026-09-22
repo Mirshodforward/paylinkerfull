@@ -14,7 +14,7 @@ const display = Playfair_Display({
 });
 
 /**
- * `weblinker.uz/{name}` orqali ochilganda — DB dagi `Landing` ma’lumotlarini
+ * `paylinker.uz/{name}` orqali ochilganda — DB dagi `Landing` ma’lumotlarini
  * `DemoChoyxonaSite` orqali to‘liq sahifa sifatida ko‘rsatadi.
  */
 export function PublicLanding({ landing }: { landing: LandingRecord }) {

@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { Logo } from "@/components/marketing/logo";
 import { cn } from "@/lib/cn";
+import { SITE_DOMAIN } from "@/lib/brand";
 
 export type ExpiredSiteKind = "vizitka" | "landing" | "generic";
 
@@ -118,7 +119,7 @@ export function ExpiredPageView({
               {hasSlug && showSlugHint ? (
                 <>
                   <span className="font-mono text-neutral-800">
-                    weblinker.uz/{displaySlug}
+                    {SITE_DOMAIN}/{displaySlug}
                   </span>{" "}
                   manzilidagi bu nomdagi sayt vaqtincha to&apos;xtatilgan.
                 </>

@@ -83,7 +83,7 @@ model TgUser {
   @@map("tg_users")
 }
 
-/// Vizitka tarif — weblinker.uz/{name} (name noyob slug)
+/// Vizitka tarif — paylinker.uz/{name} (name noyob slug)
 model Vizitka {
   id     String  @id @default(cuid())
   user   User   @relation(fields: [ownerPublicId], references: [publicId], onDelete: Cascade)
@@ -168,7 +168,7 @@ model AppSettings {
 
 
 
-/// Landing tarif — weblinker.uz/{name} (name noyob slug)
+/// Landing tarif — paylinker.uz/{name} (name noyob slug)
 model Landing {
   id     String  @id @default(cuid())
   /// Foydalanuvchini `users.public_id` orqali bog‘lash (ichki `id` emas)

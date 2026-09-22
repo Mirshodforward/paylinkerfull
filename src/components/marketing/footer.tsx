@@ -1,4 +1,5 @@
 import { Container } from "@/components/ui/container";
+import { BRAND_NAME, SUPPORT_URL } from "@/lib/brand";
 import { Logo } from "./logo";
 
 export function Footer() {
@@ -8,7 +9,7 @@ export function Footer() {
         <div className="flex items-center gap-5">
           <Logo />
           <p className="text-xs text-neutral-500">
-            © {new Date().getFullYear()} Webgrade
+            © {new Date().getFullYear()} {BRAND_NAME}
           </p>
         </div>
         <nav className="flex gap-5 text-xs text-neutral-600" aria-label="Footer">
@@ -16,7 +17,7 @@ export function Footer() {
             Tariflar
           </a>
           <a
-            href="https://t.me/weblinker_support"
+            href={SUPPORT_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-black"

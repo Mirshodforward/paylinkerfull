@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Logo, LogoMark } from "@/components/marketing/logo";
 import { cn } from "@/lib/cn";
+import { BRAND_NAME, SUPPORT_URL as BRAND_SUPPORT_URL } from "@/lib/brand";
 import { api } from "@/lib/api";
 import { e164ToDisplay } from "@/lib/phone";
 import { clearTokens, getAccessToken } from "@/lib/auth-storage";
@@ -17,7 +18,7 @@ type MeUser = {
   balance: number;
 };
 
-const SUPPORT_URL = "https://t.me/weblinker_support";
+const SUPPORT_URL = BRAND_SUPPORT_URL;
 
 const navItems = [
   { label: "Bosh sahifa", href: "/dashboard", icon: <HomeIcon />, exact: true },
@@ -236,8 +237,8 @@ function SidebarBrand({ onPress }: { onPress?: () => void }) {
         className="inline-flex items-center gap-2.5 text-left text-[16px] font-semibold tracking-tight text-black outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-neutral-300"
         aria-label="Menyuni yopish"
       >
-        <LogoMark variant="v2" size={24} />
-        <span>Weblinker</span>
+        <LogoMark size={24} />
+        <span>{BRAND_NAME}</span>
       </button>
     );
   }

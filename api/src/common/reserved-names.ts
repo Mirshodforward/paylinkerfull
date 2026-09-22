@@ -1,7 +1,7 @@
 /**
  * Vizitka va Landing manzillari uchun yagona band-bo'sh tekshiruvchi util.
  *
- * `weblinker.uz/{name}` slug ikkala model uchun ham noyob bo'lishi shart:
+ * `paylinker.uz/{name}` slug ikkala model uchun ham noyob bo'lishi shart:
  *  - bitta `name` faqat bitta marta — yo Vizitka, yo Landing tomonidan ishlatilishi mumkin.
  *  - tizim yo'llari (route nomlari) hech qaysi modelda olinmasligi kerak.
  */
@@ -16,6 +16,7 @@ export const RESERVED_NAMES: ReadonlySet<string> = new Set([
   '_next',
   'admin',
   'api',
+  'apple-touch-icon',
   'auth',
   'billing',
   'check',
@@ -29,6 +30,8 @@ export const RESERVED_NAMES: ReadonlySet<string> = new Set([
   'login',
   'm',
   'new',
+  'pay',
+  'paylinker',
   'pricing',
   'privacy',
   'public',
@@ -42,7 +45,9 @@ export const RESERVED_NAMES: ReadonlySet<string> = new Set([
   'telegram',
   'terms',
   'vizitka',
+  'web',
   'webhook',
+  'www',
 ]);
 
 export function assertNameAllowed(name: string): void {

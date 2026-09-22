@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/cn";
+import { BRAND_NAME, LOGO_SRC } from "@/lib/brand";
 
 export type PromoSiteKind = "vizitka" | "landing" | "generic";
 
@@ -25,8 +26,8 @@ const COPY: Record<
   },
 };
 
-/** Jamoat sahifalari (404, expired) uchun Weblinker reklamasi */
-export function WeblinkerPublicPromo({
+/** Jamoat sahifalari (404, expired) uchun Paylinker reklamasi */
+export function PaylinkerPublicPromo({
   slug,
   siteKind = "generic",
   className,
@@ -61,7 +62,7 @@ export function WeblinkerPublicPromo({
       <div className="relative border-b border-white/10 px-5 py-6 sm:px-7">
         <div className="flex items-start gap-4">
           <Image
-            src="/weblinker.png"
+            src={LOGO_SRC}
             alt=""
             width={48}
             height={48}
@@ -69,7 +70,7 @@ export function WeblinkerPublicPromo({
           />
           <div className="min-w-0 text-left">
             <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-teal-300/90">
-              Weblinker
+              {BRAND_NAME}
             </p>
             <p className="mt-0.5 text-lg font-semibold leading-snug tracking-tight sm:text-xl">
               {copy.headline}

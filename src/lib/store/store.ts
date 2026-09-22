@@ -1,7 +1,7 @@
 import { Site, SiteType, TemplateId, UnknownSite } from "./types";
 import { defaultLandingContent, defaultVizitkaContent } from "./defaults";
 
-const STORAGE_KEY = "weblinker.sites.v1";
+const STORAGE_KEY = "paylinker.sites.v1";
 const SUBSCRIBERS = new Set<() => void>();
 
 function isBrowser(): boolean {
@@ -25,7 +25,7 @@ function writeAll(sites: UnknownSite[]) {
   if (!isBrowser()) return;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(sites));
   SUBSCRIBERS.forEach((cb) => cb());
-  window.dispatchEvent(new CustomEvent("weblinker:sites-updated"));
+  window.dispatchEvent(new CustomEvent("paylinker:sites-updated"));
 }
 
 export function subscribe(cb: () => void): () => void {

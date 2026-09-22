@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Logo } from "@/components/marketing/logo";
+import { BRAND_NAME, LOGO_SRC, SITE_DOMAIN } from "@/lib/brand";
 import type { UnknownSite } from "@/lib/store/types";
 import { SiteRenderer } from "./site-renderer";
 
@@ -34,13 +35,13 @@ export function PausedSitePreview({ site }: { site: UnknownSite }) {
   );
 }
 
-function WeblinkerPromo({ slug }: { slug?: string }) {
+function PaylinkerPromo({ slug }: { slug?: string }) {
   return (
     <div className="mt-6 w-full max-w-md overflow-hidden rounded-3xl border border-black/10 bg-black text-white shadow-[0_20px_60px_-24px_rgba(0,0,0,0.55)]">
       <div className="relative border-b border-white/10 px-6 py-5">
         <div className="flex items-center gap-3">
           <Image
-            src="/weblinker.png"
+            src={LOGO_SRC}
             alt=""
             width={40}
             height={40}
@@ -50,7 +51,7 @@ function WeblinkerPromo({ slug }: { slug?: string }) {
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/55">
               Taklif
             </p>
-            <p className="text-lg font-semibold tracking-tight">Weblinker</p>
+            <p className="text-lg font-semibold tracking-tight">{BRAND_NAME}</p>
           </div>
         </div>
         <p className="mt-3 text-sm leading-relaxed text-white/75">
@@ -123,12 +124,12 @@ function PausedSiteShell({
           <p className="mt-4 text-sm leading-relaxed text-neutral-600">{message}</p>
           {showSlugHint && slug ? (
             <p className="mt-3 font-mono text-xs text-neutral-500">
-              weblinker.uz/{slug}
+              {SITE_DOMAIN}/{slug}
             </p>
           ) : null}
         </div>
 
-        <WeblinkerPromo slug={slug} />
+        <PaylinkerPromo slug={slug} />
 
         <Logo className="mt-8 opacity-40 hover:opacity-70" />
       </div>
@@ -177,7 +178,7 @@ export function PausedSiteExpiredView({
       message={
         showSlugHint && slug ? (
           <>
-            <span className="font-mono text-neutral-800">weblinker.uz/{slug}</span>{" "}
+            <span className="font-mono text-neutral-800">{SITE_DOMAIN}/{slug}</span>{" "}
             manzilidagi bu nomdagi sayt vaqtincha to&apos;xtatilgan.
           </>
         ) : (

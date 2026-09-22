@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useSites } from "@/lib/store/hooks";
 import { trialDaysLeft } from "@/lib/store/store";
+import { SITE_DOMAIN } from "@/lib/brand";
 
 export function Overview() {
   const { sites, ready } = useSites();
@@ -52,7 +53,7 @@ export function Overview() {
               {mostRecent.content.businessName}
             </p>
             <p className="mt-1 text-sm text-neutral-600">
-              weblinker.uz/<span className="font-mono">{mostRecent.slug}</span>
+              {SITE_DOMAIN}/<span className="font-mono">{mostRecent.slug}</span>
             </p>
           </div>
           <div className="flex gap-2">

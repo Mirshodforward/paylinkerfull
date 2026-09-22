@@ -7,8 +7,9 @@ import { postJson } from "@/lib/api";
 import { e164ToDisplay, nineToE164 } from "@/lib/phone";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
+import { TELEGRAM_BOT } from "@/lib/brand";
 
-const BOT = process.env.NEXT_PUBLIC_TELEGRAM_BOT ?? "weblinkeruz_bot";
+const BOT = TELEGRAM_BOT;
 
 type PhoneRes = { ok: boolean; phone: string; display: string; bot: string };
 

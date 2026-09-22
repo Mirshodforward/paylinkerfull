@@ -120,7 +120,7 @@ export type PublicLandingFetchResult =
   | { landing: LandingRecord }
   | { publicPause: PublicPausePayload; landing: LandingRecord };
 
-/** Ommaviy domen: `weblinker.uz/{name}` — faol yoki muddati tugagan */
+/** Ommaviy domen: `paylinker.uz/{name}` — faol yoki muddati tugagan */
 export async function fetchPublicLandingFromApi(
   name: string,
 ): Promise<PublicLandingFetchResult | null> {

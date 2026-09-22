@@ -8,6 +8,7 @@ import { UnknownSite } from "@/lib/store/types";
 import { trialDaysLeft, deleteSite, duplicateSite, saveSite } from "@/lib/store/store";
 import { downloadSiteQRCode } from "@/components/editor/qr-code";
 import { cn } from "@/lib/cn";
+import { SITE_DOMAIN, siteFileName } from "@/lib/brand";
 import { api, ApiError } from "@/lib/api";
 
 type SiteCardProps = {
@@ -51,7 +52,7 @@ export function SiteCard({ site, onUpdated }: SiteCardProps) {
               {current.content.businessName}
             </h3>
             <p className="truncate text-xs text-neutral-500">
-              weblinker.uz/<span className="font-mono">{current.slug}</span>
+              {SITE_DOMAIN}/<span className="font-mono">{current.slug}</span>
             </p>
             {current.content.category?.trim() ? (
               <p className="mt-0.5 truncate text-xs font-medium text-neutral-700">
@@ -226,7 +227,7 @@ function Menu({ site }: { site: UnknownSite }) {
   const handleDownloadQR = () => {
     setOpen(false);
     const url = `${window.location.origin}/${site.slug}`;
-    downloadSiteQRCode(url, `weblinker-${site.slug}`).catch(() => {});
+    downloadSiteQRCode(url, siteFileName(site.slug)).catch(() => {});
   };
 
   const handleDeleteClick = () => {

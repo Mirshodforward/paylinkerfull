@@ -7,7 +7,7 @@ export type LandingRecord = {
   id: string;
   ownerPublicId: string;
 
-  /** weblinker.uz/{name} */
+  /** paylinker.uz/{name} */
   name: string;
   /** Biznes turi / yo‘nalish (masalan: Chayxona) */
   category: string;

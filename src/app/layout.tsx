@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { BRAND_NAME, SITE_URL } from "@/lib/brand";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,20 +13,31 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const TITLE = `${BRAND_NAME} — 15 daqiqada biznes saytingizni yarating`;
+
 export const metadata: Metadata = {
-  title: "Weblinker — 15 daqiqada biznes saytingizni yarating",
+  title: TITLE,
   description:
     "O'zbekistondagi kichik va o'rta biznes uchun oson va qulay sayt yaratish platformasi. Shablon tanlang, matnni tahrirlang va saytingiz tayyor.",
+  applicationName: BRAND_NAME,
   icons: {
     icon: "/favicon.png",
+    apple: "/apple-touch-icon.png",
   },
-  metadataBase: new URL("https://weblinker.uz"),
+  metadataBase: new URL(SITE_URL),
   openGraph: {
-    title: "Weblinker — 15 daqiqada biznes saytingizni yarating",
+    title: TITLE,
     description:
       "Dasturchisiz va dizaynersiz o'z biznes saytingizni yarating. 10 kun bepul sinov.",
+    siteName: BRAND_NAME,
     type: "website",
     locale: "uz_UZ",
+    images: [{ url: "/paylinker-logo-512.png", width: 512, height: 512 }],
+  },
+  twitter: {
+    card: "summary",
+    title: TITLE,
+    images: ["/paylinker-logo-512.png"],
   },
 };
 

@@ -1,5 +1,5 @@
 import { ColorTheme, VizitkaContent } from "@/lib/store/types";
-import { Avatar, SocialRow, telHref, WeblinkerBrandLink } from "./shared";
+import { Avatar, SocialRow, telHref, PaylinkerBrandLink } from "./shared";
 import { PatternLayer } from "../patterns";
 
 type Props = { content: VizitkaContent; theme: ColorTheme };
@@ -37,7 +37,7 @@ export function VizitkaMinimal({ content, theme }: Props) {
         <SocialRow social={content.social} />
       </div>
 
-      <WeblinkerBrandLink className="mt-auto pt-10" />
+      <PaylinkerBrandLink className="mt-auto pt-10" />
     </div>
   );
 }

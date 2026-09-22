@@ -26,7 +26,7 @@ export function Topbar({ title, breadcrumb, actions }: Props) {
         >
           <MenuIcon open={mobileOpen} />
         </button>
-        <LogoMark variant="v2" size={24} />
+        <LogoMark size={24} />
       </div>
       <div className="flex flex-col gap-4 border-b border-[color:var(--border)] bg-white px-5 py-6 sm:flex-row sm:items-end sm:justify-between lg:px-10">
         <div>

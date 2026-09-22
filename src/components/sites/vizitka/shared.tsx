@@ -5,24 +5,25 @@ import {
   VizitkaContent,
 } from "@/lib/store/types";
 import { cn } from "@/lib/cn";
+import { BRAND_NAME, SITE_DOMAIN, SITE_URL } from "@/lib/brand";
 import { buildSocialHref, SocialGlyph } from "../social-icons";
 
 /** Ochiq vizitka saytlarida pastdagi brand — bosh sahifaga */
-export const WEBLINKER_HOMEPAGE = "https://weblinker.uz";
+export const PAYLINKER_HOMEPAGE = SITE_URL;
 
-export function WeblinkerBrandLink({ className }: { className?: string }) {
+export function PaylinkerBrandLink({ className }: { className?: string }) {
   return (
     <a
-      href={WEBLINKER_HOMEPAGE}
+      href={PAYLINKER_HOMEPAGE}
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
         "text-[10px] uppercase tracking-[0.2em] text-neutral-400 transition-opacity hover:opacity-80",
         className,
       )}
-      aria-label="Weblinker — bosh sahifa"
+      aria-label={`${BRAND_NAME} — bosh sahifa`}
     >
-      weblinker.uz
+      {SITE_DOMAIN}
     </a>
   );
 }

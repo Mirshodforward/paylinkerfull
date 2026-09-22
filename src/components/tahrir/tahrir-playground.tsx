@@ -11,6 +11,7 @@ import {
   useState,
 } from "react";
 import { DemoChoyxonaSite } from "@/components/demo/demo-choyxona-site";
+import { SITE_DOMAIN } from "@/lib/brand";
 import { sampleLanding, DEFAULT_LANDING_HERO_DESCRIPTION } from "@/lib/landings/defaults";
 import {
   TAHRIR_PREVIEW_LANDING_SESSION_KEY,
@@ -704,7 +705,7 @@ function Toolbar(props: {
       <div className="flex min-w-0 flex-wrap items-center gap-2 border-b border-neutral-100 px-[calc(5px+0.75rem)] py-2 pt-[calc(8px+max(4px,env(safe-area-inset-top)))] sm:gap-3 sm:px-[calc(5px+1rem)]">
         <div className="flex min-w-0 flex-1 items-center rounded-md border border-neutral-200 bg-neutral-50 text-xs sm:max-w-[50%]">
           <span className="hidden shrink-0 px-2 py-1.5 text-neutral-500 sm:inline">
-            weblinker.uz/
+            {SITE_DOMAIN}/
           </span>
           <span className="shrink-0 px-2 py-1.5 text-neutral-500 sm:hidden">…/</span>
           <input
@@ -735,7 +736,7 @@ function Toolbar(props: {
                 onClick={onCreate}
                 disabled={creating}
                 className="inline-flex h-9 min-h-[44px] min-w-[44px] shrink-0 items-center justify-center gap-1.5 rounded-md bg-emerald-600 px-4 text-xs font-bold text-white shadow-sm transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50 sm:min-h-0 sm:min-w-0"
-                title={`weblinker.uz/${landing.name} manzilida saqlash`}
+                title={`${SITE_DOMAIN}/${landing.name} manzilida saqlash`}
               >
                 {creating ? "Yaratilmoqda…" : "Yaratish"}
               </button>

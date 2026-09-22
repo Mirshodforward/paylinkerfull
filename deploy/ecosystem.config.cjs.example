@@ -1,10 +1,10 @@
 /**
- * @deprecated — endi ildizdagi weblinker.config.cjs ishlatiladi.
+ * @deprecated — endi ildizdagi paylinker.config.cjs ishlatiladi.
  *
  *   cd <loyiha-ildizi>
  *   npm run build:all
- *   pm2 start weblinker.config.cjs
+ *   pm2 start paylinker.config.cjs
  *
  * Back-compat:
  */
-module.exports = require("../weblinker.config.cjs");
+module.exports = require("../paylinker.config.cjs");

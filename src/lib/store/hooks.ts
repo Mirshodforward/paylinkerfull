@@ -14,7 +14,7 @@ export function useSites(): { sites: UnknownSite[]; ready: boolean } {
     setReady(true);
     const unsub = subscribe(refresh);
     const onStorage = (e: StorageEvent) => {
-      if (e.key && e.key.startsWith("weblinker.")) refresh();
+      if (e.key && e.key.startsWith("paylinker.")) refresh();
     };
     window.addEventListener("storage", onStorage);
     return () => {

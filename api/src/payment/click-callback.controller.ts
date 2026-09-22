@@ -3,8 +3,8 @@ import { PaymentService } from './payment.service';
 
 /**
  * CLICK merchant kabineti (Prepare / Complete).
- * Production (bir domen): https://weblinker.uz/api/payments/click/prepare
- * va https://weblinker.uz/api/payments/click/complete
+ * Production (bir domen): https://paylinker.uz/api/payments/click/prepare
+ * va https://paylinker.uz/api/payments/click/complete
  * (Nginx yoki Next rewrites orqali backend 8001 ga proxylanadi)
  *
  * Nest @Post() default 201 — CLICK odatda 200 kutadi; shuningdan "javob yo'q" xatosi bo'lishi mumkin.

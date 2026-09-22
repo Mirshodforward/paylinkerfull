@@ -11,6 +11,7 @@ import {
   landingInitials,
 } from "@/lib/landings/dashboard-utils";
 import { cn } from "@/lib/cn";
+import { SITE_DOMAIN } from "@/lib/brand";
 
 type Props = {
   landing: LandingRecord;
@@ -66,7 +67,7 @@ export function LandingSiteCard({ landing, onDeleted, onUpdated }: Props) {
             </span>
           </div>
           <p className="mt-1 truncate text-xs text-neutral-500">
-            weblinker.uz/
+            {SITE_DOMAIN}/
             <span className="font-mono">{current.name}</span>
           </p>
           {current.category.trim() ? (

@@ -1,5 +1,5 @@
-const A = "weblinker_access";
-const R = "weblinker_refresh";
+const A = "paylinker_access";
+const R = "paylinker_refresh";
 
 export function getAccessToken(): string | null {
   if (typeof window === "undefined") return null;
