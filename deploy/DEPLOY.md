@@ -190,6 +190,26 @@ Agar faqat `.env` dagi `NEXT_PUBLIC_*` o‘zgargan bo‘lsa — **`npm run build
    ```
 5. CLICK kabineti va Telegram webhook manzillarini ham yangi domenga o‘tkazing.
 
+## 11. Joriy server holati (164.92.133.109, `asosiysever`)
+
+Bu serverda bir nechta loyiha bor — ularni **ulashmaydigan** qilib joylandi:
+
+| Loyiha | Domen | Port | Boshqaruv | Baza |
+|--------|-------|------|-----------|------|
+| **Paylinker WEB** (bu loyiha) | `web.paylinker.uz` | 8000 / 8001 | pm2 `paylinker-web`, `paylinker-api` | `paylinkerweb_db` (rol `paylinkerweb`) |
+| Paylinker Click shlyuzi | `api.paylinker.uz` | 4000 | systemd `paylinker.service` | `paylinker_api` (rol `api_user`) |
+| Starspaymee | — | — | pm2 `starspaymee` | — |
+| Mafiya Online | `game.mafiaonline.uz` | — | systemd `mafiya-online.service` | `mafia_db` |
+
+- Loyiha yo'li: `/home/appuser/paylinkerweb` (foydalanuvchi `appuser`)
+- Nginx: `/etc/nginx/sites-available/paylinker-web`
+- Reboot: `pm2-appuser.service` yoqilgan (`pm2 save` bilan ro'yxat muzlatilgan)
+- Bo'sh `paylinker_db` bazasi va `paylinker` roli **tegilmagan** — bu loyiha
+  alohida `paylinkerweb_db` dan foydalanadi.
+
+**Eslatma:** RAM 961 MB (+5 GB swap). `npm run build:all` swap hisobiga
+ishlaydi, lekin sekin — build paytida boshqa og'ir ish qilmang.
+
 ## Muammolar
 
 - **Bir serverda noto‘g‘ri sayt / boshqa front chiqyapti:** [deploy/NGINX-MULTI-SITE.md](NGINX-MULTI-SITE.md) — `server_name`, port ziddiyati, `default_server`.

@@ -1,182 +1,161 @@
-# /etc/nginx/sites-available/paylinker ga nusxalang, keyin:
-#   sudo ln -s /etc/nginx/sites-available/paylinker /etc/nginx/sites-enabled/
+# ─────────────────────────────────────────────────────────────────────────────
+#  Nginx — Paylinker WEB (sayt konstruktori): web.paylinker.uz
 #
-# BIRINCHI BOSQICH — ilova faqat `web.paylinker.uz` subdomenida turadi.
-# Asosiy `paylinker.uz` keyin ulanadi (pastdagi ixtiyoriy blokni oching).
+#  Bu fayl serverda ishlayotgan konfiguratsiyaning aynan nusxasi:
+#    /etc/nginx/sites-available/paylinker-web
 #
-# Avval HTTP (80) bilan tekshirib, keyin certbot:
-#   sudo certbot --nginx -d web.paylinker.uz
+#  O'rnatish:
+#    sudo cp deploy/nginx-paylinker.conf.example /etc/nginx/sites-available/paylinker-web
+#    sudo ln -sfn /etc/nginx/sites-available/paylinker-web /etc/nginx/sites-enabled/
+#    sudo mkdir -p /var/www/certbot
+#    sudo nginx -t && sudo systemctl reload nginx
+#    sudo certbot --nginx -d web.paylinker.uz      # DNS A yozuvi tayyor bo'lgach
 #
-# Keyinroq asosiy domen qo'shilganda:
-#   sudo certbot --nginx -d web.paylinker.uz -d paylinker.uz -d www.paylinker.uz --expand
+#  Certbot bu faylga 443 bloki va HTTP->HTTPS redirectni O'ZI qo'shadi —
+#  shundan keyin serverdagi nusxa bu fayldan farq qiladi (bu normal).
 #
-# Bir serverda nechta loyiha bo'lsa: har domen alohida server_name + paylinker uchun
-# alohida portlar (boshqa loyiha paylinker portini band qilmasin). Muammo: deploy/NGINX-MULTI-SITE.md
-#
-# Next.js va Nest API — PM2: 127.0.0.1:8000 va :8001
-#
-# Certbot dan keyin HTTPS (443) server bloklarida ham — birinchi domen uchun —
-# shu `location /api/payments/click/` ni takrorlang (yoki faqat Next rewrites yetadi).
+#  DIQQAT: bir serverda `paylinker` nomli boshqa sayt ham bo'lishi mumkin
+#  (api.paylinker.uz — Click to'lov shlyuzi, :4000). Bu ALOHIDA loyiha:
+#  Next :8000 + Nest :8001. Portlarni ulashmang. deploy/NGINX-MULTI-SITE.md
+# ─────────────────────────────────────────────────────────────────────────────
 
-upstream paylinker_next {
+upstream paylinkerweb_next {
     # .env da PAYLINKER_WEB_PORT bilan mos (odat 8000)
     server 127.0.0.1:8000;
     keepalive 64;
 }
 
-upstream paylinker_api {
-    # .env da PAYLINKER_API_PORT bilan mos
+upstream paylinkerweb_api {
+    # .env da PAYLINKER_API_PORT bilan mos (odat 8001)
     server 127.0.0.1:8001;
     keepalive 64;
 }
 
-# Takrorlanadigan proxy sozlamalari
-# (nginx `include` talab qilmasin uchun har blokda yozilgan)
-
-# ── ASOSIY: web.paylinker.uz ────────────────────────────────────────────────
-# HTTP → HTTPS (certbot bundan keyin SSL bloklarini qo'shadi)
 server {
     listen 80;
     listen [::]:80;
     server_name web.paylinker.uz;
 
-    # 413 Request Entity Too Large: nginx default ~1m. `location /` (Next) va barcha proxy uchun.
+    # Certbot webroot (--webroot bilan olinsa)
+    location /.well-known/acme-challenge/ { root /var/www/certbot; }
+
+    # 413 Request Entity Too Large: nginx default ~1m.
+    # Landing kontenti hero/about rasmlarini `data:` URL sifatida yuboradi.
     client_max_body_size 25m;
 
-    # Nest API — shu domen orqali (alohida api subdomen shart emas). 443 blokda ham xuddi shu.
+    # CVE-2025-66478 to'sig'i.
+    # `Next-Action` header'li so'rov = React Server Components chaqiruvi.
+    # Bu ilova Server Action ISHLATMAYDI ("use server" hech qayerda yo'q),
+    # shuning uchun bunday qonuniy so'rov bo'lmaydi — bemalol rad etamiz.
+    if ($http_next_action) { return 403; }
+
+    # ── Nest API — shu domen orqali (alohida api subdomen shart emas) ────────
     location /auth {
-        proxy_pass http://paylinker_api;
+        proxy_pass http://paylinkerweb_api;
         proxy_http_version 1.1;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host              $host;
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
-        client_max_body_size 25m;
     }
     location /vizitka {
-        proxy_pass http://paylinker_api;
+        proxy_pass http://paylinkerweb_api;
         proxy_http_version 1.1;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host              $host;
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
-        client_max_body_size 25m;
     }
     location /landings {
-        proxy_pass http://paylinker_api;
+        proxy_pass http://paylinkerweb_api;
         proxy_http_version 1.1;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host              $host;
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
-        client_max_body_size 25m;
     }
     location /telegram {
-        proxy_pass http://paylinker_api;
+        proxy_pass http://paylinkerweb_api;
         proxy_http_version 1.1;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host              $host;
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
-        client_max_body_size 25m;
     }
     location /payments {
-        proxy_pass http://paylinker_api;
+        proxy_pass http://paylinkerweb_api;
         proxy_http_version 1.1;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host              $host;
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
-        client_max_body_size 25m;
     }
     location = /health {
-        proxy_pass http://paylinker_api;
+        proxy_pass http://paylinkerweb_api;
         proxy_http_version 1.1;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host              $host;
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 
     # CLICK Prepare/Complete
     location /api/payments/click/ {
-        proxy_pass http://paylinker_api;
+        proxy_pass http://paylinkerweb_api;
         proxy_http_version 1.1;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host              $host;
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
-        client_max_body_size 25m;
     }
 
     # Admin API
     location /api/admin/ {
-        proxy_pass http://paylinker_api;
+        proxy_pass http://paylinkerweb_api;
         proxy_http_version 1.1;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host              $host;
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
         client_max_body_size 5m;
     }
 
-    # Statik logo/rasm (Nest uploads/)
+    # Yuklangan vizitka logolari (Nest uploads/)
     location /uploads/ {
-        proxy_pass http://paylinker_api;
+        proxy_pass http://paylinkerweb_api;
         proxy_http_version 1.1;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host              $host;
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
         client_max_body_size 5m;
     }
 
+    # ── Next.js ──────────────────────────────────────────────────────────────
     location / {
-        proxy_pass http://paylinker_next;
+        proxy_pass http://paylinkerweb_next;
         proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host              $host;
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Upgrade           $http_upgrade;
+        proxy_set_header Connection        "upgrade";
         proxy_read_timeout 86400;
     }
 }
 
-# ── IXTIYORIY (2-bosqich): paylinker.uz + www → web.paylinker.uz ────────────
-# UI da havolalar `paylinker.uz/{slug}` ko'rinishida chiqadi. Asosiy domen shu
-# serverga qaratilgach quyidagi blokni oching — havolalar ishlay boshlaydi.
+# ── IXTIYORIY (2-bosqich): asosiy paylinker.uz ni ulash ──────────────────────
+# Hozir paylinker.uz boshqa hostga (216.198.79.1) qaragan. Agar keyin shu
+# serverga olib kelinsa:
 #
-# Variant A — redirect (oddiy, SEO uchun toza):
-#
-# server {
-#     listen 80;
-#     listen [::]:80;
-#     server_name paylinker.uz www.paylinker.uz;
-#     return 301 https://web.paylinker.uz$request_uri;
-# }
-#
-# Variant B — o'sha ilovani asosiy domenda ham ko'rsatish:
-# yuqoridagi `web.paylinker.uz` blokidan nusxa olib, faqat
-# `server_name paylinker.uz www.paylinker.uz;` deb o'zgartiring va
-# `.env` da NEXT_PUBLIC_SITE_DOMAIN=paylinker.uz qo'ying (keyin qayta build).
-
-# ── IXTIYORIY: api.paylinker.uz (alohida API subdomen) ──────────────────────
-# server {
-#     listen 80;
-#     listen [::]:80;
-#     server_name api.paylinker.uz;
-#
-#     client_max_body_size 25m;
-#
-#     location / {
-#         proxy_pass http://paylinker_api;
-#         proxy_http_version 1.1;
-#         proxy_set_header Host $host;
-#         proxy_set_header X-Real-IP $remote_addr;
-#         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-#         proxy_set_header X-Forwarded-Proto $scheme;
-#         client_max_body_size 25m;
+#   Variant A — redirect (havolalar web. da qoladi):
+#     server {
+#         listen 80; listen [::]:80;
+#         server_name paylinker.uz www.paylinker.uz;
+#         return 301 https://web.paylinker.uz$request_uri;
 #     }
-# }
+#
+#   Variant B — ilovani asosiy domenda ham ko'rsatish: yuqoridagi blokdan
+#   nusxa oling, `server_name paylinker.uz www.paylinker.uz;` qiling va
+#   `.env` da NEXT_PUBLIC_SITE_DOMAIN=paylinker.uz (keyin qayta build).
