@@ -2,7 +2,7 @@
 
 `ERR_NAME_NOT_RESOLVED` (api.paylinker.uz) — DNS da `api` yo‘q. Loyihada brauzer endi **bir xil domen**dan chaqiradi; Nginx da `/auth`, `/vizitka` proxy bo‘lsin ([nginx-paylinker.conf.example](./nginx-paylinker.conf.example)). **443** bloki ham.
 
-Agar `web.paylinker.uz` ochilganda **boshqa sayt** yoki **boshqa loyiha** fronti chiqsa, odatda sabab quyidagilardan biri.
+Agar `paylinker.uz` ochilganda **boshqa sayt** yoki **boshqa loyiha** fronti chiqsa, odatda sabab quyidagilardan biri.
 
 ## 1. `default_server` — noto‘g‘ri “standart” sayt
 
@@ -18,13 +18,13 @@ Agar paylinker faylida `default_server` **kerak emas** — olib tashlang. Asosiy
 
 ## 2. `server_name` mos kelmayapti
 
-Har bir domen uchun **alohida** `server { ... server_name example.com; }` bo‘lishi kerak. `web.paylinker.uz` uchun:
+Har bir domen uchun **alohida** `server { ... server_name example.com; }` bo‘lishi kerak. `paylinker.uz` uchun:
 
 ```nginx
-server_name web.paylinker.uz;
+server_name paylinker.uz www.paylinker.uz;
 ```
 
-Brauzer `Host: web.paylinker.uz` yuboradi; bu bilan mos bo‘lmagan blok tanlanmasligi kerak.
+Brauzer `Host: paylinker.uz` yuboradi; bu bilan mos bo‘lmagan blok tanlanmasligi kerak.
 
 **Tekshiruv (butun konfig):**
 
@@ -32,7 +32,7 @@ Brauzer `Host: web.paylinker.uz` yuboradi; bu bilan mos bo‘lmagan blok tanlanm
 sudo nginx -T 2>/dev/null | grep -E "server_name|listen 80|listen 443"
 ```
 
-`web.paylinker.uz` faqat **paylinker** faylida bo‘lishi kerak (yoki shu domen boshqa faylda takrorlanmasin).
+`paylinker.uz` faqat **paylinker** faylida bo‘lishi kerak (yoki shu domen boshqa faylda takrorlanmasin).
 
 ## 3. Bir xil port — ikki PM2 / ikki Next
 
@@ -84,13 +84,13 @@ Ba’zan eski HTML keshdan chiqadi. **Ctrl+F5** yoki boshqa brauzerda sinang.
 ## 6. Tez test (server ichida)
 
 ```bash
-curl -sI -H "Host: web.paylinker.uz" http://127.0.0.1/ | head -5
+curl -sI -H "Host: paylinker.uz" http://127.0.0.1/ | head -5
 ```
 
-(Bu faqat Nginx `localhost` da 80 ni tinglayotgan bo‘lsa ishlaydi; ko‘pincha `curl -sI https://web.paylinker.uz` yaxshiroq.)
+(Bu faqat Nginx `localhost` da 80 ni tinglayotgan bo‘lsa ishlaydi; ko‘pincha `curl -sI https://paylinker.uz` yaxshiroq.)
 
 ---
 
-**Xulosa:** paylinker uchun **alohida** nginx fayl (`sites-available/paylinker`), aniq **`server_name web.paylinker.uz`**, **`proxy_pass`** faqat shu loyiha portlariga (odat **8000** / **8001**), va boshqa loyiha bilan **shu portlarni ulashmaslik**.
+**Xulosa:** paylinker uchun **alohida** nginx fayl (`sites-available/paylinker`), aniq **`server_name paylinker.uz`**, **`proxy_pass`** faqat shu loyiha portlariga (odat **8000** / **8001**), va boshqa loyiha bilan **shu portlarni ulashmaslik**.
 
 Namuna upstream: [nginx-paylinker.conf.example](./nginx-paylinker.conf.example).

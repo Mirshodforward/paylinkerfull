@@ -1,14 +1,14 @@
 /**
  * Brend va domen — bitta manba.
  *
- * Ko'rinadigan havolalar `paylinker.uz/{slug}` ko'rinishida, lekin ilova
- * dastlab faqat `web.paylinker.uz` subdomenida turadi. Deploy paytida
- * `.env` ga quyidagini qo'shish kifoya — butun UI shunga moslashadi:
+ * Ilova asosiy domen `paylinker.uz` da turadi (`www` nginx da 301 bilan
+ * shu yerga yo'naltiriladi). Boshqa domenga ko'chirish uchun `.env`:
  *
- *   NEXT_PUBLIC_SITE_DOMAIN=web.paylinker.uz
+ *   NEXT_PUBLIC_SITE_DOMAIN=boshqa.domen.uz
  *
  * Eslatma: NEXT_PUBLIC_* build vaqtida inline bo'ladi — o'zgartirgach
- * `npm run build` qayta bajarilishi shart.
+ * `npm run build` qayta bajarilishi shart (next.config.js ham shu
+ * qiymatni server va klientga bir xil qilib qotiradi).
  */
 
 export const BRAND_NAME = "Paylinker";

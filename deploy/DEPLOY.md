@@ -1,21 +1,20 @@
-# web.paylinker.uz — Linux serverga deploy va Let’s Encrypt (Certbot)
+# paylinker.uz — Linux serverga deploy va Let’s Encrypt (Certbot)
 
-Bu hujjat **web.paylinker.uz** (Next + Nginx) va orqa fonda **Nest** (`127.0.0.1:8001`) ni deploy qilish tartibi. API brauzerda **o‘sha domen** orqali (`/auth`, `/vizitka`, …); alohida **api** subdomen ixtiyoriy.
-
-> **Bosqichlar.** 1-bosqichda ilova **faqat `web.paylinker.uz`** da ishga tushadi — asosiy `paylinker.uz` tegilmaydi. Asosiy domen keyin ulanadi (§10).
+Bu hujjat **paylinker.uz** (Next + Nginx) va orqa fonda **Nest** (`127.0.0.1:8001`) ni deploy qilish tartibi. API brauzerda **o‘sha domen** orqali (`/auth`, `/vizitka`, …).
 
 ## 1. DNS
 
 Serveringiz **ochiq IP** sini oldingizdan:
 
-| Yozuv | Turi | Qiymat |
-|--------|------|--------|
-| `web.paylinker.uz` | A | server IP — **1-bosqichda shu yetarli** |
-| `paylinker.uz` | A | 2-bosqich (§10) |
-| `www.paylinker.uz` | A | 2-bosqich (§10) |
-| `api.paylinker.uz` | A | ixtiyoriy (faqat subdomen orqali API ishlatmoqchi bo‘lsangiz) |
+| Yozuv (host) | Turi | Qiymat |
+|--------------|------|--------|
+| `@` (`paylinker.uz`) | A | server IP |
+| `www` | A | server IP (nginx uni `paylinker.uz` ga 301 qiladi) |
+| `api` | A | **tegmang** — bu alohida loyiha (Click to‘lov shlyuzi, :4000) |
 
-TAR sozlanguncha **80** va **443** portlari tashqaridan ochiq bo‘lishi kerak.
+`www` uchun CNAME emas, **A** yozuv qo‘ying (apex bilan bir xil IP) — Let’s Encrypt ikkalasini bitta sertifikatga oladi.
+
+Certbot ishlashi uchun **80** va **443** portlari tashqaridan ochiq bo‘lishi kerak.
 
 ## 2. Serverda dasturlar
 
@@ -42,10 +41,10 @@ Ildizdagi `.env` faylini yarating: `deploy/env.production.example` ni namuna sif
 - `DATABASE_URL` — ishlayotgan PostgreSQL
 - `JWT_*`, `TELEGRAM_BOT_TOKEN`, CLICK maydonlari
 - `INTERNAL_API_URL=http://127.0.0.1:8001` (server/RSC va Next rewrites)
-- `NEXT_PUBLIC_SITE_DOMAIN=web.paylinker.uz` (UI dagi havola domeni: `web.paylinker.uz/{slug}`)
-- `NEXT_PUBLIC_APP_URL=https://web.paylinker.uz` (billing matnlari va hokazo)
-- `FRONTEND_ORIGIN=https://web.paylinker.uz`
-- `PUBLIC_APP_URL=https://web.paylinker.uz`
+- `NEXT_PUBLIC_SITE_DOMAIN=paylinker.uz` (UI dagi havola domeni: `paylinker.uz/{slug}`)
+- `NEXT_PUBLIC_APP_URL=https://paylinker.uz` (billing matnlari va hokazo)
+- `FRONTEND_ORIGIN=https://paylinker.uz,https://www.paylinker.uz`
+- `PUBLIC_APP_URL=https://paylinker.uz`
 - `TELEGRAM_POLLING=false` (prod odatda webhook)
 
 **Muhim:** `NEXT_PUBLIC_*` o‘zgarishidan keyin frontendni **qayta build** qilish kerak.
@@ -117,17 +116,17 @@ sudo nginx -t && sudo systemctl reload nginx
 
 Agar avval xato `ln` tufayli **buzilgan symlink** qolgan bo‘lsa: `sudo rm -f /etc/nginx/sites-enabled/paylinker`, keyin yuqoridagi qadamlarni qayta bajaring.
 
-Brauzerda `http://web.paylinker.uz` ochilishi kerak (sertifikatsiz, vaqtincha).
+Brauzerda `http://paylinker.uz` ochilishi kerak (sertifikatsiz, vaqtincha).
 
 ## 6. Certbot — SSL sertifikat (HTTPS)
 
-**web.paylinker.uz** uchun SSL olish va Nginx ga ulash **bitta buyruq** bilan (oldindan DNS va HTTP (80) ishlayotgan bo‘lsin):
+**paylinker.uz** uchun SSL olish va Nginx ga ulash **bitta buyruq** bilan (oldindan DNS va HTTP (80) ishlayotgan bo‘lsin):
 
 ```bash
-sudo certbot --nginx -d web.paylinker.uz
-# api subdomen uchun SSL kerak bo‘lsa (DNS bor bo‘lgach):
-# sudo certbot --nginx -d web.paylinker.uz -d api.paylinker.uz --expand
+sudo certbot --nginx -d paylinker.uz -d www.paylinker.uz
 ```
+
+`api.paylinker.uz` ning sertifikati **alohida** (boshqa loyiha) — bu buyruqqa qo‘shmang.
 
 Certbot Nginx faylingizga `listen 443 ssl` va sertifikat yo‘llarini qo‘shadi; HTTP → HTTPS yo‘naltirishni so‘raydi (odatda **2** ni tanlang).
 
@@ -141,9 +140,9 @@ Batafsil (tekshiruvlar, muammolar, `.env` da `https://`): **[deploy/SSL.md](./SS
 
 - **Webhook** (polling o‘chiq bo‘lsa): BotFather / `@BotFather` orqali yoki `setWebhook` API:
 
-  `https://web.paylinker.uz/telegram/webhook` (yoki alohida `api` domeni bo‘lsa: `https://api.paylinker.uz/telegram/webhook`)
+  `https://paylinker.uz/telegram/webhook`
 
-- **CLICK** merchant kabinetida **Prepare/Complete:** `https://web.paylinker.uz/api/payments/click/prepare` va `.../complete` (backend Nest ga Nginx yoki Next orqali proxylanadi).
+- **CLICK** merchant kabinetida **Prepare/Complete:** `https://paylinker.uz/api/payments/click/prepare` va `.../complete` (backend Nest ga Nginx yoki Next orqali proxylanadi).
 
 ## 8. Firewall (ixtiyoriy)
 
@@ -167,36 +166,13 @@ pm2 restart all
 
 Agar faqat `.env` dagi `NEXT_PUBLIC_*` o‘zgargan bo‘lsa — **`npm run build`** qayta ishga tushiring (Next.js brauzerga embed qiladi).
 
-## 10. 2-bosqich — asosiy `paylinker.uz` ni ulash
-
-1-bosqichda hamma havola `web.paylinker.uz/{slug}` ko‘rinishida. Asosiy domen tayyor bo‘lganda:
-
-1. DNS: `paylinker.uz` va `www.paylinker.uz` → shu server IP.
-2. Nginx: [nginx-paylinker.conf.example](./nginx-paylinker.conf.example) ichidagi **“IXTIYORIY (2-bosqich)”** blokini oching.
-   - **Variant A** — `paylinker.uz` → `web.paylinker.uz` ga 301 redirect (havolalar `web.` da qoladi).
-   - **Variant B** — ilovani asosiy domenda ham ko‘rsatish.
-3. Certbot: `sudo certbot --nginx -d web.paylinker.uz -d paylinker.uz -d www.paylinker.uz --expand`
-4. **Variant B** tanlansa `.env` ni yangilang va **qayta build** qiling:
-
-   ```bash
-   NEXT_PUBLIC_SITE_DOMAIN=paylinker.uz
-   NEXT_PUBLIC_APP_URL=https://paylinker.uz
-   PUBLIC_APP_URL=https://paylinker.uz
-   FRONTEND_ORIGIN=https://paylinker.uz,https://www.paylinker.uz,https://web.paylinker.uz
-   ```
-
-   ```bash
-   npm run build && pm2 restart paylinker-web
-   ```
-5. CLICK kabineti va Telegram webhook manzillarini ham yangi domenga o‘tkazing.
-
-## 11. Joriy server holati (164.92.133.109, `asosiysever`)
+## 10. Joriy server holati (164.92.133.109, `asosiysever`)
 
 Bu serverda bir nechta loyiha bor — ularni **ulashmaydigan** qilib joylandi:
 
 | Loyiha | Domen | Port | Boshqaruv | Baza |
 |--------|-------|------|-----------|------|
-| **Paylinker WEB** (bu loyiha) | `web.paylinker.uz` | 8000 / 8001 | pm2 `paylinker-web`, `paylinker-api` | `paylinkerweb_db` (rol `paylinkerweb`) |
+| **Paylinker** (bu loyiha) | `paylinker.uz`, `www` | 8000 / 8001 | pm2 `paylinker-web`, `paylinker-api` | `paylinkerweb_db` (rol `paylinkerweb`) |
 | Paylinker Click shlyuzi | `api.paylinker.uz` | 4000 | systemd `paylinker.service` | `paylinker_api` (rol `api_user`) |
 | Starspaymee | — | — | pm2 `starspaymee` | — |
 | Mafiya Online | `game.mafiaonline.uz` | — | systemd `mafiya-online.service` | `mafia_db` |
@@ -216,5 +192,5 @@ ishlaydi, lekin sekin — build paytida boshqa og'ir ish qilmang.
 - **Prisma P3018 / migratsiya:** Repoda endi **boshlang‘ich** migratsiya bor (`20260101000000_init_schema`). `git pull`, keyin bo‘sh/yomon holatda bazani tiklash: ma’lumotlar muhim emas bo‘lsa `psql` ichida `DROP SCHEMA public CASCADE; CREATE SCHEMA public;` va DB user uchun `GRANT ALL ON SCHEMA public ...`, keyin `npm run migrate:deploy`.
 - **Prisma P1012 / Prisma 7:** `npx prisma` (versiyasiz) **ishlatilmaydi**. Faqat `npm run migrate:deploy` yoki `npx prisma@5.22.0 ...`.
 - **CORS xatosi:** `FRONTEND_ORIGIN` da aynan brauzerdagi manzil (https, `www` bo‘lsa qo‘shing).
-- **API 502:** PM2 da `paylinker-api` ishlayaptimi; Nginx `web.paylinker.uz` uchun `/auth`, `/vizitka` va boshqalar **Nest** ga proxylanayaptimi (namuna: [nginx-paylinker.conf.example](./nginx-paylinker.conf.example)); `api` subdomen ishlatilsa, u ham shu portga tushadi.
+- **API 502:** PM2 da `paylinker-api` ishlayaptimi; Nginx `paylinker.uz` uchun `/auth`, `/vizitka` va boshqalar **Nest** ga proxylanayaptimi (namuna: [nginx-paylinker.conf.example](./nginx-paylinker.conf.example)); `api` subdomen ishlatilsa, u ham shu portga tushadi.
 - **Sertifikat:** domenlar DNS da to‘g‘ri IP ga ko‘rsatayotganini va 80-port ochiq ekanini tekshiring.

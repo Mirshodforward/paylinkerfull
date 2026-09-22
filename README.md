@@ -24,7 +24,7 @@ Brend nomi, domen, logo va Telegram havolalari **bitta joyda** — [`src/lib/bra
 Ko'rinadigan domen `.env` orqali boshqariladi:
 
 ```env
-NEXT_PUBLIC_SITE_DOMAIN=web.paylinker.uz   # bo'sh bo'lsa: paylinker.uz
+NEXT_PUBLIC_SITE_DOMAIN=paylinker.uz   # bo'sh bo'lsa ham shu (default)
 ```
 
 `NEXT_PUBLIC_*` build vaqtida inline bo'ladi — o'zgartirgach `npm run build` qayta bajarilishi shart.
@@ -37,7 +37,7 @@ bash scripts/generate-logo-assets.sh
 
 ## Production
 
-**Deploy (web.paylinker.uz, Nginx, Certbot, PM2):** [deploy/DEPLOY.md](deploy/DEPLOY.md)
+**Deploy (paylinker.uz, Nginx, Certbot, PM2):** [deploy/DEPLOY.md](deploy/DEPLOY.md)
 **SSL:** [deploy/SSL.md](deploy/SSL.md) · **Bir serverda bir nechta sayt:** [deploy/NGINX-MULTI-SITE.md](deploy/NGINX-MULTI-SITE.md)
 
 ```bash

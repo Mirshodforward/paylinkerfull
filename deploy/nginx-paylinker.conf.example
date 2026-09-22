@@ -1,5 +1,5 @@
 # ─────────────────────────────────────────────────────────────────────────────
-#  Nginx — Paylinker WEB (sayt konstruktori): web.paylinker.uz
+#  Nginx — Paylinker (sayt konstruktori): paylinker.uz + www.paylinker.uz
 #
 #  Bu fayl serverda ishlayotgan konfiguratsiyaning aynan nusxasi:
 #    /etc/nginx/sites-available/paylinker-web
@@ -9,7 +9,7 @@
 #    sudo ln -sfn /etc/nginx/sites-available/paylinker-web /etc/nginx/sites-enabled/
 #    sudo mkdir -p /var/www/certbot
 #    sudo nginx -t && sudo systemctl reload nginx
-#    sudo certbot --nginx -d web.paylinker.uz      # DNS A yozuvi tayyor bo'lgach
+#    sudo certbot --nginx -d paylinker.uz -d www.paylinker.uz   # DNS tayyor bo'lgach
 #
 #  Certbot bu faylga 443 bloki va HTTP->HTTPS redirectni O'ZI qo'shadi —
 #  shundan keyin serverdagi nusxa bu fayldan farq qiladi (bu normal).
@@ -34,7 +34,7 @@ upstream paylinkerweb_api {
 server {
     listen 80;
     listen [::]:80;
-    server_name web.paylinker.uz;
+    server_name paylinker.uz;
 
     # Certbot webroot (--webroot bilan olinsa)
     location /.well-known/acme-challenge/ { root /var/www/certbot; }
@@ -145,17 +145,14 @@ server {
     }
 }
 
-# ── IXTIYORIY (2-bosqich): asosiy paylinker.uz ni ulash ──────────────────────
-# Hozir paylinker.uz boshqa hostga (216.198.79.1) qaragan. Agar keyin shu
-# serverga olib kelinsa:
-#
-#   Variant A — redirect (havolalar web. da qoladi):
-#     server {
-#         listen 80; listen [::]:80;
-#         server_name paylinker.uz www.paylinker.uz;
-#         return 301 https://web.paylinker.uz$request_uri;
-#     }
-#
-#   Variant B — ilovani asosiy domenda ham ko'rsatish: yuqoridagi blokdan
-#   nusxa oling, `server_name paylinker.uz www.paylinker.uz;` qiling va
-#   `.env` da NEXT_PUBLIC_SITE_DOMAIN=paylinker.uz (keyin qayta build).
+# ── www.paylinker.uz → paylinker.uz (301) ───────────────────────────────────
+# Brend domeni `paylinker.uz`; www faqat yo'naltiradi.
+server {
+    listen 80;
+    listen [::]:80;
+    server_name www.paylinker.uz;
+
+    location /.well-known/acme-challenge/ { root /var/www/certbot; }
+
+    location / { return 301 https://paylinker.uz$request_uri; }
+}
