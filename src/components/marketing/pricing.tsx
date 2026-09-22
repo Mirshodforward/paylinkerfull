@@ -88,7 +88,7 @@ export async function Pricing() {
   return (
     <section
       id="pricing"
-      className="relative isolate flex min-h-[100dvh] items-center overflow-hidden border-t border-[color:var(--border)] bg-[color:var(--surface-2)]"
+      className="relative isolate scroll-mt-20 overflow-hidden border-t border-[color:var(--border)] bg-white py-20 sm:py-24"
     >
       <div
         aria-hidden
@@ -101,7 +101,7 @@ export async function Pricing() {
         style={{ background: "var(--brand-to)", opacity: 0.1 }}
       />
 
-      <Container className="w-full py-20">
+      <Container className="w-full">
         <div className="mx-auto mb-14 max-w-xl text-center">
           <p className="mb-4 inline-flex items-center rounded-full border border-brand-200 bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-700">
             Tariflar
@@ -177,7 +177,7 @@ function PricingCard({ plan }: { plan: Plan }) {
         ) : null}
       </div>
 
-      <div className="my-7 h-px w-full bg-[color:var(--border)]" />
+      <div className="my-7 h-px w-full shrink-0 bg-[color:var(--border)]" />
 
       <ul className="space-y-3.5">
         {plan.features.map((feature) => (

@@ -5,7 +5,7 @@ const POINTS = ["Dasturchisiz", "Mobilga mos", "10 kun bepul"];
 
 export function Hero() {
   return (
-    <section className="relative isolate flex min-h-[calc(100dvh-4rem)] items-center overflow-hidden">
+    <section className="relative isolate flex min-h-[min(88dvh,46rem)] items-center overflow-hidden">
       {/* Fon: nozik brend to'ri + ikkita yumshoq nur */}
       <div aria-hidden className="pl-grid absolute inset-0 -z-10" />
       <div
@@ -40,12 +40,12 @@ export function Hero() {
               Boshlash
             </Button>
             <Button
-              href="#pricing"
+              href="/demo"
               variant="secondary"
               size="lg"
               className="w-full sm:w-auto"
             >
-              Tariflar
+              Namunani ko&apos;rish
             </Button>
           </div>
 
