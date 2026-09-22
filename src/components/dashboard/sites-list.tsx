@@ -113,7 +113,7 @@ export function SitesList() {
         {[0, 1, 2].map((i) => (
           <div
             key={i}
-            className="h-56 rounded-2xl border border-[color:var(--border)] bg-white"
+            className="h-56 rounded-[var(--radius-card)] border border-[color:var(--border)] bg-white"
           />
         ))}
       </div>
@@ -123,10 +123,10 @@ export function SitesList() {
   if (isEmpty) {
     return (
       <div className="px-5 py-16 lg:px-10">
-        <div className="mx-auto max-w-xl rounded-2xl border border-[color:var(--border)] bg-white p-8 text-center">
+        <div className="mx-auto max-w-xl rounded-[var(--radius-card)] border border-[color:var(--border)] bg-white p-8 text-center">
           <div
             aria-hidden
-            className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-black text-white"
+            className="mx-auto flex h-12 w-12 items-center justify-center pl-gradient rounded-xl text-white"
           >
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
               <path
@@ -137,7 +137,7 @@ export function SitesList() {
               />
             </svg>
           </div>
-          <h2 className="mt-5 text-xl font-semibold tracking-tight text-black">
+          <h2 className="mt-5 text-xl font-semibold tracking-tight text-[color:var(--foreground)]">
             Hozircha saytlar yo&apos;q
           </h2>
           <p className="mt-2 text-sm leading-relaxed text-neutral-600">
@@ -166,12 +166,12 @@ export function SitesList() {
       >
         <p className="text-xs text-neutral-500">
           Jami:{" "}
-          <span className="font-semibold text-black">{rows.length}</span>
+          <span className="font-semibold text-[color:var(--foreground)]">{rows.length}</span>
           {filter !== "all" ? (
             <>
               {" "}
               · ko&apos;rsatilmoqda:{" "}
-              <span className="font-semibold text-black">
+              <span className="font-semibold text-[color:var(--foreground)]">
                 {filteredRows.length}
               </span>
             </>
@@ -186,8 +186,8 @@ export function SitesList() {
               className={cn(
                 "rounded-lg px-2 py-2 text-xs font-medium transition-colors sm:px-3 sm:py-1.5",
                 filter === opt.id
-                  ? "bg-black text-white"
-                  : "text-neutral-600 hover:bg-neutral-100 hover:text-black",
+                  ? "pl-gradient text-white"
+                  : "text-neutral-600 hover:bg-neutral-100 hover:text-brand-700",
               )}
             >
               {opt.label}
@@ -197,16 +197,16 @@ export function SitesList() {
       </div>
 
       {filterEmpty ? (
-        <div className="mb-6 rounded-2xl border border-[color:var(--border)] bg-neutral-50 px-4 py-8 text-center text-sm text-neutral-600">
+        <div className="mb-6 rounded-[var(--radius-card)] border border-[color:var(--border)] bg-neutral-50 px-4 py-8 text-center text-sm text-neutral-600">
           {filter === "vizitka" ? (
             <>
-              <p className="font-medium text-black">Hozircha vizitka yo&apos;q</p>
+              <p className="font-medium text-[color:var(--foreground)]">Hozircha vizitka yo&apos;q</p>
               <p className="mt-1">
                 Yangi vizitka yoki boshqa turdagi saytlarni ko&apos;rish uchun{" "}
                 <button
                   type="button"
                   onClick={() => setFilter("all")}
-                  className="font-medium text-black underline underline-offset-2"
+                  className="font-medium text-[color:var(--foreground)] underline underline-offset-2"
                 >
                   Hammasi
                 </button>{" "}
@@ -215,13 +215,13 @@ export function SitesList() {
             </>
           ) : (
             <>
-              <p className="font-medium text-black">Hozircha landing yo&apos;q</p>
+              <p className="font-medium text-[color:var(--foreground)]">Hozircha landing yo&apos;q</p>
               <p className="mt-1">
                 Landing yarating yoki{" "}
                 <button
                   type="button"
                   onClick={() => setFilter("all")}
-                  className="font-medium text-black underline underline-offset-2"
+                  className="font-medium text-[color:var(--foreground)] underline underline-offset-2"
                 >
                   Hammasi
                 </button>{" "}
@@ -252,11 +252,11 @@ export function SitesList() {
         )}
         <Link
           href="/dashboard/sites/new"
-          className="flex min-h-[200px] flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-[color:var(--border)] bg-white p-4 text-center transition-colors hover:border-black sm:min-h-[220px] sm:p-5"
+          className="flex min-h-[200px] flex-col items-center justify-center gap-3 rounded-[var(--radius-card)] border border-dashed border-[color:var(--border)] bg-white p-4 text-center transition-colors hover:border-brand-300 sm:min-h-[220px] sm:p-5"
         >
             <span
               aria-hidden
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-black text-black"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-brand-500 text-[color:var(--foreground)]"
             >
               <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
                 <path
@@ -267,7 +267,7 @@ export function SitesList() {
                 />
               </svg>
             </span>
-            <span className="text-sm font-medium text-black">Yangi sayt yaratish</span>
+            <span className="text-sm font-medium text-[color:var(--foreground)]">Yangi sayt yaratish</span>
             <span className="text-xs text-neutral-500">Vizitka yoki Landing</span>
           </Link>
       </div>

@@ -57,7 +57,7 @@ export function DashboardGate({ children }: { children: React.ReactNode }) {
         <p className="max-w-md">{msg}</p>
         <button
           type="button"
-          className="rounded-md bg-black px-4 py-2 text-sm font-medium text-white"
+          className="pl-gradient rounded-md px-4 py-2 text-sm font-medium text-white"
           onClick={() => window.location.reload()}
         >
           Sahifani yangilash

@@ -101,7 +101,7 @@ export default function AdminPaymentsPage() {
                   <div className="mt-1">
                     <Link
                       href={`/gradeadmin/users/${p.user.id}`}
-                      className="text-xs font-semibold text-teal-800 underline-offset-2 hover:underline"
+                      className="text-xs font-semibold text-brand-800 underline-offset-2 hover:underline"
                     >
                       Profil
                     </Link>
@@ -122,7 +122,7 @@ export default function AdminPaymentsPage() {
         ) : null}
       </AdminTableWrap>
 
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-zinc-200 bg-white px-4 py-3 shadow-sm">
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-[var(--radius-card)] border border-zinc-200 bg-white px-4 py-3 shadow-sm">
         <p className="text-sm text-zinc-600">
           {total > 0 ? (
             <>

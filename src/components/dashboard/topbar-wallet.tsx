@@ -56,7 +56,7 @@ export function TopbarWalletActions({
       {!hideNewPlus ? (
         <Link
           href="/dashboard/sites/new"
-          className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-black text-white shadow-sm transition-colors hover:bg-neutral-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/30 focus-visible:ring-offset-2"
+          className="inline-flex h-10 w-10 shrink-0 items-center justify-center pl-gradient rounded-xl text-white shadow-sm transition-colors hover:brightness-[1.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/30 focus-visible:ring-offset-2"
           aria-label="Yangi sayt yaratish"
           title="Yangi sayt"
         >

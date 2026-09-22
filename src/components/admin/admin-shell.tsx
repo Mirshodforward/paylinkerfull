@@ -118,14 +118,14 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
         className={cn(
           "group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all",
           active
-            ? "bg-white/[0.12] text-white shadow-[inset_3px_0_0_0_#14b8a6]"
-            : "text-zinc-400 hover:bg-white/[0.06] hover:text-zinc-200",
+            ? "bg-white/[0.10] text-white shadow-[inset_3px_0_0_0_var(--brand-400)]"
+            : "text-white/55 hover:bg-white/[0.07] hover:text-white/90",
         )}
       >
         <Icon
           className={cn(
             "h-[18px] w-[18px] shrink-0 transition-colors",
-            active ? "text-teal-400" : "text-zinc-500 group-hover:text-zinc-300",
+            active ? "text-brand-300" : "text-white/40 group-hover:text-white/70",
           )}
         />
         {item.label}
@@ -134,9 +134,12 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="flex min-h-screen bg-zinc-100">
-      <aside className="relative hidden w-[260px] shrink-0 flex-col border-r border-zinc-800/80 bg-zinc-900 lg:flex">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_120%_80%_at_0%_-20%,rgba(20,184,166,0.15),transparent)]" />
+    <div className="flex min-h-screen bg-[color:var(--surface-3)]">
+      <aside className="relative hidden w-[260px] shrink-0 flex-col border-r border-white/10 bg-[color:var(--dark-surface)] lg:flex">
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-[radial-gradient(ellipse_130%_85%_at_0%_-20%,rgba(91,69,240,0.35),transparent_70%)]"
+        />
         <div className="relative flex flex-1 flex-col px-4 pb-8 pt-10">
           <div className="px-3">
             <div className="flex items-center gap-2">
@@ -149,7 +152,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               />
               <div>
                 <p className="text-[13px] font-semibold tracking-tight text-white">{BRAND_NAME}</p>
-                <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-zinc-500">
+                <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-brand-300/80">
                   Admin
                 </p>
               </div>
@@ -163,7 +166,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           <div className="mt-auto border-t border-white/10 pt-6">
             <Link
               href="/dashboard"
-              className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm text-zinc-500 transition-colors hover:bg-white/[0.06] hover:text-zinc-200"
+              className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm text-white/50 transition-colors hover:bg-white/[0.07] hover:text-white/90"
             >
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden className="opacity-70">
                 <path
@@ -191,8 +194,8 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               className="h-8 w-8 shrink-0 rounded-lg object-contain"
             />
             <div className="min-w-0">
-              <p className="truncate text-sm font-semibold text-zinc-900">Admin</p>
-              <p className="truncate text-[11px] text-zinc-500">{BRAND_NAME} boshqaruvi</p>
+              <p className="truncate text-sm font-semibold text-[color:var(--foreground)]">Admin</p>
+              <p className="truncate text-[11px] text-[color:var(--muted-foreground)]">{BRAND_NAME} boshqaruvi</p>
             </div>
           </div>
           <nav
@@ -208,8 +211,8 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
                   className={cn(
                     "shrink-0 rounded-full px-3.5 py-2 text-xs font-semibold transition-colors",
                     active
-                      ? "bg-zinc-900 text-white shadow-sm"
-                      : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200",
+                      ? "pl-gradient text-white shadow-[var(--shadow-brand)]"
+                      : "bg-white text-[color:var(--muted-foreground)] hover:bg-brand-50 hover:text-brand-700",
                   )}
                 >
                   {item.label}
@@ -218,7 +221,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             })}
             <Link
               href="/dashboard"
-              className="ml-auto shrink-0 rounded-full border border-zinc-200 bg-white px-3.5 py-2 text-xs font-semibold text-zinc-600 hover:bg-zinc-50"
+              className="ml-auto shrink-0 rounded-full border border-brand-200 bg-white px-3.5 py-2 text-xs font-semibold text-brand-700 transition-colors hover:bg-brand-50"
             >
               Dashboard
             </Link>

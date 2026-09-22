@@ -11,8 +11,8 @@ export type ExpiredSiteKind = "vizitka" | "landing" | "generic";
 function GenericBackdrop() {
   return (
     <div className="absolute inset-0 overflow-hidden">
-      <div className="absolute -left-1/4 top-0 h-[70%] w-[70%] rounded-full bg-teal-200/50 blur-3xl" />
-      <div className="absolute -right-1/4 bottom-0 h-[65%] w-[65%] rounded-full bg-amber-100/60 blur-3xl" />
+      <div className="absolute -left-1/4 top-0 h-[70%] w-[70%] rounded-full bg-brand-200/50 blur-3xl" />
+      <div className="absolute -right-1/4 bottom-0 h-[65%] w-[65%] rounded-full bg-brand-200/50 blur-3xl" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(255,255,255,0.9)_0%,_transparent_55%)]" />
       <div
         className="absolute inset-0 opacity-[0.35]"
@@ -88,9 +88,9 @@ export function ExpiredPageView({
       <ExpiredBackdrop preview={preview} siteKind={siteKind} />
 
       <div className="relative z-10 mx-auto flex min-h-[100dvh] max-w-lg flex-col items-center justify-center px-4 py-8 sm:py-12">
-        <div className="w-full overflow-hidden rounded-[28px] border border-white/80 bg-white/80 shadow-[0_32px_90px_-36px_rgba(0,0,0,0.35)] backdrop-blur-xl">
-          <div className="border-b border-black/5 bg-gradient-to-br from-amber-50/90 via-white to-white px-6 pb-6 pt-8 text-center sm:px-8">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-white shadow-md ring-1 ring-amber-200/60">
+        <div className="pl-rise w-full overflow-hidden rounded-[var(--radius-panel)] border border-white/80 bg-white/88 shadow-[var(--shadow-lg)] backdrop-blur-xl">
+          <div className="border-b border-brand-500/5 bg-gradient-to-br from-amber-50/90 via-white to-white px-6 pb-6 pt-8 text-center sm:px-8">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-[var(--radius-card)] bg-white shadow-md ring-1 ring-amber-200/60">
               <svg
                 className="h-8 w-8 text-amber-600"
                 fill="none"
@@ -130,7 +130,7 @@ export function ExpiredPageView({
             {hasSlug ? (
               <Link
                 href="/login"
-                className="mt-5 inline-flex h-10 w-full items-center justify-center rounded-xl border border-black/10 bg-neutral-50 text-sm font-medium text-neutral-800 transition hover:bg-neutral-100 sm:w-auto sm:px-6"
+                className="mt-5 inline-flex h-10 w-full items-center justify-center rounded-[var(--radius-control)] border border-brand-200 bg-white px-5 text-sm font-medium text-brand-700 transition hover:border-brand-400 hover:bg-brand-50 sm:w-auto sm:px-6"
               >
                 Egamisaniz? Kirish
               </Link>

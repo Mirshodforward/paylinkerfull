@@ -56,7 +56,7 @@ function Row({
               className={cn(
                 "relative flex h-7 flex-1 items-center justify-center rounded-md border transition-all",
                 active
-                  ? "border-black ring-1 ring-black ring-offset-1 ring-offset-white"
+                  ? "border-brand-500 ring-1 ring-black ring-offset-1 ring-offset-white"
                   : "border-[color:var(--border)] hover:border-neutral-400",
               )}
               style={{ backgroundColor: t.primary }}

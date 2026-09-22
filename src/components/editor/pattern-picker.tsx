@@ -26,7 +26,7 @@ export function PatternPicker({
             className={cn(
               "group flex flex-col overflow-hidden rounded-md border-2 bg-white text-center transition-colors",
               selected
-                ? "border-black"
+                ? "border-brand-500"
                 : "border-[color:var(--border)] hover:border-neutral-400",
             )}
           >
@@ -41,7 +41,7 @@ export function PatternPicker({
             <span
               className={cn(
                 "px-1 py-1.5 text-[10px] font-medium tracking-wide",
-                selected ? "bg-black text-white" : "text-black",
+                selected ? "pl-gradient text-white" : "text-[color:var(--foreground)]",
               )}
             >
               {p.name}

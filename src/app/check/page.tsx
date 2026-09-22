@@ -132,11 +132,11 @@ export default function CheckPage() {
         <Container className="py-10">
           <Link
             href="/"
-            className="text-xs font-medium uppercase tracking-[0.14em] text-neutral-500 hover:text-black"
+            className="text-xs font-medium uppercase tracking-[0.14em] text-neutral-500 hover:text-brand-700"
           >
             ← Bosh sahifa
           </Link>
-          <h1 className="mt-4 text-3xl font-semibold tracking-tight text-black sm:text-4xl">
+          <h1 className="mt-4 text-3xl font-semibold tracking-tight text-[color:var(--foreground)] sm:text-4xl">
             Ijtimoiy tarmoq qo&apos;shish — 5 variant
           </h1>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-neutral-600">
@@ -217,13 +217,13 @@ function VariantCard({
   children: React.ReactNode;
 }) {
   return (
-    <article className="overflow-hidden rounded-2xl border border-[color:var(--border)] bg-white shadow-[0_20px_50px_-30px_rgba(0,0,0,0.12)]">
+    <article className="overflow-hidden rounded-[var(--radius-card)] border border-[color:var(--border)] bg-white shadow-[0_20px_50px_-30px_rgba(0,0,0,0.12)]">
       <header className="flex flex-col gap-2 border-b border-[color:var(--border)] p-6 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
         <div>
           <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-500">
             Variant {index}
           </span>
-          <h2 className="mt-1 text-xl font-semibold text-black">{title}</h2>
+          <h2 className="mt-1 text-xl font-semibold text-[color:var(--foreground)]">{title}</h2>
           <p className="mt-1.5 max-w-xl text-sm text-neutral-600">{tagline}</p>
         </div>
         <div className="flex flex-col gap-2 sm:min-w-[260px]">
@@ -272,10 +272,10 @@ function VariantOne() {
               key={item.id}
               className="flex items-center gap-2 rounded-md border border-[color:var(--border)] bg-white p-2"
             >
-              <span className="flex h-8 w-8 items-center justify-center rounded border border-[color:var(--border)] text-black">
+              <span className="flex h-8 w-8 items-center justify-center rounded border border-[color:var(--border)] text-[color:var(--foreground)]">
                 <Glyph id={net.id} />
               </span>
-              <div className="flex flex-1 items-center overflow-hidden rounded-md border border-[color:var(--border)] focus-within:border-black">
+              <div className="flex flex-1 items-center overflow-hidden rounded-md border border-[color:var(--border)] focus-within:border-brand-500">
                 <span className="bg-neutral-50 px-2 font-mono text-[11px] text-neutral-500">
                   {net.prefix}
                 </span>
@@ -287,7 +287,7 @@ function VariantOne() {
                     )
                   }
                   placeholder={net.placeholder}
-                  className="h-8 flex-1 bg-transparent px-2 text-sm text-black focus:outline-none"
+                  className="h-8 flex-1 bg-transparent px-2 text-sm text-[color:var(--foreground)] focus:outline-none"
                 />
               </div>
               <button
@@ -320,7 +320,7 @@ function VariantOne() {
                   ]);
                   setPicking(false);
                 }}
-                className="flex items-center gap-2 rounded-md border border-[color:var(--border)] bg-white px-2 py-1.5 text-xs font-medium text-black transition-colors hover:border-black"
+                className="flex items-center gap-2 rounded-md border border-[color:var(--border)] bg-white px-2 py-1.5 text-xs font-medium text-[color:var(--foreground)] transition-colors hover:border-brand-300"
               >
                 <Glyph id={n.id} />
                 {n.name}
@@ -332,7 +332,7 @@ function VariantOne() {
         <button
           type="button"
           onClick={() => setPicking(true)}
-          className="inline-flex h-10 w-full items-center justify-center gap-1.5 rounded-md border border-dashed border-[color:var(--border)] text-sm font-medium text-black hover:border-black"
+          className="inline-flex h-10 w-full items-center justify-center gap-1.5 rounded-md border border-dashed border-[color:var(--border)] text-sm font-medium text-[color:var(--foreground)] hover:border-brand-300"
         >
           <Glyph id="plus" />
           Ijtimoiy tarmoq qo&apos;shish
@@ -365,10 +365,10 @@ function VariantTwo() {
               className={cn(
                 "flex aspect-square items-center justify-center rounded-md border transition-colors",
                 isActive
-                  ? "border-black bg-black text-white"
+                  ? "pl-gradient border-transparent text-white"
                   : selected
-                  ? "border-black text-black"
-                  : "border-[color:var(--border)] text-neutral-400 hover:border-black hover:text-black",
+                  ? "border-brand-500 text-[color:var(--foreground)]"
+                  : "border-[color:var(--border)] text-neutral-400 hover:border-brand-300 hover:text-brand-700",
               )}
               aria-pressed={isActive}
               aria-label={n.name}
@@ -451,7 +451,7 @@ function VariantThree() {
             type="button"
             onClick={add}
             disabled={!draft.trim()}
-            className="inline-flex h-10 shrink-0 items-center gap-1.5 rounded-md bg-black px-4 text-sm font-medium text-white disabled:opacity-40"
+            className="inline-flex h-10 shrink-0 items-center gap-1.5 pl-gradient rounded-md px-4 text-sm font-medium text-white disabled:opacity-40"
           >
             <Glyph id="plus" />
             Qo&apos;shish
@@ -478,7 +478,7 @@ function VariantThree() {
                 <Glyph id={e.network ?? "link"} />
               </span>
               <div className="flex-1 overflow-hidden">
-                <p className="truncate text-xs font-semibold text-black">
+                <p className="truncate text-xs font-semibold text-[color:var(--foreground)]">
                   {e.network ? NETWORK_MAP[e.network].name : "Havola"}
                 </p>
                 <p className="truncate font-mono text-[11px] text-neutral-500">{e.raw}</p>
@@ -529,7 +529,7 @@ function VariantFour() {
       <button
         type="button"
         onClick={() => setExpanded((e) => !e)}
-        className="flex w-full items-center justify-between rounded-md border border-[color:var(--border)] bg-neutral-50 px-3 py-2 text-xs font-medium text-black hover:border-black"
+        className="flex w-full items-center justify-between rounded-md border border-[color:var(--border)] bg-neutral-50 px-3 py-2 text-xs font-medium text-[color:var(--foreground)] hover:border-brand-300"
       >
         <span>{expanded ? "Kamroq" : `Boshqa tarmoqlar (${REST.length})`}</span>
         <span
@@ -589,7 +589,7 @@ function VariantFive() {
                   type="button"
                   onClick={() => move(item.id, -1)}
                   disabled={idx === 0}
-                  className="flex h-4 w-6 items-center justify-center text-neutral-400 hover:text-black disabled:opacity-30"
+                  className="flex h-4 w-6 items-center justify-center text-neutral-400 hover:text-brand-700 disabled:opacity-30"
                   aria-label="Yuqoriga"
                 >
                   <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden>
@@ -600,7 +600,7 @@ function VariantFive() {
                   type="button"
                   onClick={() => move(item.id, 1)}
                   disabled={idx === items.length - 1}
-                  className="flex h-4 w-6 items-center justify-center text-neutral-400 hover:text-black disabled:opacity-30"
+                  className="flex h-4 w-6 items-center justify-center text-neutral-400 hover:text-brand-700 disabled:opacity-30"
                   aria-label="Pastga"
                 >
                   <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden>
@@ -620,7 +620,7 @@ function VariantFive() {
                     )
                   }
                   placeholder="Sarlavha"
-                  className="rounded border border-[color:var(--border)] px-2 py-1 text-sm font-medium text-black placeholder:text-neutral-400 focus:border-black focus:outline-none"
+                  className="rounded border border-[color:var(--border)] px-2 py-1 text-sm font-medium text-[color:var(--foreground)] placeholder:text-neutral-400 focus:border-brand-500 focus:outline-none"
                 />
                 <input
                   value={item.url}
@@ -634,7 +634,7 @@ function VariantFive() {
                     )
                   }
                   placeholder="URL"
-                  className="rounded border border-[color:var(--border)] px-2 py-1 font-mono text-[11px] text-neutral-600 focus:border-black focus:outline-none"
+                  className="rounded border border-[color:var(--border)] px-2 py-1 font-mono text-[11px] text-neutral-600 focus:border-brand-500 focus:outline-none"
                 />
               </div>
               <button
@@ -653,7 +653,7 @@ function VariantFive() {
       <button
         type="button"
         onClick={add}
-        className="inline-flex h-10 w-full items-center justify-center gap-1.5 rounded-md border border-dashed border-[color:var(--border)] text-sm font-medium text-black hover:border-black"
+        className="inline-flex h-10 w-full items-center justify-center gap-1.5 rounded-md border border-dashed border-[color:var(--border)] text-sm font-medium text-[color:var(--foreground)] hover:border-brand-300"
       >
         <Glyph id="plus" />
         Havola qo&apos;shish

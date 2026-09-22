@@ -19,7 +19,7 @@ export function Topbar({ title, breadcrumb, actions }: Props) {
         <button
           type="button"
           onClick={toggleMobile}
-          className="inline-flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg text-neutral-800 outline-none ring-offset-2 transition-colors hover:bg-neutral-100 focus-visible:ring-2 focus-visible:ring-neutral-300"
+          className="inline-flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-[var(--radius-control)] text-[color:var(--foreground)] transition-colors hover:bg-brand-50 hover:text-brand-700"
           aria-expanded={mobileOpen}
           aria-controls="dashboard-mobile-nav"
           aria-label={mobileOpen ? "Menyuni yopish" : "Menyuni ochish"}
@@ -35,7 +35,7 @@ export function Topbar({ title, breadcrumb, actions }: Props) {
               {breadcrumb}
             </p>
           ) : null}
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-black sm:text-3xl">
+          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-[color:var(--foreground)] sm:text-3xl">
             {title}
           </h1>
         </div>

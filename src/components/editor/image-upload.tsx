@@ -162,7 +162,7 @@ export function ImageUpload({
           </div>
           <div className="mt-3 flex items-start justify-between gap-3">
             <div className="min-w-0 flex-1">
-              <p className="truncate text-xs font-medium text-black">{value.name}</p>
+              <p className="truncate text-xs font-medium text-[color:var(--foreground)]">{value.name}</p>
               <p className="mt-0.5 text-[11px] text-neutral-500">
                 {formatBytes(value.sizeBytes)}
               </p>
@@ -172,7 +172,7 @@ export function ImageUpload({
                 type="button"
                 disabled={uploading}
                 onClick={() => inputRef.current?.click()}
-                className="h-8 rounded-md border border-[color:var(--border)] px-3 text-xs font-medium text-black transition-colors hover:border-black disabled:opacity-50"
+                className="h-8 rounded-md border border-[color:var(--border)] px-3 text-xs font-medium text-[color:var(--foreground)] transition-colors hover:border-brand-300 disabled:opacity-50"
               >
                 {uploading ? "Yuklanmoqda…" : "Almashtirish"}
               </button>
@@ -206,12 +206,12 @@ export function ImageUpload({
             "flex w-full flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed bg-white p-6 text-center transition-colors",
             ratio,
             isDragging
-              ? "border-black bg-neutral-50"
-              : "border-[color:var(--border)] hover:border-black",
+              ? "border-brand-500 bg-neutral-50"
+              : "border-[color:var(--border)] hover:border-brand-300",
           )}
         >
           <UploadIcon />
-          <span className="text-sm font-medium text-black">
+          <span className="text-sm font-medium text-[color:var(--foreground)]">
             Rasmni shu yerga tashlang yoki tanlang
           </span>
           <span className="text-xs text-neutral-500">

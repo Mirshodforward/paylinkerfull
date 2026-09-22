@@ -100,10 +100,10 @@ export function LoginForm() {
   if (step === 2) {
     return (
       <div className="space-y-5">
-        <p className="text-center text-base font-medium text-neutral-900">
+        <p className="text-center text-base font-medium text-[color:var(--foreground)]">
           {e164ToDisplay(e164)}
         </p>
-        <div className="rounded-lg border border-[color:var(--border)] bg-neutral-50/80 p-3 text-sm text-neutral-700">
+        <div className="rounded-[var(--radius-card)] border border-brand-200 bg-brand-50 p-3.5 text-sm text-brand-900">
           <p className="leading-relaxed">
             O&lsquo;ngdagi tugma orqali botni oching va yozing: <span className="font-mono">/start</span>
           </p>
@@ -111,13 +111,13 @@ export function LoginForm() {
             href={tme}
             target="_blank"
             rel="noreferrer"
-            className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-sky-500 py-2.5 text-sm font-medium text-white hover:bg-sky-600"
+            className="pl-gradient mt-2.5 inline-flex w-full items-center justify-center gap-2 rounded-[var(--radius-control)] py-2.5 text-sm font-semibold text-white shadow-[var(--shadow-brand)] transition hover:brightness-[1.06]"
           >
             @{bot}
           </a>
         </div>
         <div>
-          <p className="text-xs font-medium text-neutral-500">6 xonali kod</p>
+          <p className="text-xs font-medium text-[color:var(--muted-foreground)]">6 xonali kod</p>
           <div
             className="mt-1.5 flex justify-center gap-1.5 sm:gap-2"
             onPaste={onPasteOtp}
@@ -131,8 +131,11 @@ export function LoginForm() {
                   refs.current[i] = el;
                 }}
                 className={cn(
-                  "h-11 w-9 rounded-md border text-center text-base font-mono sm:h-12 sm:w-10",
-                  i === 0 && !c ? "border-emerald-500 ring-1 ring-emerald-500" : "border-[color:var(--border)]",
+                  "h-11 w-9 rounded-[var(--radius-control)] border bg-white text-center font-mono text-base text-[color:var(--foreground)]",
+                  "transition-colors outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-200 sm:h-12 sm:w-10",
+                  i === 0 && !c
+                    ? "border-brand-400 ring-2 ring-brand-100"
+                    : "border-[color:var(--border)]",
                 )}
                 inputMode="numeric"
                 maxLength={1}
@@ -143,11 +146,15 @@ export function LoginForm() {
             ))}
           </div>
         </div>
-        {err ? <p className="text-center text-sm text-red-600">{err}</p> : null}
+        {err ? (
+          <p className="rounded-[var(--radius-control)] border border-[color:var(--danger-border)] bg-[color:var(--danger-bg)] px-3 py-2 text-center text-sm text-[color:var(--danger)]">
+            {err}
+          </p>
+        ) : null}
         <Button type="button" className="w-full" onClick={() => void onVerify()} disabled={load}>
           {load ? "…" : "Kirish"}
         </Button>
-        <p className="text-center text-xs text-neutral-500">
+        <p className="text-center text-xs text-[color:var(--muted-foreground)]">
           Kod 2 daqiqagacha. Telegramdagi <strong className="font-normal">Kodni yangilash</strong> orqali
           yangilaysiz.
         </p>
@@ -158,7 +165,7 @@ export function LoginForm() {
             setCells(["", "", "", "", "", ""]);
             setErr(null);
           }}
-          className="w-full text-center text-sm text-neutral-500 underline hover:text-black"
+          className="w-full text-center text-sm text-[color:var(--muted-foreground)] underline underline-offset-2 transition-colors hover:text-brand-700"
         >
           Boshqa raqam
         </button>
@@ -169,13 +176,13 @@ export function LoginForm() {
   return (
     <div className="space-y-5">
       <div>
-        <p className="text-xs font-medium text-neutral-500">Telefon raqam</p>
-        <div className="mt-1.5 flex overflow-hidden rounded-lg border border-[color:var(--border)] bg-white shadow-sm">
-          <span className="flex items-center border-r border-[color:var(--border)] bg-emerald-50 px-3 text-sm font-medium text-emerald-900">
+        <p className="text-xs font-medium text-[color:var(--muted-foreground)]">Telefon raqam</p>
+        <div className="mt-1.5 flex overflow-hidden rounded-[var(--radius-control)] border border-[color:var(--border)] bg-white shadow-[var(--shadow-sm)] transition-colors focus-within:border-brand-400">
+          <span className="flex items-center border-r border-[color:var(--border)] bg-brand-50 px-3.5 text-sm font-semibold text-brand-800">
             +998
           </span>
           <input
-            className="min-w-0 flex-1 bg-white px-3 py-3 text-[15px] text-neutral-900 outline-none"
+            className="min-w-0 flex-1 bg-white px-3.5 py-3 text-[15px] text-[color:var(--foreground)] outline-none"
             type="text"
             inputMode="numeric"
             autoComplete="tel"
@@ -186,7 +193,11 @@ export function LoginForm() {
           />
         </div>
       </div>
-      {err ? <p className="text-sm text-red-600">{err}</p> : null}
+      {err ? (
+        <p className="rounded-[var(--radius-control)] border border-[color:var(--danger-border)] bg-[color:var(--danger-bg)] px-3 py-2 text-sm text-[color:var(--danger)]">
+          {err}
+        </p>
+      ) : null}
       <Button
         type="button"
         className="w-full"

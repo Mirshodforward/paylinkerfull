@@ -62,9 +62,9 @@ function MenuRowLink(props: {
       {...(props.external
         ? { target: "_blank", rel: "noopener noreferrer" }
         : ({} as { target?: string; rel?: string }))}
-      className="flex items-center gap-2.5 rounded-lg py-1.5 pl-0.5 pr-1 text-sm text-neutral-800 transition-colors hover:bg-neutral-50"
+      className="flex items-center gap-2.5 rounded-[var(--radius-control)] px-1.5 py-1.5 text-sm text-[color:var(--foreground)] transition-colors hover:bg-brand-50"
     >
-      <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-neutral-100 text-neutral-600">
+      <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-[0.625rem] bg-brand-50 text-brand-700">
         {props.icon}
       </span>
       <span className="min-w-0 flex-1 font-medium leading-tight">{props.children}</span>
@@ -81,9 +81,9 @@ function MenuRowButton(props: {
     <button
       type="button"
       onClick={props.onClick}
-      className="flex w-full items-center gap-2.5 rounded-lg py-1.5 pl-0.5 pr-1 text-left text-sm text-red-600 transition-colors hover:bg-red-50/80"
+      className="flex w-full items-center gap-2.5 rounded-[var(--radius-control)] px-1.5 py-1.5 text-left text-sm text-[color:var(--danger)] transition-colors hover:bg-[color:var(--danger-bg)]"
     >
-      <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-600">
+      <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-[0.625rem] bg-[color:var(--danger-bg)] text-[color:var(--danger)]">
         {props.icon}
       </span>
       <span className="min-w-0 font-medium leading-tight">{props.children}</span>
@@ -137,7 +137,7 @@ function SidebarUserCard({ onNavigate }: { onNavigate?: () => void }) {
 
   if (user === "loading") {
     return (
-      <div className="rounded-2xl border border-[color:var(--border)] bg-white p-3 shadow-sm">
+      <div className="rounded-[var(--radius-card)] border border-[color:var(--border)] bg-white p-3 shadow-[var(--shadow-sm)]">
         <div className="flex animate-pulse items-center gap-3">
           <div className="h-10 w-10 flex-shrink-0 rounded-full bg-neutral-200" />
           <div className="min-w-0 flex-1 space-y-1.5">
@@ -153,18 +153,18 @@ function SidebarUserCard({ onNavigate }: { onNavigate?: () => void }) {
   }
 
   return (
-    <div className="rounded-2xl border border-[color:var(--border)] bg-white p-3 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+    <div className="rounded-[var(--radius-card)] border border-[color:var(--border)] bg-white p-3 shadow-[var(--shadow-md)]">
       <button
         type="button"
         onClick={() => setExpanded((e) => !e)}
-        className="flex w-full items-center gap-3 rounded-lg py-0.5 text-left outline-none ring-offset-2 transition-colors hover:bg-neutral-50/80 focus-visible:ring-2 focus-visible:ring-neutral-300"
+        className="flex w-full items-center gap-3 rounded-[var(--radius-control)] px-1.5 py-1 text-left transition-colors hover:bg-brand-50"
         aria-expanded={expanded}
         aria-controls={expanded ? "sidebar-user-menu" : undefined}
         id="sidebar-user-profile-trigger"
         aria-label={expanded ? "Profil menyusini yopish" : "Profil menyusini ochish"}
       >
         <div
-          className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-teal-500 text-sm font-semibold text-white"
+          className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-brand-500 text-sm font-semibold text-white"
           aria-hidden
         >
           {userInitial(user)}
@@ -189,9 +189,9 @@ function SidebarUserCard({ onNavigate }: { onNavigate?: () => void }) {
             <Link
               href="/dashboard/billing"
               onClick={() => onNavigate?.()}
-              className="flex items-center gap-2.5 rounded-lg py-1.5 pl-0.5 pr-1 text-sm text-neutral-800 transition-colors hover:bg-neutral-50"
+              className="flex items-center gap-2.5 rounded-[var(--radius-control)] px-1.5 py-1.5 text-sm text-[color:var(--foreground)] transition-colors hover:bg-brand-50"
             >
-              <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-neutral-100 text-neutral-600">
+              <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-[0.625rem] bg-brand-50 text-brand-700">
                 <WalletIcon />
               </span>
               <span className="min-w-0 flex-1 font-medium">Balans +</span>
@@ -209,9 +209,9 @@ function SidebarUserCard({ onNavigate }: { onNavigate?: () => void }) {
             <Link
               href="/dashboard/settings"
               onClick={() => onNavigate?.()}
-              className="flex items-center gap-2.5 rounded-lg py-1.5 pl-0.5 pr-1 text-sm text-neutral-800 transition-colors hover:bg-neutral-50"
+              className="flex items-center gap-2.5 rounded-[var(--radius-control)] px-1.5 py-1.5 text-sm text-[color:var(--foreground)] transition-colors hover:bg-brand-50"
             >
-              <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-neutral-100 text-neutral-600">
+              <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-[0.625rem] bg-brand-50 text-brand-700">
                 <PersonIcon />
               </span>
               <span className="min-w-0 flex-1 font-medium">Profil</span>
@@ -234,7 +234,7 @@ function SidebarBrand({ onPress }: { onPress?: () => void }) {
       <button
         type="button"
         onClick={onPress}
-        className="inline-flex items-center gap-2.5 text-left text-[16px] font-semibold tracking-tight text-black outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-neutral-300"
+        className="inline-flex items-center gap-2.5 text-left text-[16px] font-semibold tracking-tight text-[color:var(--foreground)]"
         aria-label="Menyuni yopish"
       >
         <LogoMark size={24} />
@@ -270,10 +270,10 @@ function SidebarPanel({
                   aria-current={active ? "page" : undefined}
                   onClick={() => onNavigate?.()}
                   className={cn(
-                    "flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors",
+                    "flex items-center gap-3 rounded-[var(--radius-control)] px-3 py-2.5 text-sm font-medium transition-all",
                     active
-                      ? "bg-black text-white"
-                      : "text-neutral-700 hover:bg-neutral-100 hover:text-black",
+                      ? "pl-gradient text-white shadow-[var(--shadow-brand)]"
+                      : "text-[color:var(--muted-foreground)] hover:bg-brand-50 hover:text-brand-700",
                   )}
                 >
                   <span className="flex h-4 w-4 items-center justify-center">{item.icon}</span>
@@ -322,7 +322,7 @@ export function Sidebar() {
         <button
           type="button"
           className={cn(
-            "absolute inset-0 bg-black/40 transition-opacity duration-200",
+            "absolute inset-0 bg-[color:var(--brand-950)]/45 backdrop-blur-sm transition-opacity duration-200",
             mobileOpen ? "opacity-100" : "opacity-0",
           )}
           onClick={() => setMobileOpen(false)}

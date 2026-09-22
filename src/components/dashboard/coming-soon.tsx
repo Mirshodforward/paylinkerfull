@@ -9,11 +9,11 @@ type Props = {
 export function ComingSoon({ title, description, hint }: Props) {
   return (
     <div className="px-5 py-16 lg:px-10">
-      <div className="mx-auto max-w-xl rounded-2xl border border-[color:var(--border)] bg-white p-8 text-center">
+      <div className="mx-auto max-w-xl rounded-[var(--radius-card)] border border-[color:var(--border)] bg-white p-8 text-center">
         <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-neutral-500">
           Tez orada
         </p>
-        <h2 className="mt-3 text-2xl font-semibold tracking-tight text-black">
+        <h2 className="mt-3 text-2xl font-semibold tracking-tight text-[color:var(--foreground)]">
           {title}
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-neutral-600">
@@ -25,7 +25,7 @@ export function ComingSoon({ title, description, hint }: Props) {
         <div className="mt-6">
           <Link
             href="/dashboard"
-            className="inline-flex h-10 items-center justify-center rounded-md bg-black px-5 text-sm font-medium text-white hover:bg-neutral-800"
+            className="inline-flex h-10 items-center justify-center pl-gradient rounded-md px-5 text-sm font-medium text-white hover:brightness-[1.06]"
           >
             Bosh sahifaga
           </Link>

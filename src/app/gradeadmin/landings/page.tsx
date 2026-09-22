@@ -110,13 +110,13 @@ export default function AdminLandingsPage() {
   }
 
   const inpDays =
-    "h-9 w-14 rounded-lg border border-zinc-200 bg-white px-2 text-xs font-medium tabular-nums outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 disabled:opacity-50";
+    "h-9 w-14 rounded-lg border border-zinc-200 bg-white px-2 text-xs font-medium tabular-nums outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 disabled:opacity-50";
 
   const btnMini =
-    "rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 py-1.5 text-xs font-semibold text-zinc-800 shadow-sm transition-colors hover:bg-teal-50 hover:border-teal-200 hover:text-teal-900 disabled:opacity-50";
+    "rounded-lg border border-zinc-200 bg-zinc-50 px-2.5 py-1.5 text-xs font-semibold text-zinc-800 shadow-sm transition-colors hover:bg-brand-50 hover:border-brand-200 hover:text-brand-900 disabled:opacity-50";
 
   const linkPrimary =
-    "font-semibold text-teal-800 underline-offset-2 hover:text-teal-950 hover:underline";
+    "font-semibold text-brand-800 underline-offset-2 hover:text-brand-950 hover:underline";
 
   return (
     <div className="space-y-8">

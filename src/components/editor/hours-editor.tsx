@@ -78,8 +78,8 @@ export function HoursEditor({
                 className={cn(
                   "rounded-md border px-3 py-1.5 text-xs font-medium transition-colors",
                   selected
-                    ? "border-black bg-black text-white"
-                    : "border-[color:var(--border)] bg-white text-black hover:border-black",
+                    ? "pl-gradient border-transparent text-white"
+                    : "border-[color:var(--border)] bg-white text-[color:var(--foreground)] hover:border-brand-300",
                 )}
               >
                 {p.label}
@@ -104,8 +104,8 @@ export function HoursEditor({
                   className={cn(
                     "flex h-9 flex-1 items-center justify-center rounded-md border text-xs font-medium transition-colors",
                     days[i]
-                      ? "border-black bg-black text-white"
-                      : "border-[color:var(--border)] bg-white text-neutral-500 hover:border-black hover:text-black",
+                      ? "pl-gradient border-transparent text-white"
+                      : "border-[color:var(--border)] bg-white text-neutral-500 hover:border-brand-300 hover:text-brand-700",
                   )}
                 >
                   {label}
@@ -131,7 +131,7 @@ export function HoursEditor({
 
       <div className="rounded-md border border-dashed border-[color:var(--border)] bg-white px-3 py-2 text-xs">
         <span className="text-neutral-500">Saytda chiqadi:</span>{" "}
-        <span className="font-medium text-black">{value || "—"}</span>
+        <span className="font-medium text-[color:var(--foreground)]">{value || "—"}</span>
       </div>
     </div>
   );
@@ -153,8 +153,8 @@ function ModeTab({
       className={cn(
         "flex-1 rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
         active
-          ? "bg-black text-white"
-          : "text-neutral-600 hover:bg-neutral-100 hover:text-black",
+          ? "pl-gradient text-white"
+          : "text-neutral-600 hover:bg-neutral-100 hover:text-brand-700",
       )}
     >
       {children}
@@ -179,7 +179,7 @@ function TimeSelect({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="h-10 w-full rounded-md border border-[color:var(--border)] bg-white px-2 text-sm text-black focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
+        className="h-10 w-full rounded-md border border-[color:var(--border)] bg-white px-2 text-sm text-[color:var(--foreground)] focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200"
       >
         {TIME_OPTIONS.map((t) => (
           <option key={t} value={t}>

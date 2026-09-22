@@ -22,8 +22,8 @@ export function VizitkaTemplateSwitcher({ value, onChange }: Props) {
             className={cn(
               "h-8 rounded-md px-2 text-[11px] font-medium transition-colors",
               active
-                ? "bg-black text-white shadow-sm"
-                : "text-neutral-700 hover:bg-white hover:text-black",
+                ? "pl-gradient text-white shadow-[var(--shadow-brand)]"
+                : "text-neutral-700 hover:bg-white hover:text-brand-700",
             )}
           >
             {tpl.name}

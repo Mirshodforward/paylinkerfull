@@ -109,10 +109,10 @@ export function VizitkaSubscriptionPanel({ site, onExtended }: Props) {
   }
 
   return (
-    <div className="rounded-2xl border border-[color:var(--border)] bg-gradient-to-b from-neutral-50/80 to-white p-5 shadow-sm">
+    <div className="rounded-[var(--radius-card)] border border-[color:var(--border)] bg-gradient-to-b from-neutral-50/80 to-white p-5 shadow-sm">
       <div className="flex flex-col gap-1 border-b border-neutral-100 pb-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h3 className="text-sm font-semibold text-black">Obuna muddati</h3>
+          <h3 className="text-sm font-semibold text-[color:var(--foreground)]">Obuna muddati</h3>
           <p className="mt-1 text-xs text-neutral-600">
             Paket tanlang — muddat joriy tugash sanasiga qo‘shiladi (CLICK yoki balans).
           </p>
@@ -139,18 +139,18 @@ export function VizitkaSubscriptionPanel({ site, onExtended }: Props) {
             className={cn(
               "flex flex-col rounded-xl border p-4",
               p.recommended
-                ? "border-black bg-white ring-1 ring-black/10"
+                ? "border-brand-500 bg-white ring-1 ring-brand-200"
                 : "border-neutral-200 bg-white",
             )}
           >
             {p.recommended ? (
-              <span className="mb-2 inline-flex w-fit rounded-full bg-black px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">
+              <span className="mb-2 inline-flex w-fit pl-gradient rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">
                 Tavsiya
               </span>
             ) : (
               <span className="mb-2 h-5" />
             )}
-            <span className="text-base font-semibold text-black">{p.title}</span>
+            <span className="text-base font-semibold text-[color:var(--foreground)]">{p.title}</span>
             <span className="mt-1 text-lg font-bold tabular-nums text-neutral-900">
               {formatSom(p.priceSom)}
             </span>
@@ -162,7 +162,7 @@ export function VizitkaSubscriptionPanel({ site, onExtended }: Props) {
                 type="button"
                 disabled={loadingMonths !== null}
                 onClick={() => void payClick(p.months)}
-                className="inline-flex h-9 items-center justify-center rounded-md bg-black px-3 text-xs font-medium text-white transition hover:bg-neutral-800 disabled:opacity-50"
+                className="inline-flex h-9 items-center justify-center pl-gradient rounded-md px-3 text-xs font-medium text-white transition hover:brightness-[1.06] disabled:opacity-50"
               >
                 {loadingMonths === p.months
                   ? "Yo‘naltirilmoqda…"
@@ -172,7 +172,7 @@ export function VizitkaSubscriptionPanel({ site, onExtended }: Props) {
                 type="button"
                 disabled={loadingMonths !== null}
                 onClick={() => void payBalance(p.months)}
-                className="inline-flex h-9 items-center justify-center rounded-md border border-[color:var(--border)] bg-white px-3 text-xs font-medium text-black transition hover:border-black disabled:opacity-50"
+                className="inline-flex h-9 items-center justify-center rounded-md border border-[color:var(--border)] bg-white px-3 text-xs font-medium text-[color:var(--foreground)] transition hover:border-brand-300 disabled:opacity-50"
               >
                 {loadingMonths === "balance" ? "Tekshirilmoqda…" : "Balansdan uzaytirish"}
               </button>

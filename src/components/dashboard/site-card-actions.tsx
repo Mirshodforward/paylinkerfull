@@ -35,7 +35,7 @@ export function SiteCardActions({
           href={viewHref}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex h-10 w-full min-w-0 items-center justify-center rounded-md border border-[color:var(--border)] px-2 text-sm font-medium text-black transition-colors hover:border-black"
+          className="inline-flex h-10 w-full min-w-0 items-center justify-center rounded-md border border-[color:var(--border)] px-2 text-sm font-medium text-[color:var(--foreground)] transition-colors hover:border-brand-300"
         >
           Ko&apos;rish
         </Link>
@@ -50,7 +50,7 @@ export function SiteCardActions({
           <button
             type="button"
             onClick={onExtend}
-            className="inline-flex h-10 min-w-0 items-center justify-center rounded-md border border-[color:var(--border)] px-2 text-xs font-medium text-black transition-colors hover:border-black sm:text-sm"
+            className="inline-flex h-10 min-w-0 items-center justify-center rounded-md border border-[color:var(--border)] px-2 text-xs font-medium text-[color:var(--foreground)] transition-colors hover:border-brand-300 sm:text-sm"
           >
             Obunani uzaytirish
           </button>

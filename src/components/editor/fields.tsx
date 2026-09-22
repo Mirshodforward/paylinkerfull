@@ -31,7 +31,7 @@ export function Field({
 }
 
 const inputBase =
-  "w-full rounded-md border border-[color:var(--border)] bg-white text-sm text-black placeholder:text-neutral-400 transition-colors focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10";
+  "w-full rounded-md border border-[color:var(--border)] bg-white text-sm text-[color:var(--foreground)] placeholder:text-neutral-400 transition-colors focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200";
 
 export function TextInput({
   value,
@@ -50,7 +50,7 @@ export function TextInput({
 }) {
   if (prefix) {
     return (
-      <div className="flex h-10 items-center overflow-hidden rounded-md border border-[color:var(--border)] bg-white focus-within:border-black focus-within:ring-2 focus-within:ring-black/10">
+      <div className="flex h-10 items-center overflow-hidden rounded-md border border-[color:var(--border)] bg-white focus-within:border-brand-500 focus-within:ring-2 focus-within:ring-brand-200">
         <span className="flex h-full items-center bg-neutral-50 px-3 font-mono text-xs text-neutral-600">
           {prefix}
         </span>
@@ -59,7 +59,7 @@ export function TextInput({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className={cn("h-full flex-1 bg-transparent px-3 text-sm text-black placeholder:text-neutral-400 focus:outline-none", className)}
+          className={cn("h-full flex-1 bg-transparent px-3 text-sm text-[color:var(--foreground)] placeholder:text-neutral-400 focus:outline-none", className)}
         />
       </div>
     );
@@ -111,7 +111,7 @@ export function Section({
   return (
     <section className="space-y-4 border-b border-[color:var(--border)] p-5 last:border-b-0 sm:p-6">
       <div>
-        <h3 className="text-sm font-semibold text-black">{title}</h3>
+        <h3 className="text-sm font-semibold text-[color:var(--foreground)]">{title}</h3>
         {description ? (
           <p className="mt-0.5 text-xs leading-relaxed text-neutral-500">
             {description}
@@ -143,7 +143,7 @@ export function IconButton({
         "inline-flex h-8 w-8 items-center justify-center rounded-md border transition-colors",
         destructive
           ? "border-[color:var(--border)] text-red-700 hover:border-red-700 hover:bg-red-50"
-          : "border-[color:var(--border)] text-black hover:border-black",
+          : "border-[color:var(--border)] text-[color:var(--foreground)] hover:border-brand-300",
       )}
     >
       {children}

@@ -78,7 +78,7 @@ export default function AdminUsersPage() {
                 <td className={`${adminTd} text-right`}>
                   <Link
                     href={`/gradeadmin/users/${u.id}`}
-                    className="text-sm font-semibold text-teal-800 underline-offset-2 hover:text-teal-950 hover:underline"
+                    className="text-sm font-semibold text-brand-800 underline-offset-2 hover:text-brand-950 hover:underline"
                   >
                     Batafsil
                   </Link>

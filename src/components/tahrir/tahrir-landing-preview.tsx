@@ -48,7 +48,7 @@ export function TahrirLandingPreview({ titleFontClassName, bodyFontClassName }: 
         <p className="text-sm text-neutral-600">Ko‘rish ma’lumoti topilmadi.</p>
         <Link
           href="/tahrir"
-          className="rounded-lg bg-neutral-900 px-4 py-2 text-sm font-bold text-white hover:bg-neutral-800"
+          className="rounded-lg bg-neutral-900 px-4 py-2 text-sm font-bold text-white hover:brightness-[1.06]"
         >
           Tahrirga qaytish
         </Link>

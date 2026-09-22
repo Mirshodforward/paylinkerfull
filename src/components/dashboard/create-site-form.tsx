@@ -737,7 +737,7 @@ export function CreateSiteForm() {
         <div className="mb-3 flex items-center justify-between">
           <div>
             <p className="text-xs text-neutral-500">
-              Tarif: <span className="font-semibold text-black">Landing</span>
+              Tarif: <span className="font-semibold text-[color:var(--foreground)]">Landing</span>
             </p>
             {landingTier === "free" ? (
               <p className="mt-0.5 text-[11px] text-neutral-600">
@@ -760,7 +760,7 @@ export function CreateSiteForm() {
               setLandingTier(null);
               setLandingComingSoon(false);
             }}
-            className="text-xs font-medium text-black underline underline-offset-4"
+            className="text-xs font-medium text-[color:var(--foreground)] underline underline-offset-4"
           >
             Tarifni o&apos;zgartirish
           </button>
@@ -786,7 +786,7 @@ export function CreateSiteForm() {
         <div className="mb-3 flex items-center justify-between">
           <div>
             <p className="text-xs text-neutral-500">
-              Tarif: <span className="font-semibold text-black">Landing</span>
+              Tarif: <span className="font-semibold text-[color:var(--foreground)]">Landing</span>
             </p>
             {landingTier === "free" ? (
               <p className="mt-0.5 text-[11px] text-neutral-600">
@@ -809,7 +809,7 @@ export function CreateSiteForm() {
               setLandingTier(null);
               setStep(1);
             }}
-            className="text-xs font-medium text-black underline underline-offset-4"
+            className="text-xs font-medium text-[color:var(--foreground)] underline underline-offset-4"
           >
             Tarifni o&apos;zgartirish
           </button>
@@ -841,7 +841,7 @@ export function CreateSiteForm() {
         <div>
           <p className="text-xs text-neutral-500">
             Tarif:{" "}
-            <span className="font-semibold text-black">
+            <span className="font-semibold text-[color:var(--foreground)]">
               {siteType === "vizitka" ? "Vizitka" : "Landing"}
             </span>
           </p>
@@ -889,7 +889,7 @@ export function CreateSiteForm() {
             }
             setSiteType(null);
           }}
-          className="text-xs font-medium text-black underline underline-offset-4"
+          className="text-xs font-medium text-[color:var(--foreground)] underline underline-offset-4"
         >
           Tarifni o&apos;zgartirish
         </button>
@@ -1001,7 +1001,7 @@ function VizitkaPackagePicker({
   return (
     <div>
       <div className="mb-8 text-center">
-        <h2 className="text-2xl font-semibold tracking-tight text-black sm:text-3xl">
+        <h2 className="text-2xl font-semibold tracking-tight text-[color:var(--foreground)] sm:text-3xl">
           Obuna muddatini tanlang
         </h2>
         <p className="mt-2 text-sm text-neutral-600">
@@ -1021,24 +1021,24 @@ function VizitkaPackagePicker({
           type="button"
           disabled={busy}
           onClick={() => void onSelectTier("free")}
-          className="group relative flex flex-col gap-3 rounded-2xl border-2 border-dashed border-teal-400/80 bg-gradient-to-b from-teal-50/80 to-white p-6 text-left transition-all hover:border-teal-600 hover:shadow-md disabled:pointer-events-none disabled:opacity-50"
+          className="group relative flex flex-col gap-3 rounded-[var(--radius-card)] border-2 border-dashed border-brand-400/80 bg-gradient-to-b from-brand-50/80 to-white p-6 text-left transition-all hover:border-brand-600 hover:shadow-md disabled:pointer-events-none disabled:opacity-50"
         >
-          <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-teal-600 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
+          <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand-600 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
             Bepul
           </span>
           <div className="mt-1">
-            <p className="text-lg font-semibold text-black">
+            <p className="text-lg font-semibold text-[color:var(--foreground)]">
               {freePackage.title}
             </p>
-            <p className="mt-2 text-2xl font-bold tabular-nums tracking-tight text-teal-800">
+            <p className="mt-2 text-2xl font-bold tabular-nums tracking-tight text-brand-800">
               {freePackage.priceLabel}
             </p>
             <p className="mt-1 text-xs text-neutral-600">{freePackage.subtitle}</p>
-            <p className="mt-2 text-[11px] font-medium text-teal-700">
+            <p className="mt-2 text-[11px] font-medium text-brand-700">
               {pricing.freePublishDays} kun sinov
             </p>
           </div>
-          <span className="mt-auto pt-2 text-sm font-semibold text-teal-900">
+          <span className="mt-auto pt-2 text-sm font-semibold text-brand-900">
             Tanlash →
           </span>
         </button>
@@ -1050,19 +1050,19 @@ function VizitkaPackagePicker({
             disabled={busy}
             onClick={() => void onSelectTier(p.months)}
             className={cn(
-              "group relative flex flex-col gap-3 rounded-2xl border p-6 text-left transition-all disabled:pointer-events-none disabled:opacity-50",
+              "group relative flex flex-col gap-3 rounded-[var(--radius-card)] border p-6 text-left transition-all disabled:pointer-events-none disabled:opacity-50",
               p.recommended
-                ? "border-2 border-black bg-white shadow-[0_18px_40px_-24px_rgba(0,0,0,0.35)]"
-                : "border border-[color:var(--border)] bg-white hover:border-black",
+                ? "border-2 border-brand-500 bg-white shadow-[0_18px_40px_-24px_rgba(0,0,0,0.35)]"
+                : "border border-[color:var(--border)] bg-white hover:border-brand-300",
             )}
           >
             {p.recommended ? (
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-black px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
+              <span className="absolute -top-3 left-1/2 -translate-x-1/2 pl-gradient rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
                 Tavsiya
               </span>
             ) : null}
             <div className="mt-1">
-              <p className="text-lg font-semibold text-black">{p.title}</p>
+              <p className="text-lg font-semibold text-[color:var(--foreground)]">{p.title}</p>
               <p className="mt-2 text-2xl font-bold tabular-nums tracking-tight text-neutral-900">
                 {formatSom(p.priceSom)}
               </p>
@@ -1071,7 +1071,7 @@ function VizitkaPackagePicker({
                 <p className="mt-2 text-[11px] text-neutral-500">{p.hint}</p>
               ) : null}
             </div>
-            <span className="mt-auto pt-2 text-sm font-semibold text-black">
+            <span className="mt-auto pt-2 text-sm font-semibold text-[color:var(--foreground)]">
               {payingTier === p.months ? "CLICK ga yo‘naltirilmoqda…" : "Tanlash →"}
             </span>
           </button>
@@ -1082,7 +1082,7 @@ function VizitkaPackagePicker({
         <button
           type="button"
           onClick={onBack}
-          className="text-sm font-medium text-neutral-600 underline underline-offset-4 hover:text-black"
+          className="text-sm font-medium text-neutral-600 underline underline-offset-4 hover:text-brand-700"
         >
           ← Sayt turini qayta tanlash
         </button>
@@ -1125,7 +1125,7 @@ function LandingPackagePicker({
   return (
     <div>
       <div className="mb-8 text-center">
-        <h2 className="text-2xl font-semibold tracking-tight text-black sm:text-3xl">
+        <h2 className="text-2xl font-semibold tracking-tight text-[color:var(--foreground)] sm:text-3xl">
           Landing paketini tanlang
         </h2>
         <p className="mt-2 text-sm text-neutral-600">
@@ -1143,24 +1143,24 @@ function LandingPackagePicker({
           type="button"
           disabled={busy}
           onClick={() => void onSelectFree()}
-          className="group relative flex flex-col gap-3 rounded-2xl border-2 border-dashed border-teal-400/80 bg-gradient-to-b from-teal-50/80 to-white p-6 text-left transition-all hover:border-teal-600 hover:shadow-md disabled:pointer-events-none disabled:opacity-50"
+          className="group relative flex flex-col gap-3 rounded-[var(--radius-card)] border-2 border-dashed border-brand-400/80 bg-gradient-to-b from-brand-50/80 to-white p-6 text-left transition-all hover:border-brand-600 hover:shadow-md disabled:pointer-events-none disabled:opacity-50"
         >
-          <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-teal-600 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
+          <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand-600 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
             Shablon
           </span>
           <div className="mt-1">
-            <p className="text-lg font-semibold text-black">Bepul</p>
-            <p className="mt-2 text-2xl font-bold tabular-nums tracking-tight text-teal-800">
+            <p className="text-lg font-semibold text-[color:var(--foreground)]">Bepul</p>
+            <p className="mt-2 text-2xl font-bold tabular-nums tracking-tight text-brand-800">
               {freePackage.priceLabel}
             </p>
             <p className="mt-1 text-xs text-neutral-600">
               Tayyor shablon asosida landing — bloklar va forma.
             </p>
-            <p className="mt-2 text-[11px] font-medium text-teal-700">
+            <p className="mt-2 text-[11px] font-medium text-brand-700">
               {pricing.freePublishDays} kun sinov
             </p>
           </div>
-          <span className="mt-auto pt-2 text-sm font-semibold text-teal-900">
+          <span className="mt-auto pt-2 text-sm font-semibold text-brand-900">
             Tanlash →
           </span>
         </button>
@@ -1169,7 +1169,7 @@ function LandingPackagePicker({
           role="note"
           aria-label="AI bilan landing — tez orada"
           className={cn(
-            "group relative flex cursor-not-allowed flex-col gap-3 rounded-2xl border-2 border-violet-200 bg-gradient-to-b from-violet-50/60 to-neutral-50/90 p-6 text-left",
+            "group relative flex cursor-not-allowed flex-col gap-3 rounded-[var(--radius-card)] border-2 border-violet-200 bg-gradient-to-b from-violet-50/60 to-neutral-50/90 p-6 text-left",
             busy && "opacity-50",
           )}
         >
@@ -1177,7 +1177,7 @@ function LandingPackagePicker({
             AI
           </span>
           <div className="mt-1">
-            <p className="text-lg font-semibold text-black">AI bilan landing</p>
+            <p className="text-lg font-semibold text-[color:var(--foreground)]">AI bilan landing</p>
             <p className="mt-2 text-2xl font-bold tabular-nums tracking-tight text-violet-900/80">
               {formatSom(LANDING_AI_STARTER_PRICE_SOM)}
             </p>
@@ -1196,9 +1196,9 @@ function LandingPackagePicker({
           disabled={busy}
           onClick={() => setSelectedMonths(6)}
           className={cn(
-            "group relative flex flex-col gap-3 rounded-2xl border-2 bg-white p-6 text-left shadow-[0_18px_40px_-24px_rgba(0,0,0,0.25)] transition-all hover:border-black hover:shadow-md disabled:pointer-events-none disabled:opacity-50",
+            "group relative flex flex-col gap-3 rounded-[var(--radius-card)] border-2 bg-white p-6 text-left shadow-[0_18px_40px_-24px_rgba(0,0,0,0.25)] transition-all hover:border-brand-300 hover:shadow-md disabled:pointer-events-none disabled:opacity-50",
             selectedMonths === 6
-              ? "border-black ring-2 ring-black/15"
+              ? "border-brand-500 ring-2 ring-brand-200"
               : "border-neutral-300",
           )}
         >
@@ -1206,7 +1206,7 @@ function LandingPackagePicker({
             Obuna · 6 oy
           </span>
           <div className="mt-1">
-            <p className="text-lg font-semibold text-black">{pkg6.title}</p>
+            <p className="text-lg font-semibold text-[color:var(--foreground)]">{pkg6.title}</p>
             {pkg6.hint ? (
               <>
                 <p className="mt-2 text-2xl font-bold tabular-nums tracking-tight text-neutral-900">
@@ -1226,7 +1226,7 @@ function LandingPackagePicker({
               </>
             )}
           </div>
-          <span className="mt-auto pt-2 text-sm font-semibold text-black">
+          <span className="mt-auto pt-2 text-sm font-semibold text-[color:var(--foreground)]">
             {selectedMonths === 6 ? "Tanlangan" : "Tanlash →"}
           </span>
         </button>
@@ -1236,17 +1236,17 @@ function LandingPackagePicker({
           disabled={busy}
           onClick={() => setSelectedMonths(12)}
           className={cn(
-            "group relative flex flex-col gap-3 rounded-2xl border-2 bg-gradient-to-b from-amber-50/70 to-white p-6 text-left shadow-[0_18px_40px_-24px_rgba(0,0,0,0.35)] transition-all hover:shadow-md disabled:pointer-events-none disabled:opacity-50",
+            "group relative flex flex-col gap-3 rounded-[var(--radius-card)] border-2 bg-gradient-to-b from-amber-50/70 to-white p-6 text-left shadow-[0_18px_40px_-24px_rgba(0,0,0,0.35)] transition-all hover:shadow-md disabled:pointer-events-none disabled:opacity-50",
             selectedMonths === 12
-              ? "border-black ring-2 ring-black/15"
-              : "border-black/40",
+              ? "border-brand-500 ring-2 ring-brand-200"
+              : "border-brand-200",
           )}
         >
-          <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-black px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
+          <span className="absolute -top-3 left-1/2 -translate-x-1/2 pl-gradient rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
             Obuna · 1 yil
           </span>
           <div className="mt-1">
-            <p className="text-lg font-semibold text-black">{pkg12.title}</p>
+            <p className="text-lg font-semibold text-[color:var(--foreground)]">{pkg12.title}</p>
             {pkg12.hint ? (
               <>
                 <p className="mt-2 text-2xl font-bold tabular-nums tracking-tight text-neutral-900">
@@ -1266,15 +1266,15 @@ function LandingPackagePicker({
               </>
             )}
           </div>
-          <span className="mt-auto pt-2 text-sm font-semibold text-black">
+          <span className="mt-auto pt-2 text-sm font-semibold text-[color:var(--foreground)]">
             {selectedMonths === 12 ? "Tanlangan" : "Tanlash →"}
           </span>
         </button>
       </div>
 
       {selectedMonths != null && selectedPkg ? (
-        <div className="mt-6 rounded-2xl border border-[color:var(--border)] bg-white p-5 shadow-sm sm:p-6">
-          <p className="text-sm font-semibold text-black">
+        <div className="mt-6 rounded-[var(--radius-card)] border border-[color:var(--border)] bg-white p-5 shadow-sm sm:p-6">
+          <p className="text-sm font-semibold text-[color:var(--foreground)]">
             {selectedPkg.title} — {formatSom(selectedPkg.priceSom)}
           </p>
           <p className="mt-1 text-xs text-neutral-600">
@@ -1285,7 +1285,7 @@ function LandingPackagePicker({
               type="button"
               disabled={busy}
               onClick={onStartTrial}
-              className="inline-flex h-11 flex-1 items-center justify-center rounded-xl border border-teal-600 bg-teal-50 px-4 text-sm font-semibold text-teal-900 transition hover:bg-teal-100 disabled:opacity-50"
+              className="inline-flex h-11 flex-1 items-center justify-center rounded-xl border border-brand-600 bg-brand-50 px-4 text-sm font-semibold text-brand-900 transition hover:bg-brand-100 disabled:opacity-50"
             >
               {pricing.freePublishDays} kun sinov muddati
             </button>
@@ -1293,7 +1293,7 @@ function LandingPackagePicker({
               type="button"
               disabled={busy}
               onClick={() => void onPayPackage(selectedMonths)}
-              className="inline-flex h-11 flex-1 items-center justify-center rounded-xl bg-black px-4 text-sm font-semibold text-white transition hover:bg-neutral-800 disabled:opacity-50"
+              className="inline-flex h-11 flex-1 items-center justify-center pl-gradient rounded-xl px-4 text-sm font-semibold text-white transition hover:brightness-[1.06] disabled:opacity-50"
             >
               {payingTier === selectedMonths
                 ? "To‘lov tekshirilmoqda…"
@@ -1307,7 +1307,7 @@ function LandingPackagePicker({
         <button
           type="button"
           onClick={onBack}
-          className="text-sm font-medium text-neutral-600 underline underline-offset-4 hover:text-black"
+          className="text-sm font-medium text-neutral-600 underline underline-offset-4 hover:text-brand-700"
         >
           ← Sayt turini qayta tanlash
         </button>
@@ -1328,7 +1328,7 @@ function TypePicker({
   return (
     <div>
       <div className="mb-8 text-center">
-        <h2 className="text-2xl font-semibold tracking-tight text-black sm:text-3xl">
+        <h2 className="text-2xl font-semibold tracking-tight text-[color:var(--foreground)] sm:text-3xl">
           Qaysi tarifda sayt yaratasiz?
         </h2>
         <p className="mt-2 text-sm text-neutral-600">
@@ -1385,12 +1385,12 @@ function TypeCard({
   onClick?: () => void;
 }) {
   const cardClass = cn(
-    "group relative flex flex-col gap-5 rounded-2xl p-6 text-left transition-all",
+    "group relative flex flex-col gap-5 rounded-[var(--radius-card)] p-6 text-left transition-all",
     disabled
       ? "cursor-not-allowed border border-neutral-200 bg-neutral-50/90 text-neutral-600"
       : recommended
-        ? "border-2 border-black bg-white"
-        : "border border-[color:var(--border)] bg-white hover:border-black",
+        ? "border-2 border-brand-500 bg-white"
+        : "border border-[color:var(--border)] bg-white hover:border-brand-300",
   );
 
   const body = (
@@ -1400,7 +1400,7 @@ function TypeCard({
           Tez orada
         </span>
       ) : recommended ? (
-        <span className="absolute -top-3 left-1/2 inline-flex -translate-x-1/2 items-center rounded-full bg-black px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-white">
+        <span className="absolute -top-3 left-1/2 inline-flex -translate-x-1/2 items-center pl-gradient rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-white">
           Tavsiya
         </span>
       ) : null}
@@ -1409,7 +1409,7 @@ function TypeCard({
         <h3
           className={cn(
             "text-xl font-semibold tracking-tight",
-            disabled ? "text-neutral-700" : "text-black",
+            disabled ? "text-neutral-700" : "text-[color:var(--foreground)]",
           )}
         >
           {title}
@@ -1432,7 +1432,7 @@ function TypeCard({
             key={f}
             className={cn(
               "flex items-start gap-2 text-sm",
-              disabled ? "text-neutral-600" : "text-black",
+              disabled ? "text-neutral-600" : "text-[color:var(--foreground)]",
             )}
           >
             <svg
@@ -1457,7 +1457,7 @@ function TypeCard({
           Tez orada
         </span>
       ) : (
-        <span className="mt-auto inline-flex items-center gap-1.5 pt-2 text-sm font-semibold text-black">
+        <span className="mt-auto inline-flex items-center gap-1.5 pt-2 text-sm font-semibold text-[color:var(--foreground)]">
           Tanlash
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
             <path
@@ -1502,7 +1502,7 @@ function StepIndicator({ current }: { current: Step }) {
               className={cn(
                 "flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-[11px] font-semibold",
                 current >= s.n
-                  ? "bg-black text-white"
+                  ? "pl-gradient text-white"
                   : "bg-neutral-200 text-neutral-500",
               )}
             >
@@ -1511,7 +1511,7 @@ function StepIndicator({ current }: { current: Step }) {
             <span
               className={cn(
                 "text-xs font-medium",
-                current >= s.n ? "text-black" : "text-neutral-500",
+                current >= s.n ? "text-[color:var(--foreground)]" : "text-neutral-500",
               )}
             >
               {s.label}
@@ -1522,7 +1522,7 @@ function StepIndicator({ current }: { current: Step }) {
               aria-hidden
               className={cn(
                 "h-px flex-1",
-                current > s.n ? "bg-black" : "bg-[color:var(--border)]",
+                current > s.n ? "pl-gradient" : "bg-[color:var(--border)]",
               )}
             />
           ) : null}
@@ -1558,8 +1558,8 @@ function StepOne({
   submitting?: boolean;
 }) {
   return (
-    <div className="mx-auto max-w-2xl rounded-2xl border border-[color:var(--border)] bg-white p-6 sm:p-8">
-      <h2 className="text-xl font-semibold tracking-tight text-black">
+    <div className="mx-auto max-w-2xl rounded-[var(--radius-card)] border border-[color:var(--border)] bg-white p-6 sm:p-8">
+      <h2 className="text-xl font-semibold tracking-tight text-[color:var(--foreground)]">
         Biznes nomi
       </h2>
       <p className="mt-1 text-sm text-neutral-500">
@@ -1630,7 +1630,7 @@ function CategorySelect({
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="flex h-10 w-full items-center justify-between rounded-md border border-[color:var(--border)] bg-white px-3 text-left text-sm text-black transition-colors hover:border-black focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
+          className="flex h-10 w-full items-center justify-between rounded-md border border-[color:var(--border)] bg-white px-3 text-left text-sm text-[color:var(--foreground)] transition-colors hover:border-brand-300 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200"
         >
           <span
             className={cn(
@@ -1675,7 +1675,7 @@ function CategorySelect({
                 className={cn(
                   "flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition-colors hover:bg-neutral-100",
                   value === cat && !customMode
-                    ? "font-semibold text-black"
+                    ? "font-semibold text-[color:var(--foreground)]"
                     : "text-neutral-700",
                 )}
               >
@@ -1703,7 +1703,7 @@ function CategorySelect({
                 setOpen(false);
                 onChange("");
               }}
-              className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-black hover:bg-neutral-100"
+              className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-[color:var(--foreground)] hover:bg-neutral-100"
             >
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
                 <path d="M7 3V11M3 7H11" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
@@ -1749,7 +1749,7 @@ function StepTwoVizitka({
   return (
     <div>
       <div className="mb-5">
-        <h2 className="text-xl font-semibold tracking-tight text-black">
+        <h2 className="text-xl font-semibold tracking-tight text-[color:var(--foreground)]">
           Joylashuv va rang
         </h2>
         <p className="mt-1 text-sm text-neutral-500">
@@ -1763,7 +1763,7 @@ function StepTwoVizitka({
             <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-600">
               Rang · 16 ta (8 to&apos;q, 8 och)
             </p>
-            <p className="text-[11px] font-medium text-black">
+            <p className="text-[11px] font-medium text-[color:var(--foreground)]">
               {getColorTheme(colorTheme).name}
             </p>
           </div>
@@ -1796,7 +1796,7 @@ function StepTwoVizitka({
                   className={cn(
                     "flex flex-col overflow-hidden rounded-xl border-2 bg-white text-left transition-all",
                     selected
-                      ? "border-black shadow-[0_10px_30px_-15px_rgba(0,0,0,0.4)]"
+                      ? "border-brand-500 shadow-[0_10px_30px_-15px_rgba(0,0,0,0.4)]"
                       : "border-[color:var(--border)] hover:border-neutral-400",
                   )}
                 >
@@ -1806,7 +1806,7 @@ function StepTwoVizitka({
                   />
                   <div className="flex items-start justify-between gap-2 p-3">
                     <div className="min-w-0">
-                      <p className="truncate text-sm font-semibold text-black">
+                      <p className="truncate text-sm font-semibold text-[color:var(--foreground)]">
                         {tpl.name}
                       </p>
                       <p className="mt-0.5 line-clamp-2 text-[11px] leading-snug text-neutral-500">
@@ -1846,7 +1846,7 @@ function LandingInfoComingSoonPlaceholder({
 
   return (
     <div className="mt-8">
-      <div className="relative isolate overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-100 shadow-inner">
+      <div className="relative isolate overflow-hidden rounded-[var(--radius-card)] border border-neutral-200 bg-neutral-100 shadow-inner">
         <div
           aria-hidden
           className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${blurLayers} animate-pulse`}
@@ -1911,7 +1911,7 @@ function StepTwoLanding({
   return (
     <div>
       <div className="mb-5">
-        <h2 className="text-xl font-semibold tracking-tight text-black">
+        <h2 className="text-xl font-semibold tracking-tight text-[color:var(--foreground)]">
           Shablon
         </h2>
         <p className="mt-1 text-sm text-neutral-500">
@@ -1919,13 +1919,13 @@ function StepTwoLanding({
         </p>
       </div>
 
-      <div className="rounded-2xl border-2 border-black bg-white p-6">
+      <div className="rounded-[var(--radius-card)] border-2 border-brand-500 bg-white p-6">
         <div className="flex items-start justify-between gap-4">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.15em] text-neutral-500">
               Default
             </p>
-            <h3 className="mt-1 text-lg font-semibold text-black">
+            <h3 className="mt-1 text-lg font-semibold text-[color:var(--foreground)]">
               Landing — Classic
             </h3>
             <p className="mt-2 text-sm text-neutral-600">
@@ -2032,8 +2032,8 @@ function StepThree({
 
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_380px]">
-      <div className="rounded-2xl border border-[color:var(--border)] bg-white p-6 sm:p-8">
-        <h2 className="text-xl font-semibold tracking-tight text-black">
+      <div className="rounded-[var(--radius-card)] border border-[color:var(--border)] bg-white p-6 sm:p-8">
+        <h2 className="text-xl font-semibold tracking-tight text-[color:var(--foreground)]">
           Asosiy ma&apos;lumotlar
         </h2>
         <p className="mt-1 text-sm text-neutral-500">
@@ -2187,7 +2187,7 @@ function SiteCreatedSuccess({
   const publicHref = `${origin}${publicPath}`;
 
   return (
-    <div className="rounded-2xl border border-[color:var(--border)] bg-white p-8 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+    <div className="rounded-[var(--radius-card)] border border-[color:var(--border)] bg-white p-8 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
       <div className="flex flex-col items-center text-center">
         <div className="flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -2200,7 +2200,7 @@ function SiteCreatedSuccess({
             />
           </svg>
         </div>
-        <h2 className="mt-5 text-xl font-semibold tracking-tight text-black">
+        <h2 className="mt-5 text-xl font-semibold tracking-tight text-[color:var(--foreground)]">
           Sayt muvaffaqiyatli yaratildi
         </h2>
         <p className="mt-1.5 text-sm text-neutral-600">{state.businessName}</p>
@@ -2219,7 +2219,7 @@ function SiteCreatedSuccess({
           href={publicHref}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-1 block break-all text-sm font-medium text-teal-700 underline underline-offset-2 hover:text-teal-900"
+          className="mt-1 block break-all text-sm font-medium text-brand-700 underline underline-offset-2 hover:text-brand-900"
         >
           {publicHref}
         </a>
@@ -2290,13 +2290,13 @@ function Radio({ checked }: { checked: boolean }) {
       aria-hidden
       className={cn(
         "mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full border-2 transition-colors",
-        checked ? "border-black" : "border-[color:var(--border)]",
+        checked ? "border-brand-500" : "border-[color:var(--border)]",
       )}
     >
       <span
         className={cn(
           "h-2 w-2 rounded-full transition-colors",
-          checked ? "bg-black" : "bg-transparent",
+          checked ? "pl-gradient" : "bg-transparent",
         )}
       />
     </span>

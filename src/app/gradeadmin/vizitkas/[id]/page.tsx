@@ -145,21 +145,21 @@ export default function AdminVizitkaEditPage() {
     return (
       <div className="space-y-6">
         <AdminPageHeader title="Vizitka" description="Yuklanmoqda…" />
-        <div className="h-40 animate-pulse rounded-2xl bg-zinc-100" />
+        <div className="h-40 animate-pulse rounded-[var(--radius-card)] bg-zinc-100" />
       </div>
     );
   }
   if (err && !form.name && !loading) return <AdminAlert>{err}</AdminAlert>;
 
   const inp =
-    "mt-1.5 h-11 w-full rounded-xl border border-zinc-200 bg-white px-3 text-sm outline-none transition-colors focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20";
+    "mt-1.5 h-11 w-full rounded-xl border border-zinc-200 bg-white px-3 text-sm outline-none transition-colors focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20";
 
   return (
     <div className="mx-auto max-w-2xl space-y-8">
       <div>
         <Link
           href="/gradeadmin/vizitkas"
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-teal-800 hover:text-teal-950"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-800 hover:text-brand-950"
         >
           <span aria-hidden>←</span> Vizitkalar
         </Link>

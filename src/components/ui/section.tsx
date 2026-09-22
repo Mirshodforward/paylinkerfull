@@ -46,11 +46,11 @@ export function SectionHeader({
       )}
     >
       {eyebrow ? (
-        <p className="mb-4 text-xs font-medium uppercase tracking-[0.2em] text-[color:var(--muted-foreground)]">
+        <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-700">
           {eyebrow}
         </p>
       ) : null}
-      <h2 className="text-balance text-3xl font-semibold tracking-tight text-black sm:text-4xl md:text-5xl">
+      <h2 className="text-balance text-3xl font-semibold tracking-tight text-[color:var(--foreground)] sm:text-4xl md:text-5xl">
         {title}
       </h2>
       {description ? (

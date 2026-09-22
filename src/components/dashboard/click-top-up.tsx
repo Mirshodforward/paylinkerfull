@@ -78,13 +78,13 @@ export function ClickTopUpPanel() {
   }
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-[color:var(--border)] bg-white shadow-sm">
+    <div className="overflow-hidden rounded-[var(--radius-card)] border border-[color:var(--border)] bg-white shadow-sm">
       {/* CLICK brand header */}
       <div className="relative bg-gradient-to-br from-[#0065ff]/12 via-white to-sky-50/80 px-6 pb-5 pt-6">
         <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-[#0065ff]/10 blur-2xl" />
         <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white shadow-md shadow-[#0065ff]/15 ring-1 ring-[#0065ff]/10">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[var(--radius-card)] bg-white shadow-md shadow-[#0065ff]/15 ring-1 ring-[#0065ff]/10">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/click_logo.svg"
@@ -139,7 +139,7 @@ export function ClickTopUpPanel() {
             className={cn(
               "rounded-full border px-3 py-1.5 text-xs font-medium transition",
               amountSom === v
-                ? "border-black bg-neutral-900 text-white"
+                ? "pl-gradient border-transparent text-white"
                 : "border-neutral-200 bg-neutral-50 text-neutral-700 hover:border-neutral-400",
             )}
           >
@@ -158,7 +158,7 @@ export function ClickTopUpPanel() {
             step={1000}
             value={amountSom}
             onChange={(e) => setAmountSom(Number(e.target.value))}
-            className="h-11 w-full rounded-lg border border-neutral-200 px-3 text-sm outline-none ring-black/5 transition focus:border-black focus:ring-2"
+            className="h-11 w-full rounded-lg border border-neutral-200 px-3 text-sm outline-none ring-brand-100 transition focus:border-brand-500 focus:ring-2"
           />
         </label>
         <Button type="button" onClick={() => void pay()} disabled={loading} className="h-11 shrink-0">

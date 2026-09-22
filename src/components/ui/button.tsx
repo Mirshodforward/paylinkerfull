@@ -5,25 +5,36 @@ type Variant = "primary" | "secondary" | "ghost" | "inverse" | "outline";
 type Size = "sm" | "md" | "lg";
 
 const base =
-  "inline-flex items-center justify-center gap-2 font-medium tracking-tight transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 select-none";
+  "relative inline-flex items-center justify-center gap-2 font-medium tracking-tight " +
+  "transition-[transform,box-shadow,background-color,color,border-color] duration-200 " +
+  "disabled:pointer-events-none disabled:opacity-50 select-none " +
+  "active:translate-y-px";
 
 const variants: Record<Variant, string> = {
+  /** Asosiy CTA — logo gradienti, ustida oq matn */
   primary:
-    "bg-black text-white border border-black hover:bg-neutral-800 active:bg-neutral-900 focus-visible:ring-black focus-visible:ring-offset-white",
+    "pl-gradient text-white border border-transparent shadow-[var(--shadow-brand)] " +
+    "hover:brightness-[1.06] hover:shadow-[0_14px_36px_-10px_rgba(91,69,240,0.55)]",
+  /** Ikkilamchi — oq karta, brend chegara va matn */
   secondary:
-    "bg-white text-black border border-black hover:bg-black hover:text-white focus-visible:ring-black focus-visible:ring-offset-white",
+    "bg-white text-brand-700 border border-brand-200 shadow-[var(--shadow-sm)] " +
+    "hover:border-brand-400 hover:bg-brand-50",
+  /** Chegarasiz — ro'yxat va ikkinchi darajali amallar */
   ghost:
-    "bg-transparent text-black hover:bg-neutral-100 focus-visible:ring-black focus-visible:ring-offset-white",
+    "bg-transparent text-[color:var(--muted-foreground)] border border-transparent " +
+    "hover:bg-brand-50 hover:text-brand-700",
+  /** To'q fon ustida — oq to'ldirilgan */
   inverse:
-    "bg-white text-black border border-white hover:bg-neutral-200 active:bg-neutral-300 focus-visible:ring-white focus-visible:ring-offset-black",
+    "bg-white text-brand-700 border border-white hover:bg-brand-50",
+  /** To'q fon ustida — faqat chegara */
   outline:
-    "bg-transparent text-white border border-white hover:bg-white hover:text-black focus-visible:ring-white focus-visible:ring-offset-black",
+    "bg-white/8 text-white border border-white/25 backdrop-blur-sm hover:bg-white/16",
 };
 
 const sizes: Record<Size, string> = {
-  sm: "h-9 px-4 text-sm rounded-md",
-  md: "h-11 px-5 text-[15px] rounded-md",
-  lg: "h-12 px-7 text-base rounded-md sm:h-13",
+  sm: "h-9 px-4 text-sm rounded-[var(--radius-control)]",
+  md: "h-11 px-5 text-[15px] rounded-[var(--radius-control)]",
+  lg: "h-12 px-7 text-base rounded-[var(--radius-control)] sm:h-[3.25rem]",
 };
 
 type BaseProps = {

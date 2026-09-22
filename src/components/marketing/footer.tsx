@@ -5,22 +5,25 @@ import { Logo } from "./logo";
 export function Footer() {
   return (
     <footer className="border-t border-[color:var(--border)] bg-white">
-      <Container className="flex flex-col gap-4 py-8 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-5">
+      <Container className="flex flex-col gap-5 py-10 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-5">
           <Logo />
-          <p className="text-xs text-neutral-500">
+          <p className="text-xs text-[color:var(--muted-foreground)]">
             © {new Date().getFullYear()} {BRAND_NAME}
           </p>
         </div>
-        <nav className="flex gap-5 text-xs text-neutral-600" aria-label="Footer">
-          <a href="#pricing" className="hover:text-black">
+        <nav
+          className="flex flex-wrap gap-x-5 gap-y-2 text-xs text-[color:var(--muted-foreground)]"
+          aria-label="Footer"
+        >
+          <a href="#pricing" className="transition-colors hover:text-brand-700">
             Tariflar
           </a>
           <a
             href={SUPPORT_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-black"
+            className="transition-colors hover:text-brand-700"
           >
             Yordam
           </a>

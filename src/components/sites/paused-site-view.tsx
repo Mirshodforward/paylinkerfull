@@ -19,7 +19,7 @@ function PausedSiteBackdrop({ preview }: { preview?: ReactNode }) {
           {preview}
         </div>
       ) : (
-        <div className="absolute inset-0 bg-gradient-to-br from-neutral-200 via-teal-50/80 to-neutral-100" />
+        <div className="absolute inset-0 bg-gradient-to-br from-brand-100 via-white to-brand-50" />
       )}
       <div className="absolute inset-0 bg-black/20" />
       <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-white/82 to-white/94" />
@@ -37,7 +37,7 @@ export function PausedSitePreview({ site }: { site: UnknownSite }) {
 
 function PaylinkerPromo({ slug }: { slug?: string }) {
   return (
-    <div className="mt-6 w-full max-w-md overflow-hidden rounded-3xl border border-black/10 bg-black text-white shadow-[0_20px_60px_-24px_rgba(0,0,0,0.55)]">
+    <div className="mt-6 w-full max-w-md overflow-hidden rounded-[var(--radius-panel)] border border-white/10 bg-[color:var(--dark-surface)] text-white shadow-[var(--shadow-lg)]">
       <div className="relative border-b border-white/10 px-6 py-5">
         <div className="flex items-center gap-3">
           <Image
@@ -45,7 +45,7 @@ function PaylinkerPromo({ slug }: { slug?: string }) {
             alt=""
             width={40}
             height={40}
-            className="h-10 w-10 rounded-xl bg-white/10 object-contain p-1"
+            className="h-10 w-10 rounded-xl bg-white/12 object-contain p-1"
           />
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/55">
@@ -62,13 +62,13 @@ function PaylinkerPromo({ slug }: { slug?: string }) {
       <div className="flex flex-col gap-2.5 px-6 py-5 sm:flex-row">
         <Link
           href="/dashboard/sites/new"
-          className="inline-flex h-11 flex-1 items-center justify-center rounded-xl bg-white px-4 text-sm font-semibold text-black transition hover:bg-neutral-100"
+          className="inline-flex h-11 flex-1 items-center justify-center rounded-[var(--radius-control)] bg-white px-4 text-sm font-semibold text-brand-700 transition hover:bg-brand-50"
         >
           O&apos;z saytingizni yarating
         </Link>
         <Link
           href={slug ? `/?ref=${encodeURIComponent(slug)}` : "/"}
-          className="inline-flex h-11 flex-1 items-center justify-center rounded-xl border border-white/25 bg-white/5 px-4 text-sm font-medium text-white transition hover:bg-white/10"
+          className="inline-flex h-11 flex-1 items-center justify-center rounded-[var(--radius-control)] border border-white/25 bg-white/8 px-4 text-sm font-medium text-white transition hover:bg-white/16"
         >
           Batafsil
         </Link>
@@ -97,8 +97,8 @@ function PausedSiteShell({
       <PausedSiteBackdrop preview={preview} />
 
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 py-10 sm:py-14">
-        <div className="w-full max-w-md rounded-3xl border border-white/70 bg-white/75 p-8 text-center shadow-[0_24px_80px_-28px_rgba(0,0,0,0.28)] backdrop-blur-2xl sm:p-10">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-50 ring-1 ring-amber-200/70">
+        <div className="pl-rise w-full max-w-md rounded-[var(--radius-panel)] border border-white/70 bg-white/85 p-8 text-center shadow-[var(--shadow-lg)] backdrop-blur-2xl sm:p-10">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-[var(--radius-card)] bg-amber-50 ring-1 ring-amber-200/70">
             <svg
               className="h-7 w-7 text-amber-700"
               fill="none"
@@ -118,7 +118,7 @@ function PausedSiteShell({
           <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-500">
             Vaqtincha to&apos;xtatilgan
           </p>
-          <h1 className="mt-3 text-2xl font-semibold tracking-tight text-black sm:text-3xl">
+          <h1 className="mt-3 text-2xl font-semibold tracking-tight text-[color:var(--foreground)] sm:text-3xl">
             {businessName}
           </h1>
           <p className="mt-4 text-sm leading-relaxed text-neutral-600">{message}</p>

@@ -43,13 +43,13 @@ export function Overview() {
 
       <TrialBanner />
 
-      <div className="rounded-2xl border border-[color:var(--border)] bg-white p-6">
+      <div className="rounded-[var(--radius-card)] border border-[color:var(--border)] bg-white p-6 shadow-[var(--shadow-sm)]">
         <div className="flex items-start justify-between">
           <div>
             <p className="text-xs uppercase tracking-[0.15em] text-neutral-500">
               Oxirgi tahrirlangan
             </p>
-            <p className="mt-1 text-lg font-semibold text-black">
+            <p className="mt-1 text-lg font-semibold text-[color:var(--foreground)]">
               {mostRecent.content.businessName}
             </p>
             <p className="mt-1 text-sm text-neutral-600">
@@ -104,12 +104,12 @@ function Stat({
   muted?: boolean;
 }) {
   return (
-    <div className="rounded-2xl border border-[color:var(--border)] bg-white p-5">
+    <div className="rounded-[var(--radius-card)] border border-[color:var(--border)] bg-white p-5 shadow-[var(--shadow-sm)]">
       <p className="text-xs uppercase tracking-[0.15em] text-neutral-500">
         {label}
       </p>
       <p
-        className={`mt-3 text-3xl font-semibold tracking-tight tabular-nums ${muted ? "text-neutral-700" : "text-black"}`}
+        className={`mt-3 text-3xl font-semibold tracking-tight tabular-nums ${muted ? "text-[color:var(--muted-foreground)]" : "text-[color:var(--foreground)]"}`}
       >
         {value}
       </p>
@@ -132,10 +132,10 @@ function QuickAction({
     <Link
       href={href}
       className={
-        "group flex items-start justify-between rounded-2xl border p-5 transition-colors " +
+        "pl-lift group flex items-start justify-between rounded-[var(--radius-card)] border p-5 " +
         (primary
-          ? "border-black bg-black text-white hover:bg-neutral-800"
-          : "border-[color:var(--border)] bg-white text-black hover:border-black")
+          ? "pl-gradient border-transparent text-white shadow-[var(--shadow-brand)]"
+          : "border-[color:var(--border)] bg-white text-[color:var(--foreground)] shadow-[var(--shadow-sm)] hover:border-brand-300")
       }
     >
       <div>
@@ -159,10 +159,10 @@ function QuickAction({
 function EmptyOverview() {
   return (
     <div className="px-5 py-16 lg:px-10">
-      <div className="mx-auto max-w-xl rounded-2xl border border-[color:var(--border)] bg-white p-8 text-center">
+      <div className="mx-auto max-w-xl rounded-[var(--radius-panel)] border border-[color:var(--border)] bg-white p-8 text-center shadow-[var(--shadow-sm)]">
         <div
           aria-hidden
-          className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-black text-white"
+          className="pl-gradient mx-auto flex h-12 w-12 items-center justify-center rounded-[var(--radius-card)] text-white shadow-[var(--shadow-brand)]"
         >
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
             <path
@@ -173,7 +173,7 @@ function EmptyOverview() {
             />
           </svg>
         </div>
-        <h2 className="mt-5 text-xl font-semibold tracking-tight text-black">
+        <h2 className="mt-5 text-xl font-semibold tracking-tight text-[color:var(--foreground)]">
           Birinchi saytingizni yarating
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-neutral-600">
@@ -192,7 +192,7 @@ function EmptyOverview() {
 
 function TrialBanner() {
   return (
-    <div className="flex flex-col gap-3 rounded-2xl border border-black bg-black p-5 text-white sm:flex-row sm:items-center sm:justify-between">
+    <div className="pl-gradient flex flex-col gap-3 rounded-[var(--radius-card)] border border-transparent p-5 text-white shadow-[var(--shadow-brand)] sm:flex-row sm:items-center sm:justify-between">
       <div>
         <p className="text-xs uppercase tracking-[0.15em] text-neutral-300">
           Bepul sinov
@@ -216,11 +216,11 @@ function OverviewSkeleton() {
         {[0, 1, 2, 3].map((i) => (
           <div
             key={i}
-            className="h-24 rounded-2xl border border-[color:var(--border)] bg-white"
+            className="h-24 animate-pulse rounded-[var(--radius-card)] border border-[color:var(--border)] bg-[color:var(--surface-3)]"
           />
         ))}
       </div>
-      <div className="h-20 rounded-2xl border border-[color:var(--border)] bg-white" />
+      <div className="h-20 animate-pulse rounded-[var(--radius-card)] border border-[color:var(--border)] bg-[color:var(--surface-3)]" />
     </div>
   );
 }

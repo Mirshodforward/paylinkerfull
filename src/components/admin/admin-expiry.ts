@@ -44,7 +44,7 @@ export function expiryParts(iso: string | null | undefined): {
     return {
       dateLine,
       daysLine: `${left} kun qoldi`,
-      daysClass: left <= 7 ? "text-amber-700" : "text-teal-700",
+      daysClass: left <= 7 ? "text-amber-700" : "text-brand-700",
     };
   }
   if (left === 0) {

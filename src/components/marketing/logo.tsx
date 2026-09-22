@@ -29,7 +29,7 @@ export function Logo({
       aria-label={`${BRAND_NAME} bosh sahifa`}
       className={cn(
         "inline-flex items-center gap-2 text-[16px] font-semibold tracking-tight",
-        inverse ? "text-white" : "text-black",
+        inverse ? "text-white" : "text-[color:var(--foreground)]",
         className,
       )}
     >

@@ -318,7 +318,7 @@ export function Editor({
                     hint="Marketing — xizmat kartochkalari, jarayon, FAQ; oddiy — 2 ta matn bo‘limi; to‘liq — barcha bo‘limlar."
                   >
                     <select
-                      className="h-11 w-full rounded-xl border border-[color:var(--border)] bg-white px-3 text-sm outline-none focus:border-black"
+                      className="h-11 w-full rounded-xl border border-[color:var(--border)] bg-white px-3 text-sm outline-none focus:border-brand-500"
                       value={
                         draft.templateId === "default" ||
                         draft.templateId === "simple" ||
@@ -553,7 +553,7 @@ export function Editor({
           <PreviewToolbar slug={draft.slug} variant={isLanding ? "landing" : "vizitka"} />
           <div className="flex-1 overflow-y-auto p-4 sm:p-8">
             {isLanding ? (
-              <div className="mx-auto max-w-5xl overflow-hidden rounded-2xl border border-[color:var(--border)] bg-white shadow-[0_30px_80px_-30px_rgba(0,0,0,0.25)]">
+              <div className="mx-auto max-w-5xl overflow-hidden rounded-[var(--radius-card)] border border-[color:var(--border)] bg-white shadow-[0_30px_80px_-30px_rgba(0,0,0,0.25)]">
                 <SiteRenderer site={draft} />
               </div>
             ) : (
@@ -592,8 +592,8 @@ function SectionTabs({
             className={cn(
               "h-8 flex-shrink-0 rounded-md px-3 text-xs font-medium transition-colors",
               active === s.id
-                ? "bg-black text-white"
-                : "text-neutral-700 hover:bg-neutral-100 hover:text-black",
+                ? "pl-gradient text-white"
+                : "text-neutral-700 hover:bg-neutral-100 hover:text-brand-700",
             )}
           >
             {s.label}
@@ -620,12 +620,12 @@ function EditorHeader({
       <div className="flex min-w-0 items-center gap-3">
         <Link
           href="/dashboard/sites"
-          className="inline-flex h-9 items-center rounded-md border border-[color:var(--border)] px-3 text-xs font-medium text-black hover:border-black"
+          className="inline-flex h-9 items-center rounded-md border border-[color:var(--border)] px-3 text-xs font-medium text-[color:var(--foreground)] hover:border-brand-300"
         >
           ← Saytlar
         </Link>
         <div className="min-w-0">
-          <p className="truncate text-sm font-semibold text-black">
+          <p className="truncate text-sm font-semibold text-[color:var(--foreground)]">
             {site.content.businessName}
           </p>
           <p className="truncate text-[11px] text-neutral-500">
@@ -1202,8 +1202,8 @@ function IconPicker({
           className={cn(
             "flex h-9 w-full items-center justify-center rounded-md border transition-colors",
             value === kind
-              ? "border-black bg-black text-white"
-              : "border-[color:var(--border)] text-black hover:border-black",
+              ? "pl-gradient border-transparent text-white"
+              : "border-[color:var(--border)] text-[color:var(--foreground)] hover:border-brand-300",
           )}
         >
           <FeatureIcon kind={kind} />
@@ -1609,7 +1609,7 @@ function RatingPicker({
           type="button"
           onClick={() => onChange(n)}
           aria-label={`${n} yulduz`}
-          className="p-1 text-black transition-colors"
+          className="p-1 text-[color:var(--foreground)] transition-colors"
         >
           <svg
             width="20"
@@ -1640,7 +1640,7 @@ function AddButton({
     <button
       type="button"
       onClick={onClick}
-      className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-md border border-dashed border-[color:var(--border)] text-sm font-medium text-black transition-colors hover:border-black"
+      className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-md border border-dashed border-[color:var(--border)] text-sm font-medium text-[color:var(--foreground)] transition-colors hover:border-brand-300"
     >
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
         <path d="M7 3V11M3 7H11" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />

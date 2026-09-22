@@ -41,7 +41,7 @@ export function AdminAlert({
         "rounded-xl border px-4 py-3 text-sm",
         variant === "error"
           ? "border-red-200 bg-red-50 text-red-900"
-          : "border-teal-200 bg-teal-50 text-teal-900",
+          : "border-brand-200 bg-brand-50 text-brand-900",
       )}
     >
       {children}
@@ -61,7 +61,7 @@ export function AdminCard({
   return (
     <div
       className={cn(
-        "rounded-2xl border border-[color:var(--border)] bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04)]",
+        "rounded-[var(--radius-card)] border border-[color:var(--border)] bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04)]",
         padding && "p-5 sm:p-6",
         className,
       )}
@@ -81,7 +81,7 @@ export function AdminTableWrap({
   return (
     <div
       className={cn(
-        "overflow-hidden rounded-2xl border border-[color:var(--border)] bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04)]",
+        "overflow-hidden rounded-[var(--radius-card)] border border-[color:var(--border)] bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04)]",
         className,
       )}
     >
@@ -99,7 +99,7 @@ export const adminTd = "px-4 py-3 text-[13px] text-zinc-800";
 export function AdminEmpty({ title, hint }: { title: string; hint?: string }) {
   return (
     <div className="flex flex-col items-center justify-center px-6 py-16 text-center">
-      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-100 text-zinc-400">
+      <div className="flex h-12 w-12 items-center justify-center rounded-[var(--radius-card)] bg-zinc-100 text-zinc-400">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
           <path
             d="M8 10h8M8 14h5M6 6h12a2 2 0 012 2v10a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2z"

@@ -47,7 +47,7 @@ export function SocialEditor({
                 key={item.id}
                 className="flex items-center gap-2 rounded-md border border-[color:var(--border)] bg-white p-2"
               >
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded border border-[color:var(--border)] text-black">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded border border-[color:var(--border)] text-[color:var(--foreground)]">
                   <SocialGlyph kind={item.network} />
                 </span>
                 <div className="flex-1">
@@ -81,7 +81,7 @@ export function SocialEditor({
             <button
               type="button"
               onClick={() => setPicking(false)}
-              className="text-xs text-neutral-500 hover:text-black"
+              className="text-xs text-neutral-500 hover:text-brand-700"
             >
               Bekor qilish
             </button>
@@ -92,7 +92,7 @@ export function SocialEditor({
                 key={id}
                 type="button"
                 onClick={() => addItem(id)}
-                className="flex items-center gap-2 rounded-md border border-[color:var(--border)] bg-white px-2.5 py-2 text-xs font-medium text-black transition-colors hover:border-black"
+                className="flex items-center gap-2 rounded-md border border-[color:var(--border)] bg-white px-2.5 py-2 text-xs font-medium text-[color:var(--foreground)] transition-colors hover:border-brand-300"
               >
                 <SocialGlyph kind={id} />
                 {SOCIAL_NETWORKS[id].name}
@@ -104,7 +104,7 @@ export function SocialEditor({
         <button
           type="button"
           onClick={() => setPicking(true)}
-          className="inline-flex h-10 w-full items-center justify-center gap-1.5 rounded-md border border-dashed border-[color:var(--border)] text-sm font-medium text-black transition-colors hover:border-black"
+          className="inline-flex h-10 w-full items-center justify-center gap-1.5 rounded-md border border-dashed border-[color:var(--border)] text-sm font-medium text-[color:var(--foreground)] transition-colors hover:border-brand-300"
         >
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
             <path d="M7 3V11M3 7H11" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />

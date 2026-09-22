@@ -69,7 +69,7 @@ export function SiteQRCode({
         type="button"
         onClick={handleDownload}
         disabled={!dataUrl}
-        className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-md bg-black px-4 text-sm font-medium text-white transition-colors hover:bg-neutral-800 disabled:opacity-40"
+        className="inline-flex h-10 w-full items-center justify-center gap-2 pl-gradient rounded-md px-4 text-sm font-medium text-white transition-colors hover:brightness-[1.06] disabled:opacity-40"
       >
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
           <path

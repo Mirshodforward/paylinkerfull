@@ -44,7 +44,7 @@ export function LandingSiteCard({ landing, onDeleted, onUpdated }: Props) {
     days === null ? "—" : days > 0 ? `${days} kun` : "Tugagan";
 
   return (
-    <article className="flex min-w-0 flex-col gap-4 rounded-2xl border border-[color:var(--border)] bg-white p-4 transition-colors hover:border-black sm:gap-5 sm:p-5">
+    <article className="flex min-w-0 flex-col gap-4 rounded-[var(--radius-card)] border border-[color:var(--border)] bg-white p-4 transition-colors hover:border-brand-300 sm:gap-5 sm:p-5">
       <div className="flex items-start gap-3">
         <div
           aria-hidden
@@ -54,7 +54,7 @@ export function LandingSiteCard({ landing, onDeleted, onUpdated }: Props) {
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
-            <h3 className="min-w-0 max-w-full truncate text-base font-semibold text-black">
+            <h3 className="min-w-0 max-w-full truncate text-base font-semibold text-[color:var(--foreground)]">
               {title}
             </h3>
             <span
@@ -99,19 +99,19 @@ export function LandingSiteCard({ landing, onDeleted, onUpdated }: Props) {
         <div className="fixed inset-0 z-[100] flex items-end justify-center sm:items-center sm:p-4" role="dialog" aria-modal="true" aria-labelledby="extend-landing-title">
           <button
             type="button"
-            className="absolute inset-0 bg-black/50"
+            className="absolute inset-0 bg-[color:var(--brand-950)]/50"
             aria-label="Yopish"
             onClick={() => setExtendOpen(false)}
           />
-          <div className="relative z-10 max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-t-2xl border border-[color:var(--border)] bg-white p-4 shadow-xl sm:rounded-2xl sm:p-5">
+          <div className="relative z-10 max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-t-2xl border border-[color:var(--border)] bg-white p-4 shadow-xl sm:rounded-[var(--radius-card)] sm:p-5">
             <div className="mb-4 flex items-start justify-between gap-3">
-              <h2 id="extend-landing-title" className="text-lg font-semibold text-black">
+              <h2 id="extend-landing-title" className="text-lg font-semibold text-[color:var(--foreground)]">
                 Obunani uzaytirish
               </h2>
               <button
                 type="button"
                 onClick={() => setExtendOpen(false)}
-                className="inline-flex h-8 w-8 items-center justify-center rounded-md text-neutral-500 hover:bg-neutral-100 hover:text-black"
+                className="inline-flex h-8 w-8 items-center justify-center rounded-md text-neutral-500 hover:bg-neutral-100 hover:text-brand-700"
                 aria-label="Yopish"
               >
                 ×
@@ -142,7 +142,7 @@ function Meta({
       <p
         className={cn(
           "mt-1 text-[11px] font-medium sm:text-xs",
-          warning ? "text-red-700" : "text-black",
+          warning ? "text-red-700" : "text-[color:var(--foreground)]",
         )}
       >
         {value}
@@ -220,7 +220,7 @@ function LandingMenu({ landing, onDeleted }: Props) {
           e.stopPropagation();
           setOpen((v) => !v);
         }}
-        className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-[color:var(--border)] text-black transition-colors hover:border-black"
+        className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-[color:var(--border)] text-[color:var(--foreground)] transition-colors hover:border-brand-300"
       >
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
           <circle cx="4" cy="8" r="1.2" fill="currentColor" />
@@ -255,17 +255,17 @@ function LandingMenu({ landing, onDeleted }: Props) {
         >
           <button
             type="button"
-            className="absolute inset-0 bg-black/50"
+            className="absolute inset-0 bg-[color:var(--brand-950)]/50"
             aria-label="Bekor qilish"
             disabled={deleting}
             onClick={() => !deleting && setDeleteOpen(false)}
           />
-          <div className="relative z-10 w-full max-w-md rounded-2xl border border-[color:var(--border)] bg-white p-6 shadow-xl">
-            <h2 className="text-lg font-semibold text-black">
+          <div className="relative z-10 w-full max-w-md rounded-[var(--radius-card)] border border-[color:var(--border)] bg-white p-6 shadow-xl">
+            <h2 className="text-lg font-semibold text-[color:var(--foreground)]">
               Landingni o&apos;chirish
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-neutral-600">
-              <span className="font-semibold text-black">{title}</span> (
+              <span className="font-semibold text-[color:var(--foreground)]">{title}</span> (
               <span className="font-mono text-neutral-800">{landing.name}</span>)
               bazadan olib tashlanadi. Keyin bu manzilni boshqa sayt olishi mumkin.
             </p>
@@ -279,7 +279,7 @@ function LandingMenu({ landing, onDeleted }: Props) {
                 type="button"
                 disabled={deleting}
                 onClick={() => setDeleteOpen(false)}
-                className="inline-flex h-10 items-center rounded-md border border-[color:var(--border)] bg-white px-4 text-sm font-medium text-black transition-colors hover:bg-neutral-50 disabled:opacity-50"
+                className="inline-flex h-10 items-center rounded-md border border-[color:var(--border)] bg-white px-4 text-sm font-medium text-[color:var(--foreground)] transition-colors hover:bg-neutral-50 disabled:opacity-50"
               >
                 Bekor qilish
               </button>

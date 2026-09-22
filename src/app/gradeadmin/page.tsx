@@ -126,7 +126,7 @@ export default function AdminHomePage() {
       value: stats.users,
       href: "/gradeadmin/users",
       icon: IconUsers,
-      accent: "bg-teal-500/15 text-teal-700 ring-teal-500/20",
+      accent: "bg-brand-500/15 text-brand-700 ring-brand-500/20",
     },
     {
       label: "Vizitkalar",
@@ -161,7 +161,7 @@ export default function AdminHomePage() {
       value: stats.landingsTrial,
       href: "/gradeadmin/landings",
       icon: IconLanding,
-      accent: "bg-teal-500/12 text-teal-800 ring-teal-500/20",
+      accent: "bg-brand-500/12 text-brand-800 ring-brand-500/20",
     },
     {
       label: "Landing — 6 oy",
@@ -219,7 +219,7 @@ export default function AdminHomePage() {
               <Link
                 key={c.label}
                 href={c.href}
-                className="group relative overflow-hidden rounded-2xl border border-zinc-200/90 bg-white p-5 shadow-[0_1px_3px_rgba(0,0,0,0.05)] transition-all hover:border-orange-300/40 hover:shadow-md"
+                className="group relative overflow-hidden rounded-[var(--radius-card)] border border-zinc-200/90 bg-white p-5 shadow-[0_1px_3px_rgba(0,0,0,0.05)] transition-all hover:border-orange-300/40 hover:shadow-md"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>
@@ -257,7 +257,7 @@ export default function AdminHomePage() {
               key={c.label}
               href={c.href}
               className={cn(
-                "group relative overflow-hidden rounded-2xl border border-zinc-200/90 bg-white p-5 shadow-[0_1px_3px_rgba(0,0,0,0.05)] transition-all hover:border-teal-300/40 hover:shadow-md",
+                "group relative overflow-hidden rounded-[var(--radius-card)] border border-zinc-200/90 bg-white p-5 shadow-[0_1px_3px_rgba(0,0,0,0.05)] transition-all hover:border-brand-300/40 hover:shadow-md",
                 i === arr.length - 1 && "sm:col-span-2 xl:col-span-3",
               )}
             >
@@ -279,7 +279,7 @@ export default function AdminHomePage() {
                   <Icon className="h-[22px] w-[22px]" />
                 </span>
               </div>
-              <p className="mt-4 text-xs font-medium text-teal-700 opacity-0 transition-opacity group-hover:opacity-100">
+              <p className="mt-4 text-xs font-medium text-brand-700 opacity-0 transition-opacity group-hover:opacity-100">
                 Batafsil →
               </p>
             </Link>

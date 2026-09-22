@@ -78,7 +78,7 @@ export default function AdminUserDetailPage() {
   }
 
   const inp =
-    "mt-1.5 h-11 w-full max-w-xs rounded-xl border border-zinc-200 bg-white px-3 text-sm outline-none transition-colors focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20";
+    "mt-1.5 h-11 w-full max-w-xs rounded-xl border border-zinc-200 bg-white px-3 text-sm outline-none transition-colors focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20";
 
   if (!Number.isFinite(id)) {
     return (
@@ -91,7 +91,7 @@ export default function AdminUserDetailPage() {
     return (
       <div className="space-y-6">
         <AdminPageHeader title="Foydalanuvchi" description="Ma’lumotlar yuklanmoqda…" />
-        <div className="h-32 animate-pulse rounded-2xl bg-zinc-100" />
+        <div className="h-32 animate-pulse rounded-[var(--radius-card)] bg-zinc-100" />
       </div>
     );
   }
@@ -103,7 +103,7 @@ export default function AdminUserDetailPage() {
       <div>
         <Link
           href="/gradeadmin/users"
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-teal-800 hover:text-teal-950"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-800 hover:text-brand-950"
         >
           <span aria-hidden>←</span> Foydalanuvchilar ro‘yxati
         </Link>

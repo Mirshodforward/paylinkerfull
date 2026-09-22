@@ -104,13 +104,13 @@ export default function AdminSettingsPage() {
   }
 
   const inp =
-    "mt-1.5 h-11 w-full max-w-md rounded-xl border border-zinc-200 bg-white px-3 text-sm outline-none transition-colors focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20";
+    "mt-1.5 h-11 w-full max-w-md rounded-xl border border-zinc-200 bg-white px-3 text-sm outline-none transition-colors focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20";
 
   if (loading) {
     return (
       <div className="space-y-6">
         <AdminPageHeader title="Sozlamalar" description="Yuklanmoqda…" />
-        <div className="h-40 animate-pulse rounded-2xl bg-zinc-100" />
+        <div className="h-40 animate-pulse rounded-[var(--radius-card)] bg-zinc-100" />
       </div>
     );
   }

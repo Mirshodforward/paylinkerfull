@@ -711,7 +711,7 @@ function Toolbar(props: {
           <input
             value={landing.name}
             onChange={(e) => onNameChange(e.target.value)}
-            className="min-w-0 flex-1 rounded-r-md bg-white px-2 py-1.5 text-sm font-mono text-neutral-900 outline-none focus:ring-2 focus:ring-black/10 sm:w-44 sm:flex-none"
+            className="min-w-0 flex-1 rounded-r-md bg-white px-2 py-1.5 text-sm font-mono text-neutral-900 outline-none focus:ring-2 focus:ring-brand-200 sm:w-44 sm:flex-none"
             placeholder="manzil"
             autoCapitalize="none"
             autoCorrect="off"
@@ -746,7 +746,7 @@ function Toolbar(props: {
                   type="button"
                   onClick={onSave}
                   disabled={saving || !dirty}
-                  className="inline-flex h-9 min-h-[44px] min-w-[44px] items-center justify-center gap-1.5 rounded-md bg-black px-4 text-xs font-bold text-white transition-colors hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-50 sm:min-h-0 sm:min-w-0"
+                  className="inline-flex h-9 min-h-[44px] min-w-[44px] items-center justify-center gap-1.5 pl-gradient rounded-md px-4 text-xs font-bold text-white transition-colors hover:brightness-[1.06] disabled:cursor-not-allowed disabled:opacity-50 sm:min-h-0 sm:min-w-0"
                 >
                   {saving ? "Saqlanmoqda…" : "Saqlash"}
                 </button>
@@ -859,7 +859,7 @@ function Toggle(props: {
 }
 
 const inp =
-  "mt-1.5 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-900 outline-none focus:border-black";
+  "mt-1.5 w-full rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-900 outline-none focus:border-brand-500";
 
 function Field(props: {
   label: string;
@@ -998,7 +998,7 @@ function ImageField(props: {
               type="button"
               disabled={busy}
               onClick={() => fileRef.current?.click()}
-              className="h-8 shrink-0 rounded-md border border-neutral-200 px-3 text-xs font-semibold text-neutral-800 transition-colors hover:border-black disabled:opacity-50"
+              className="h-8 shrink-0 rounded-md border border-neutral-200 px-3 text-xs font-semibold text-neutral-800 transition-colors hover:border-brand-300 disabled:opacity-50"
             >
               {busy ? "Yuklanmoqda…" : "Almashtirish"}
             </button>
@@ -1015,7 +1015,7 @@ function ImageField(props: {
             void handle(e.dataTransfer.files?.[0]);
           }}
           className={[
-            "flex flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-neutral-300 bg-neutral-50 text-center text-neutral-600 transition-colors hover:border-black hover:text-neutral-900",
+            "flex flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-neutral-300 bg-neutral-50 text-center text-neutral-600 transition-colors hover:border-brand-300 hover:text-neutral-900",
             compact
               ? "h-28 w-28 gap-1 p-2 text-xs"
               : "aspect-[16/9] w-full gap-2 text-sm",
@@ -1414,7 +1414,7 @@ function ThemePicker(props: {
                     <span
                       key={i}
                       aria-hidden
-                      className="h-3 w-3 rounded-full ring-1 ring-black/10"
+                      className="h-3 w-3 rounded-full ring-1 ring-brand-200"
                       style={{ background: c }}
                     />
                   ))}

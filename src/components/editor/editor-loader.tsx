@@ -74,8 +74,8 @@ export function EditorLoader({ id }: { id: string }) {
   if (!site) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center px-5">
-        <div className="mx-auto max-w-md rounded-2xl border border-[color:var(--border)] bg-white p-8 text-center">
-          <h2 className="text-lg font-semibold text-black">Sayt topilmadi</h2>
+        <div className="mx-auto max-w-md rounded-[var(--radius-card)] border border-[color:var(--border)] bg-white p-8 text-center">
+          <h2 className="text-lg font-semibold text-[color:var(--foreground)]">Sayt topilmadi</h2>
           <p className="mt-2 text-sm text-neutral-600">
             Bunday sayt mavjud emas yoki o&apos;chirilgan. Ro&apos;yxatga qaytib,
             saytni qayta toping.
@@ -83,7 +83,7 @@ export function EditorLoader({ id }: { id: string }) {
           <div className="mt-5">
             <Link
               href="/dashboard/sites"
-              className="inline-flex h-10 items-center justify-center rounded-md bg-black px-5 text-sm font-medium text-white"
+              className="inline-flex h-10 items-center justify-center pl-gradient rounded-md px-5 text-sm font-medium text-white"
             >
               Saytlar ro&apos;yxati
             </Link>
