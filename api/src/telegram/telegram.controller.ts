@@ -1,11 +1,18 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Post, UseGuards } from "@nestjs/common";
 import { TelegramService } from "./telegram.service";
+import { TelegramWebhookGuard } from "./telegram-webhook.guard";
 
 @Controller("telegram")
 export class TelegramController {
   constructor(private readonly tg: TelegramService) {}
 
+  /**
+   * Telegram update'lari. Guard `X-Telegram-Bot-Api-Secret-Token` ni
+   * tekshiradi — usiz bu endpoint akkaunt egallash yo'liga aylanadi
+   * (izoh: telegram-webhook.guard.ts).
+   */
   @Post("webhook")
+  @UseGuards(TelegramWebhookGuard)
   async webhook(@Body() body: Record<string, unknown>) {
     await this.tg.handleUpdate(
       body as {

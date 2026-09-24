@@ -46,6 +46,8 @@ Ildizdagi `.env` faylini yarating: `deploy/env.production.example` ni namuna sif
 - `FRONTEND_ORIGIN=https://paylinker.uz,https://www.paylinker.uz`
 - `PUBLIC_APP_URL=https://paylinker.uz`
 - `TELEGRAM_POLLING=false` (prod odatda webhook)
+- `TELEGRAM_WEBHOOK_SECRET` — tasodifiy (`openssl rand -hex 32`), webhook uchun **majburiy**
+- `ADMIN_LOCKDOWN=1` va `ADMIN_PUBLIC_IDS` — **majburiy**, aks holda `/api/admin/*` hammaga ochiq
 
 **Muhim:** `NEXT_PUBLIC_*` o‘zgarishidan keyin frontendni **qayta build** qilish kerak.
 
@@ -138,9 +140,18 @@ Batafsil (tekshiruvlar, muammolar, `.env` da `https://`): **[deploy/SSL.md](./SS
 
 ## 7. Telegram
 
-- **Webhook** (polling o‘chiq bo‘lsa): BotFather / `@BotFather` orqali yoki `setWebhook` API:
+- **Webhook** (polling o‘chiq bo‘lsa). Webhook **sir bilan** o‘rnatiladi — `.env` dagi
+  `TELEGRAM_WEBHOOK_SECRET` bilan aynan bir xil qiymat:
 
-  `https://paylinker.uz/telegram/webhook`
+  ```bash
+  curl -s "https://api.telegram.org/bot<TOKEN>/setWebhook" \
+    -d url=https://paylinker.uz/telegram/webhook \
+    -d secret_token=<TELEGRAM_WEBHOOK_SECRET>
+  ```
+
+  **Sirsiz webhook 403 qaytaradi** (fail-closed). Sabab: bu endpoint OTP yaratadi
+  va kodni update ichidagi `chat_id` ga yuboradi — himoyasiz bo‘lsa istalgan odam
+  boshqa akkauntga kirib olishi mumkin edi.
 
 - **CLICK** merchant kabinetida **Prepare/Complete:** `https://paylinker.uz/api/payments/click/prepare` va `.../complete` (backend Nest ga Nginx yoki Next orqali proxylanadi).
 
