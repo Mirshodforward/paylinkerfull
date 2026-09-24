@@ -16,6 +16,14 @@ async function bootstrap() {
   }
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  /**
+   * Nginx orqasida ishlaymiz: `req.ip` X-Forwarded-For dan olinsin.
+   * Busiz barcha so'rovlar 127.0.0.1 dan ko'rinadi va so'rov chastotasi
+   * cheklovi (ThrottlerGuard) barcha foydalanuvchilarni BIRGA hisoblab,
+   * hammani bloklab qo'yadi.
+   */
+  app.set('trust proxy', 1);
   app.useStaticAssets(join(process.cwd(), 'uploads'), { prefix: '/uploads/' });
 
   /** CLICK Prepare/Complete odatda application/x-www-form-urlencoded yuboradi */

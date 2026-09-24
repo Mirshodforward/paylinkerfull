@@ -30,6 +30,7 @@ export const RESERVED_NAMES: ReadonlySet<string> = new Set([
   'login',
   'm',
   'new',
+  'oferta',
   'pay',
   'paylinker',
   'pricing',
@@ -43,11 +44,14 @@ export const RESERVED_NAMES: ReadonlySet<string> = new Set([
   'static',
   'tahrir',
   'telegram',
+  'tolov',
+  "to'lov",
   'terms',
   'vizitka',
   'web',
   'webhook',
   'www',
+  'xavfsizlik',
 ]);
 
 export function assertNameAllowed(name: string): void {

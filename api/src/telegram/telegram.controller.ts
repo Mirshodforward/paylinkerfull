@@ -1,7 +1,10 @@
 import { Body, Controller, Post, UseGuards } from "@nestjs/common";
+import { SkipThrottle } from "@nestjs/throttler";
 import { TelegramService } from "./telegram.service";
 import { TelegramWebhookGuard } from "./telegram-webhook.guard";
 
+/** Telegram serverlari chaqiradi; himoya — webhook siri (guard) */
+@SkipThrottle()
 @Controller("telegram")
 export class TelegramController {
   constructor(private readonly tg: TelegramService) {}

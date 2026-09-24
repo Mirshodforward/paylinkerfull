@@ -8,6 +8,7 @@ import { e164ToDisplay, nineToE164 } from "@/lib/phone";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
 import { TELEGRAM_BOT } from "@/lib/brand";
+import Link from "next/link";
 
 const BOT = TELEGRAM_BOT;
 
@@ -31,6 +32,8 @@ export function LoginForm() {
   const [cells, setCells] = useState(["", "", "", "", "", ""]);
   const [err, setErr] = useState<string | null>(null);
   const [load, setLoad] = useState(false);
+  /** Ommaviy oferta aksepti — usiz kirish tugmasi faol bo'lmaydi */
+  const [agreed, setAgreed] = useState(false);
   const refs = useRef<(HTMLInputElement | null)[]>([]);
 
   useEffect(() => {
@@ -40,7 +43,7 @@ export function LoginForm() {
   const tme = `https://t.me/${bot}`;
 
   const onPhoneSubmit = async () => {
-    if (digits.length !== 9) return;
+    if (digits.length !== 9 || !agreed) return;
     setLoad(true);
     setErr(null);
     try {
@@ -193,6 +196,35 @@ export function LoginForm() {
           />
         </div>
       </div>
+      <label className="flex cursor-pointer items-start gap-3 rounded-[var(--radius-card)] border border-[color:var(--border)] bg-[color:var(--surface-2)] p-3.5 transition-colors hover:border-brand-300">
+        <input
+          type="checkbox"
+          checked={agreed}
+          onChange={(e) => setAgreed(e.target.checked)}
+          className="mt-0.5 h-[18px] w-[18px] shrink-0 accent-[color:var(--brand-600)]"
+        />
+        <span className="text-[13px] leading-relaxed text-[color:var(--muted-foreground)]">
+          Men{" "}
+          <Link
+            href="/oferta"
+            target="_blank"
+            className="font-medium text-brand-700 underline underline-offset-2 hover:text-brand-800"
+          >
+            Ommaviy oferta
+          </Link>
+          ,{" "}
+          <Link
+            href="/tolov"
+            target="_blank"
+            className="font-medium text-brand-700 underline underline-offset-2 hover:text-brand-800"
+          >
+            To&apos;lov va pul qaytarish
+          </Link>{" "}
+          shartlari bilan tanishdim va ularni qabul qilaman hamda shaxsga doir
+          ma&apos;lumotlarim qayta ishlanishiga rozilik bildiraman.
+        </span>
+      </label>
+
       {err ? (
         <p className="rounded-[var(--radius-control)] border border-[color:var(--danger-border)] bg-[color:var(--danger-bg)] px-3 py-2 text-sm text-[color:var(--danger)]">
           {err}
@@ -202,7 +234,7 @@ export function LoginForm() {
         type="button"
         className="w-full"
         onClick={() => void onPhoneSubmit()}
-        disabled={load || digits.length !== 9}
+        disabled={load || digits.length !== 9 || !agreed}
       >
         Davom etish
       </Button>

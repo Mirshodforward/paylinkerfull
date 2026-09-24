@@ -4,11 +4,14 @@ import { PhoneDto } from "./dto/phone.dto";
 import { VerifyDto } from "./dto/verify.dto";
 import { RefreshDto } from "./dto/refresh.dto";
 import { JwtAccessGuard } from "./jwt-access.guard";
+import { Throttle } from "@nestjs/throttler";
 
 @Controller("auth")
 export class AuthController {
   constructor(private readonly auth: AuthService) {}
 
+  /** Bitta IP dan daqiqasiga 5 ta kod so'rovi — SMS/bot spamining oldini oladi */
+  @Throttle({ default: { ttl: 60_000, limit: 5 } })
   @Post("phone")
   async phone(@Body() body: PhoneDto) {
     const v = await this.auth.validatePhone(body.phone);
@@ -19,6 +22,11 @@ export class AuthController {
     };
   }
 
+  /**
+   * Kodni tanlab topishga (brute-force) qarshi: daqiqasiga 10 urinish.
+   * Kod 6 xonali va 2 daqiqa amal qiladi — cheklovsiz bo'lsa tanlab topish real xavf.
+   */
+  @Throttle({ default: { ttl: 60_000, limit: 10 } })
   @Post("verify")
   async verify(@Body() body: VerifyDto) {
     return this.auth.verify(body.phone, body.code);

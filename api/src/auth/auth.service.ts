@@ -5,6 +5,9 @@ import { PrismaService } from "../prisma/prisma.service";
 import { normalizeUzPhone, formatPhoneForDisplay } from "../common/phone";
 import { verifyCodeConstantTime } from "./auth.crypto";
 
+/** Frontenddagi src/lib/legal/company.ts bilan mos bo'lishi shart */
+const OFERTA_VERSION = "1.0";
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -96,7 +99,14 @@ export class AuthService {
       if (verifyCodeConstantTime(code, u.loginOtp)) {
         await this.prisma.user.update({
           where: { id: u.id },
-          data: { loginOtp: null, loginOtpExpiresAt: null },
+          data: {
+            loginOtp: null,
+            loginOtpExpiresAt: null,
+            // Oferta aksepti — kirish shaklida belgi qo'yilgani uchun
+            // har bir muvaffaqiyatli kirishda joriy tahrir qayd etiladi
+            ofertaAcceptedAt: now,
+            ofertaVersion: OFERTA_VERSION,
+          },
         });
         const t = await this.buildTokens({ id: u.id, publicId: u.publicId });
         await this.saveRefreshHash(u.id, t.refreshToken);
@@ -122,6 +132,8 @@ export class AuthService {
             username: tg.username,
             telegramId: tg.telegramUserId,
             userId: null,
+            ofertaAcceptedAt: now,
+            ofertaVersion: OFERTA_VERSION,
           },
         });
         const upd = await tx.user.update({

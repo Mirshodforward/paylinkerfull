@@ -8,7 +8,7 @@ export function Footer() {
   return (
     <footer className="border-t border-[color:var(--border)] bg-[color:var(--surface-2)]">
       <Container className="py-14">
-        <div className="grid grid-cols-2 gap-10 sm:grid-cols-4 lg:grid-cols-[1.6fr_1fr_1fr_1fr]">
+        <div className="grid grid-cols-2 gap-10 sm:grid-cols-4 lg:grid-cols-[1.5fr_1fr_1fr_1fr_1fr]">
           <div className="col-span-2 sm:col-span-4 lg:col-span-1">
             <Logo />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-[color:var(--muted-foreground)]">
@@ -30,6 +30,12 @@ export function Footer() {
             <FooterLink href="/signup?plan=landing">Landing</FooterLink>
             <FooterLink href="/demo">Namuna</FooterLink>
             <FooterLink href="/login">Kirish</FooterLink>
+          </FooterCol>
+
+          <FooterCol title="Hujjatlar">
+            <FooterLink href="/oferta">Ommaviy oferta</FooterLink>
+            <FooterLink href="/tolov">To&apos;lov va qaytarish</FooterLink>
+            <FooterLink href="/xavfsizlik">Xavfsizlik</FooterLink>
           </FooterCol>
 
           <FooterCol title="Aloqa">
