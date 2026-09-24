@@ -177,6 +177,26 @@ pm2 restart all
 
 Agar faqat `.env` dagi `NEXT_PUBLIC_*` o‘zgargan bo‘lsa — **`npm run build`** qayta ishga tushiring (Next.js brauzerga embed qiladi).
 
+### ⚠️ `.env` o‘zgargach qanday restart qilish kerak
+
+```bash
+pm2 restart paylinker.config.cjs --update-env    # yoki: npm run pm2:restart
+```
+
+**`pm2 restart paylinker-api` (nom bo‘yicha) yetarli EMAS.** U `.env` ni qayta
+o‘qimaydi: chaqiruvchi shell muhitini oladi va qolganini eski saqlangan
+muhitdan tiklaydi. NestJS `ConfigModule` esa `process.env` da allaqachon
+mavjud kalitni fayl qiymati bilan **almashtirmaydi** — natijada bir marta
+bo‘sh saqlangan o‘zgaruvchi (masalan `TELEGRAM_BOT_TOKEN=`) keyin
+to‘ldirilsa ham jarayonga **bo‘sh** bo‘lib yetib boradi.
+
+Tekshirish (jarayon haqiqatda nimani ko‘rayotgani):
+
+```bash
+PID=$(pm2 pid paylinker-api)
+tr '\0' '\n' < /proc/$PID/environ | grep TELEGRAM_BOT_TOKEN | wc -c
+```
+
 ## 10. Joriy server holati (164.92.133.109, `asosiysever`)
 
 Bu serverda bir nechta loyiha bor — ularni **ulashmaydigan** qilib joylandi:

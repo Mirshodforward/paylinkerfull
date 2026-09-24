@@ -11,7 +11,7 @@
     "build:api": "npm run build --prefix api",
     "migrate:deploy": "npm run prisma:migrate:deploy --prefix api",
     "pm2": "pm2 start paylinker.config.cjs",
-    "pm2:restart": "pm2 restart paylinker-web paylinker-api",
+    "pm2:restart": "pm2 restart paylinker.config.cjs --update-env",
     "pm2:stop": "pm2 stop paylinker-web paylinker-api",
     "start": "cross-env TZ=Asia/Tashkent PORT=8000 next start",
     "lint": "eslint"
