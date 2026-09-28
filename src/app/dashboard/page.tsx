@@ -1,16 +1,18 @@
 import { Topbar } from "@/components/dashboard/topbar";
 import { Button } from "@/components/ui/button";
 import { Overview } from "@/components/dashboard/overview";
+import { getDict } from "@/lib/i18n/server";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const { t } = await getDict();
   return (
     <>
       <Topbar
-        breadcrumb="Dashboard"
-        title="Bosh sahifa"
+        breadcrumb={t.dash.pages.breadcrumb}
+        title={t.dash.pages.home}
         actions={
           <Button href="/dashboard/sites/new" size="sm">
-            Yangi sayt
+            {t.dash.pages.newSite}
           </Button>
         }
       />

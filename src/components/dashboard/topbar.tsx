@@ -1,8 +1,10 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { LangSwitch } from "@/components/i18n/lang-switch";
 import { LogoMark } from "@/components/marketing/logo";
 import { useMobileNav } from "@/components/dashboard/mobile-nav-context";
+import { useI18n } from "@/lib/i18n/provider";
 
 type Props = {
   title: string;
@@ -11,6 +13,7 @@ type Props = {
 };
 
 export function Topbar({ title, breadcrumb, actions }: Props) {
+  const { t } = useI18n();
   const { mobileOpen, toggleMobile } = useMobileNav();
 
   return (
@@ -22,11 +25,12 @@ export function Topbar({ title, breadcrumb, actions }: Props) {
           className="inline-flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-[var(--radius-control)] text-[color:var(--foreground)] transition-colors hover:bg-brand-50 hover:text-brand-700"
           aria-expanded={mobileOpen}
           aria-controls="dashboard-mobile-nav"
-          aria-label={mobileOpen ? "Menyuni yopish" : "Menyuni ochish"}
+          aria-label={mobileOpen ? t.nav.closeMenu : t.nav.openMenu}
         >
           <MenuIcon open={mobileOpen} />
         </button>
         <LogoMark size={24} />
+        <LangSwitch className="ml-auto" />
       </div>
       <div className="flex flex-col gap-4 border-b border-[color:var(--border)] bg-white px-5 py-6 sm:flex-row sm:items-end sm:justify-between lg:px-10">
         <div>
@@ -39,11 +43,14 @@ export function Topbar({ title, breadcrumb, actions }: Props) {
             {title}
           </h1>
         </div>
-        {actions ? (
-          <div className="flex w-full flex-shrink-0 flex-wrap items-center gap-2 sm:w-auto sm:justify-end">
-            {actions}
-          </div>
-        ) : null}
+        <div className="flex w-full flex-shrink-0 flex-wrap items-center gap-2 sm:w-auto sm:justify-end">
+          {/* `hidden` ni LangSwitch ga bersak bazaviy `inline-flex` bilan ziddiyat
+              (cn — tailwind-merge siz) — shuning uchun o'rovchi boshqaradi */}
+          <span className="hidden lg:contents">
+            <LangSwitch />
+          </span>
+          {actions}
+        </div>
       </div>
     </>
   );

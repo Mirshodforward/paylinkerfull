@@ -9,6 +9,8 @@ import {
   type CreateClickPaymentRes,
 } from "@/lib/click-checkout";
 import { clickInvoiceAmountSom } from "@/lib/click-invoice-amount";
+import { LOCALE } from "@/lib/i18n/config";
+import { useI18n } from "@/lib/i18n/provider";
 
 const PRESET_SOMS = [10_000, 25_000, 50_000, 100_000] as const;
 const MIN_SOM = 1000;
@@ -21,6 +23,8 @@ type Me = { user: { balance: number } };
  * karta turi — Click o‘z sahifasida tanlanadi, `card_type` yuborilmaydi.)
  */
 export function ClickTopUpPanel() {
+  const { lang, t } = useI18n();
+  const T = t.dash.topup;
   const [amountSom, setAmountSom] = useState(10_000);
   const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState<number | null>(null);
@@ -50,7 +54,7 @@ export function ClickTopUpPanel() {
   async function pay() {
     setMessage(null);
     if (!Number.isFinite(amountSom) || amountSom < MIN_SOM) {
-      setMessage(`Kamida ${MIN_SOM.toLocaleString("uz-UZ")} so‘m.`);
+      setMessage(T.min(MIN_SOM.toLocaleString(LOCALE[lang])));
       return;
     }
 
@@ -62,7 +66,13 @@ export function ClickTopUpPanel() {
         body: JSON.stringify({ amount: clickInvoiceAmountSom(amountSom) }),
       });
     } catch (e) {
-      const msg = e instanceof ApiError ? e.message : "To‘lov yaratishda xato";
+      // 503 — CLICK hali ulanmagan: texnik xabar o'rniga tushunarli matn
+      const msg =
+        e instanceof ApiError && e.status === 503
+          ? T.unavailable
+          : e instanceof ApiError
+            ? e.message
+            : T.createError;
       setMessage(msg);
       setLoading(false);
       return;
@@ -96,24 +106,24 @@ export function ClickTopUpPanel() {
             </div>
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#0065ff]/90">
-                To‘lov tizimi
+                {T.eyebrow}
               </p>
               <h2 className="mt-0.5 text-2xl font-bold tracking-tight text-[#0065ff] sm:text-[1.65rem]">
                 CLICK
               </h2>
               <p className="mt-1 max-w-md text-sm text-neutral-600">
-                Balansni bank kartasi orqali to‘ldiring — xavfsiz va tezkor.
+                {T.lead}
               </p>
             </div>
           </div>
           {balance != null && (
             <div className="rounded-xl border border-[#0065ff]/15 bg-white/90 px-4 py-3 text-right shadow-sm backdrop-blur-sm sm:min-w-[160px]">
               <p className="text-[11px] font-medium uppercase tracking-wide text-neutral-500">
-                Joriy balans
+                {T.current}
               </p>
               <p className="mt-1 text-xl font-semibold tabular-nums text-neutral-900">
                 {new Intl.NumberFormat("ru-RU").format(Math.round(balance))}{" "}
-                <span className="text-sm font-normal text-neutral-500">so‘m</span>
+                <span className="text-sm font-normal text-neutral-500">{t.common.som}</span>
               </p>
             </div>
           )}
@@ -122,9 +132,9 @@ export function ClickTopUpPanel() {
 
       <div className="border-t border-neutral-100 p-6 pt-5">
         <p className="text-sm text-neutral-600">
-          Summani kiriting yoki tezkor tanlovni bosing. Keyin{" "}
-          <strong className="font-medium text-neutral-800">my.click.uz</strong> sahifasida to‘lovni
-          yakunlaysiz (kartani shu yerda tanlaysiz).
+          {T.noteBefore}{" "}
+          <strong className="font-medium text-neutral-800">my.click.uz</strong>{" "}
+          {T.noteAfter}
         </p>
 
       <div className="mt-4 flex flex-wrap gap-2">
@@ -150,7 +160,7 @@ export function ClickTopUpPanel() {
 
       <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
         <label className="block min-w-0 flex-1 sm:min-w-[180px]">
-          <span className="mb-1.5 block text-xs font-medium text-neutral-600">Summa (so‘m)</span>
+          <span className="mb-1.5 block text-xs font-medium text-neutral-600">{T.amount}</span>
           <input
             type="number"
             inputMode="numeric"
@@ -162,7 +172,7 @@ export function ClickTopUpPanel() {
           />
         </label>
         <Button type="button" onClick={() => void pay()} disabled={loading} className="h-11 shrink-0">
-          {loading ? "Jo‘natilmoqda…" : "CLICK ga o‘tish"}
+          {loading ? T.sending : T.go}
         </Button>
       </div>
 

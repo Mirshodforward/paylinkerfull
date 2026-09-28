@@ -8,6 +8,7 @@ import { e164ToDisplay, nineToE164 } from "@/lib/phone";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
 import { TELEGRAM_BOT } from "@/lib/brand";
+import { useI18n } from "@/lib/i18n/provider";
 import Link from "next/link";
 
 const BOT = TELEGRAM_BOT;
@@ -25,6 +26,8 @@ function formatNine(nine: string) {
 
 export function LoginForm() {
   const router = useRouter();
+  const { t } = useI18n();
+  const L = t.login;
   const [step, setStep] = useState<1 | 2>(1);
   const [e164, setE164] = useState("");
   const [bot, setBot] = useState(BOT);
@@ -53,7 +56,7 @@ export function LoginForm() {
       setBot(res.bot || BOT);
       setStep(2);
     } catch (e) {
-      setErr(e instanceof Error ? e.message : "Xatolik");
+      setErr(e instanceof Error ? e.message : t.common.error);
     } finally {
       setLoad(false);
     }
@@ -84,7 +87,7 @@ export function LoginForm() {
   const onVerify = async () => {
     const code = cells.join("");
     if (code.length !== 6) {
-      setErr("6 xonali kodni kiriting");
+      setErr(L.errCode6);
       return;
     }
     setLoad(true);
@@ -94,7 +97,7 @@ export function LoginForm() {
       setTokens(r.accessToken, r.refreshToken);
       router.replace("/dashboard");
     } catch (e) {
-      setErr(e instanceof Error ? e.message : "Kod yoki muddati noto'g'ri");
+      setErr(e instanceof Error ? e.message : L.errCodeWrong);
     } finally {
       setLoad(false);
     }
@@ -108,7 +111,7 @@ export function LoginForm() {
         </p>
         <div className="rounded-[var(--radius-card)] border border-brand-200 bg-brand-50 p-3.5 text-sm text-brand-900">
           <p className="leading-relaxed">
-            O&lsquo;ngdagi tugma orqali botni oching va yozing: <span className="font-mono">/start</span>
+            {L.openBot} <span className="font-mono">/start</span>
           </p>
           <a
             href={tme}
@@ -120,7 +123,7 @@ export function LoginForm() {
           </a>
         </div>
         <div>
-          <p className="text-xs font-medium text-[color:var(--muted-foreground)]">6 xonali kod</p>
+          <p className="text-xs font-medium text-[color:var(--muted-foreground)]">{L.codeLabel}</p>
           <div
             className="mt-1.5 flex justify-center gap-1.5 sm:gap-2"
             onPaste={onPasteOtp}
@@ -155,11 +158,11 @@ export function LoginForm() {
           </p>
         ) : null}
         <Button type="button" className="w-full" onClick={() => void onVerify()} disabled={load}>
-          {load ? "…" : "Kirish"}
+          {load ? "…" : L.enter}
         </Button>
         <p className="text-center text-xs text-[color:var(--muted-foreground)]">
-          Kod 2 daqiqagacha. Telegramdagi <strong className="font-normal">Kodni yangilash</strong> orqali
-          yangilaysiz.
+          {L.codeHintBefore} <strong className="font-normal">{L.codeHintRefresh}</strong>{" "}
+          {L.codeHintAfter}
         </p>
         <button
           type="button"
@@ -170,7 +173,7 @@ export function LoginForm() {
           }}
           className="w-full text-center text-sm text-[color:var(--muted-foreground)] underline underline-offset-2 transition-colors hover:text-brand-700"
         >
-          Boshqa raqam
+          {L.otherNumber}
         </button>
       </div>
     );
@@ -179,7 +182,7 @@ export function LoginForm() {
   return (
     <div className="space-y-5">
       <div>
-        <p className="text-xs font-medium text-[color:var(--muted-foreground)]">Telefon raqam</p>
+        <p className="text-xs font-medium text-[color:var(--muted-foreground)]">{L.phone}</p>
         <div className="mt-1.5 flex overflow-hidden rounded-[var(--radius-control)] border border-[color:var(--border)] bg-white shadow-[var(--shadow-sm)] transition-colors focus-within:border-brand-400">
           <span className="flex items-center border-r border-[color:var(--border)] bg-brand-50 px-3.5 text-sm font-semibold text-brand-800">
             +998
@@ -204,13 +207,13 @@ export function LoginForm() {
           className="mt-0.5 h-[18px] w-[18px] shrink-0 accent-[color:var(--brand-600)]"
         />
         <span className="text-[13px] leading-relaxed text-[color:var(--muted-foreground)]">
-          Men{" "}
+          {L.agreePrefix}{" "}
           <Link
             href="/oferta"
             target="_blank"
             className="font-medium text-brand-700 underline underline-offset-2 hover:text-brand-800"
           >
-            Ommaviy oferta
+            {L.agreeOferta}
           </Link>
           ,{" "}
           <Link
@@ -218,10 +221,10 @@ export function LoginForm() {
             target="_blank"
             className="font-medium text-brand-700 underline underline-offset-2 hover:text-brand-800"
           >
-            To&apos;lov va pul qaytarish
-          </Link>{" "}
-          shartlari bilan tanishdim va ularni qabul qilaman hamda shaxsga doir
-          ma&apos;lumotlarim qayta ishlanishiga rozilik bildiraman.
+            {L.agreeTolov}
+          </Link>
+          {L.agreeSuffix.startsWith(",") ? "" : " "}
+          {L.agreeSuffix}
         </span>
       </label>
 
@@ -236,7 +239,7 @@ export function LoginForm() {
         onClick={() => void onPhoneSubmit()}
         disabled={load || digits.length !== 9 || !agreed}
       >
-        Davom etish
+        {L.continue}
       </Button>
     </div>
   );

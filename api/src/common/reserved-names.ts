@@ -47,6 +47,7 @@ export const RESERVED_NAMES: ReadonlySet<string> = new Set([
   'tolov',
   "to'lov",
   'terms',
+  'test-access',
   'vizitka',
   'web',
   'webhook',

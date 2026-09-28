@@ -3,6 +3,7 @@ import { AuthService } from "./auth.service";
 import { PhoneDto } from "./dto/phone.dto";
 import { VerifyDto } from "./dto/verify.dto";
 import { RefreshDto } from "./dto/refresh.dto";
+import { TestAccessDto } from "./dto/test-access.dto";
 import { JwtAccessGuard } from "./jwt-access.guard";
 import { Throttle } from "@nestjs/throttler";
 
@@ -30,6 +31,13 @@ export class AuthController {
   @Post("verify")
   async verify(@Body() body: VerifyDto) {
     return this.auth.verify(body.phone, body.code);
+  }
+
+  /** Tekshiruvchilar uchun maxsus havola — faqat .env da yoqilganda ishlaydi */
+  @Throttle({ default: { ttl: 60_000, limit: 10 } })
+  @Post("test-access")
+  async testAccess(@Body() body: TestAccessDto) {
+    return this.auth.testAccess(body.token);
   }
 
   @Post("refresh")

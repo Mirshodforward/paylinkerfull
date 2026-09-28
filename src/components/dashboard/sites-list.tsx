@@ -13,6 +13,8 @@ import type { LandingRecord } from "@/lib/landings/types";
 import type { UnknownSite } from "@/lib/store/types";
 import { getAccessToken } from "@/lib/auth-storage";
 import { syncVizitkasFromServer } from "@/lib/sync-vizitkas";
+import type { Dict } from "@/lib/i18n/dict";
+import { useI18n } from "@/lib/i18n/provider";
 
 type Row =
   | { kind: "vizitka"; site: UnknownSite }
@@ -20,13 +22,15 @@ type Row =
 
 type SitesFilter = "all" | "vizitka" | "landing";
 
-const FILTER_OPTIONS: Array<{ id: SitesFilter; label: string }> = [
-  { id: "all", label: "Hammasi" },
-  { id: "vizitka", label: "Vizitka" },
-  { id: "landing", label: "Landing" },
+const FILTER_OPTIONS: Array<{ id: SitesFilter; key: keyof Dict["dash"]["list"] }> = [
+  { id: "all", key: "all" },
+  { id: "vizitka", key: "vizitka" },
+  { id: "landing", key: "landing" },
 ];
 
 export function SitesList() {
+  const { t } = useI18n();
+  const L = t.dash.list;
   const searchParams = useSearchParams();
   const { sites, ready } = useSites();
   const [landings, setLandings] = useState<LandingRecord[]>([]);
@@ -138,18 +142,17 @@ export function SitesList() {
             </svg>
           </div>
           <h2 className="mt-5 text-xl font-semibold tracking-tight text-[color:var(--foreground)]">
-            Hozircha saytlar yo&apos;q
+            {L.emptyTitle}
           </h2>
           <p className="mt-2 text-sm leading-relaxed text-neutral-600">
-            Vizitka yoki landing yarating — barchasi shu yerda ro&apos;yxatda
-            ko&apos;rinadi va istalgan vaqtda tahrirlashingiz mumkin.
+            {L.emptyBody}
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-2">
             <Button href="/dashboard/sites/new" size="lg">
-              Yangi sayt
+              {L.newSite}
             </Button>
             <Button href="/tahrir" variant="secondary" size="lg">
-              Landing tahriri
+              {L.landingEditor}
             </Button>
           </div>
         </div>
@@ -162,7 +165,7 @@ export function SitesList() {
       <div
         className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
         role="toolbar"
-        aria-label="Sayt turini filtrlash"
+        aria-label={L.filterAria}
       >
         <p className="text-xs text-neutral-500">
           Jami:{" "}
@@ -190,7 +193,7 @@ export function SitesList() {
                   : "text-neutral-600 hover:bg-neutral-100 hover:text-brand-700",
               )}
             >
-              {opt.label}
+              {L[opt.key] as string}
             </button>
           ))}
         </div>
@@ -200,36 +203,38 @@ export function SitesList() {
         <div className="mb-6 rounded-[var(--radius-card)] border border-[color:var(--border)] bg-neutral-50 px-4 py-8 text-center text-sm text-neutral-600">
           {filter === "vizitka" ? (
             <>
-              <p className="font-medium text-[color:var(--foreground)]">Hozircha vizitka yo&apos;q</p>
+              <p className="font-medium text-[color:var(--foreground)]">{L.noVizitka}</p>
               <p className="mt-1">
-                Yangi vizitka yoki boshqa turdagi saytlarni ko&apos;rish uchun{" "}
+                {L.noVizitkaBefore}{" "}
                 <button
                   type="button"
                   onClick={() => setFilter("all")}
                   className="font-medium text-[color:var(--foreground)] underline underline-offset-2"
                 >
-                  Hammasi
-                </button>{" "}
-                ni tanlang.
+                  {L.all}
+                </button>
+                {L.pickAllAfter === "." ? "" : " "}
+                {L.pickAllAfter}
               </p>
             </>
           ) : (
             <>
-              <p className="font-medium text-[color:var(--foreground)]">Hozircha landing yo&apos;q</p>
+              <p className="font-medium text-[color:var(--foreground)]">{L.noLanding}</p>
               <p className="mt-1">
-                Landing yarating yoki{" "}
+                {L.noLandingBefore}{" "}
                 <button
                   type="button"
                   onClick={() => setFilter("all")}
                   className="font-medium text-[color:var(--foreground)] underline underline-offset-2"
                 >
-                  Hammasi
-                </button>{" "}
-                ni tanlang.
+                  {L.all}
+                </button>
+                {L.pickAllAfter === "." ? "" : " "}
+                {L.pickAllAfter}
               </p>
               <div className="mt-4">
                 <Button href="/tahrir" variant="secondary" size="sm">
-                  Landing tahriri
+                  {L.landingEditor}
                 </Button>
               </div>
             </>
@@ -267,8 +272,8 @@ export function SitesList() {
                 />
               </svg>
             </span>
-            <span className="text-sm font-medium text-[color:var(--foreground)]">Yangi sayt yaratish</span>
-            <span className="text-xs text-neutral-500">Vizitka yoki Landing</span>
+            <span className="text-sm font-medium text-[color:var(--foreground)]">{L.newSiteCard}</span>
+            <span className="text-xs text-neutral-500">{L.newSiteCardHint}</span>
           </Link>
       </div>
     </div>

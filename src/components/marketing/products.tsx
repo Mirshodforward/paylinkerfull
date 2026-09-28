@@ -1,59 +1,23 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
+import { SITE_DOMAIN } from "@/lib/brand";
 import { cn } from "@/lib/cn";
+import { getDict } from "@/lib/i18n/server";
 
-type Product = {
-  id: string;
-  eyebrow: string;
-  name: string;
-  lead: string;
-  points: string[];
-  href: string;
-  cta: string;
-  highlighted: boolean;
-};
-
-const PRODUCTS: Product[] = [
-  {
-    id: "vizitka",
-    eyebrow: "Bir ekranli",
-    name: "Vizitka",
-    lead: "Telefon, manzil va ijtimoiy tarmoqlar — bitta qulay sahifada. Mijoz bosadi va darhol bog'lanadi.",
-    points: [
-      "7 ta tayyor shablon",
-      "Telefon, manzil, ish vaqti",
-      "Instagram, Telegram, TikTok, YouTube, Facebook",
-      "Xarita va QR kod",
-    ],
-    href: "/signup?plan=vizitka",
-    cta: "Vizitka yaratish",
-    highlighted: false,
-  },
-  {
-    id: "landing",
-    eyebrow: "Ko'p bo'limli",
-    name: "Landing",
-    lead: "To'liq brend sahifasi: xizmatlar, narxlar, galereya va aloqa formasi — biznesingizni to'liq ko'rsating.",
-    points: [
-      "Vizitkadagi barcha imkoniyatlar",
-      "Xizmatlar va narxlar jadvali",
-      "Galereya, xususiyatlar, statistika",
-      "Savol-javob va aloqa formasi",
-    ],
-    href: "/signup?plan=landing",
-    cta: "Landing yaratish",
-    highlighted: true,
-  },
-];
-
-export function Products() {
+export async function Products() {
+  const { t } = await getDict();
+  const P = t.products;
+  const PRODUCTS = [
+    { id: "vizitka", ...P.vizitka, href: "/signup?plan=vizitka", highlighted: false },
+    { id: "landing", ...P.landing, href: "/signup?plan=landing", highlighted: true },
+  ];
   return (
     <section id="mahsulotlar" className="scroll-mt-20 border-t border-[color:var(--border)] bg-white py-20 sm:py-24">
       <Container>
         <SectionIntro
-          eyebrow="Ikki xil sayt"
-          title="Biznesingizga qaysi biri mos?"
-          description="Ikkalasi ham bir xil tahrirlagichda quriladi va paylinker.uz/nomingiz manzilida ochiladi."
+          eyebrow={P.eyebrow}
+          title={P.title}
+          description={P.description(SITE_DOMAIN)}
         />
 
         <div className="mt-12 grid grid-cols-1 gap-5 lg:grid-cols-2">

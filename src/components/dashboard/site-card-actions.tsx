@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
+import { useI18n } from "@/lib/i18n/provider";
 
 type Props = {
   editHref: string;
@@ -20,6 +21,7 @@ export function SiteCardActions({
   menu,
 }: Props) {
   const hasExtend = onExtend != null;
+  const { t } = useI18n();
 
   return (
     <div className="flex flex-col gap-2">
@@ -29,7 +31,7 @@ export function SiteCardActions({
           size="sm"
           className="!flex h-10 w-full min-w-0 justify-center px-2"
         >
-          Tahrirlash
+          {t.dash.card.edit}
         </Button>
         <Link
           href={viewHref}
@@ -37,7 +39,7 @@ export function SiteCardActions({
           rel="noopener noreferrer"
           className="inline-flex h-10 w-full min-w-0 items-center justify-center rounded-md border border-[color:var(--border)] px-2 text-sm font-medium text-[color:var(--foreground)] transition-colors hover:border-brand-300"
         >
-          Ko&apos;rish
+          {t.dash.card.view}
         </Link>
       </div>
       <div
@@ -52,7 +54,7 @@ export function SiteCardActions({
             onClick={onExtend}
             className="inline-flex h-10 min-w-0 items-center justify-center rounded-md border border-[color:var(--border)] px-2 text-xs font-medium text-[color:var(--foreground)] transition-colors hover:border-brand-300 sm:text-sm"
           >
-            Obunani uzaytirish
+            {t.dash.card.extend}
           </button>
         ) : null}
         {menu}

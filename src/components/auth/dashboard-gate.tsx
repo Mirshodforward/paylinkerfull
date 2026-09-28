@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { api, ApiError } from "@/lib/api";
 import { syncVizitkasFromServer } from "@/lib/sync-vizitkas";
+import { useI18n } from "@/lib/i18n/provider";
 
 async function sleep(ms: number) {
   await new Promise((r) => setTimeout(r, ms));
 }
 
 export function DashboardGate({ children }: { children: React.ReactNode }) {
+  const { t } = useI18n();
   const router = useRouter();
   const path = usePathname();
   const [ok, setOk] = useState(false);
@@ -50,8 +52,8 @@ export function DashboardGate({ children }: { children: React.ReactNode }) {
   if (bootError) {
     const msg =
       bootError === "network"
-        ? "API serveriga ulanib bo‘lmadi (tarmoq yoki server hali yoqilmagan). Bir oz kutib, sahifani yangilang."
-        : "Server javobi kutilmagandek. Keyinroq qayta urinib ko‘ring.";
+        ? t.dash.gate.network
+        : t.dash.gate.unexpected;
     return (
       <div className="flex min-h-[40vh] flex-col items-center justify-center gap-4 px-5 text-center text-sm text-neutral-600">
         <p className="max-w-md">{msg}</p>
@@ -60,7 +62,7 @@ export function DashboardGate({ children }: { children: React.ReactNode }) {
           className="pl-gradient rounded-md px-4 py-2 text-sm font-medium text-white"
           onClick={() => window.location.reload()}
         >
-          Sahifani yangilash
+          {t.dash.gate.reload}
         </button>
       </div>
     );
@@ -69,7 +71,7 @@ export function DashboardGate({ children }: { children: React.ReactNode }) {
   if (!ok) {
     return (
       <div className="flex min-h-[40vh] items-center justify-center text-sm text-neutral-500">
-        Yuklanmoqda…
+        {t.common.loading}
       </div>
     );
   }

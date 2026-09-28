@@ -5,9 +5,12 @@ import { Button } from "@/components/ui/button";
 import { useSites } from "@/lib/store/hooks";
 import { trialDaysLeft } from "@/lib/store/store";
 import { SITE_DOMAIN } from "@/lib/brand";
+import { useI18n } from "@/lib/i18n/provider";
 
 export function Overview() {
   const { sites, ready } = useSites();
+  const { t } = useI18n();
+  const O = t.dash.overview;
 
   if (!ready) {
     return <OverviewSkeleton />;
@@ -31,12 +34,12 @@ export function Overview() {
   return (
     <div className="space-y-6 px-5 py-6 lg:px-10">
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-        <Stat label="Saytlar" value={sites.length} />
-        <Stat label="Nashr qilingan" value={publishedCount} />
-        <Stat label="Xizmatlar" value={totalServices} />
+        <Stat label={O.sites} value={sites.length} />
+        <Stat label={O.published} value={publishedCount} />
+        <Stat label={O.services} value={totalServices} />
         <Stat
-          label="Obuna qolgan"
-          value={avgDaysLeft > 0 ? `${avgDaysLeft} kun` : "Tugagan"}
+          label={O.subLeft}
+          value={avgDaysLeft > 0 ? O.days(avgDaysLeft) : O.expired}
           muted
         />
       </div>
@@ -47,7 +50,7 @@ export function Overview() {
         <div className="flex items-start justify-between">
           <div>
             <p className="text-xs uppercase tracking-[0.15em] text-neutral-500">
-              Oxirgi tahrirlangan
+              {O.lastEdited}
             </p>
             <p className="mt-1 text-lg font-semibold text-[color:var(--foreground)]">
               {mostRecent.content.businessName}
@@ -63,10 +66,10 @@ export function Overview() {
               size="sm"
               target="_blank"
             >
-              Ko&apos;rish
+              {O.view}
             </Button>
             <Button href={`/dashboard/sites/${mostRecent.id}`} size="sm">
-              Tahrirlash
+              {O.edit}
             </Button>
           </div>
         </div>
@@ -75,19 +78,19 @@ export function Overview() {
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         <QuickAction
           href="/dashboard/sites/new"
-          title="Yangi sayt yaratish"
-          hint="Vizitka yoki Landing"
+          title={O.quickNew}
+          hint={O.quickNewHint}
           primary
         />
         <QuickAction
           href="/dashboard/sites"
-          title="Saytlarimni boshqarish"
-          hint={`${sites.length} ta sayt`}
+          title={O.quickManage}
+          hint={O.quickManageHint(sites.length)}
         />
         <QuickAction
           href="/dashboard/inbox"
-          title="Aloqa so'rovlari"
-          hint="Telegram'ga yuboriladi"
+          title={O.quickInbox}
+          hint={O.quickInboxHint}
         />
       </div>
     </div>
@@ -157,6 +160,8 @@ function QuickAction({
 }
 
 function EmptyOverview() {
+  const { t } = useI18n();
+  const O = t.dash.overview;
   return (
     <div className="px-5 py-16 lg:px-10">
       <div className="mx-auto max-w-xl rounded-[var(--radius-panel)] border border-[color:var(--border)] bg-white p-8 text-center shadow-[var(--shadow-sm)]">
@@ -174,15 +179,14 @@ function EmptyOverview() {
           </svg>
         </div>
         <h2 className="mt-5 text-xl font-semibold tracking-tight text-[color:var(--foreground)]">
-          Birinchi saytingizni yarating
+          {O.emptyTitle}
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-neutral-600">
-          15 daqiqada oddiy vizitka yoki kengaytirilgan landing page'ni ishga
-          tushiring. 10 kun bepul sinov davri ochiladi.
+          {O.emptyBody}
         </p>
         <div className="mt-6 flex justify-center gap-2">
           <Button href="/dashboard/sites/new" size="lg">
-            Yangi sayt yaratish
+            {O.emptyCta}
           </Button>
         </div>
       </div>
@@ -191,19 +195,20 @@ function EmptyOverview() {
 }
 
 function TrialBanner() {
+  const { t } = useI18n();
+  const O = t.dash.overview;
   return (
     <div className="pl-gradient flex flex-col gap-3 rounded-[var(--radius-card)] border border-transparent p-5 text-white shadow-[var(--shadow-brand)] sm:flex-row sm:items-center sm:justify-between">
       <div>
         <p className="text-xs uppercase tracking-[0.15em] text-neutral-300">
-          Bepul sinov
+          {O.trialEyebrow}
         </p>
         <p className="mt-1 text-sm">
-          Sinov davomida barcha imkoniyatlar ochiq. Yoqsa — Click orqali to&apos;laysiz,
-          yoqmasa — hech narsa.
+          {O.trialBody}
         </p>
       </div>
       <Button href="/dashboard/billing" variant="inverse" size="sm">
-        To&apos;lovni sozlash
+        {O.trialCta}
       </Button>
     </div>
   );

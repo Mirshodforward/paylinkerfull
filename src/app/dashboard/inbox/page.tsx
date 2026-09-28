@@ -1,14 +1,17 @@
 import { Topbar } from "@/components/dashboard/topbar";
 import { ComingSoon } from "@/components/dashboard/coming-soon";
+import { getDict } from "@/lib/i18n/server";
 
-export default function InboxPage() {
+export default async function InboxPage() {
+  const { t } = await getDict();
+  const S = t.dash.soon;
   return (
     <>
-      <Topbar breadcrumb="Aloqa so'rovlari" title="Aloqa so'rovlari" />
+      <Topbar breadcrumb={t.dash.pages.breadcrumb} title={t.dash.pages.inbox} />
       <ComingSoon
-        title="Telegram orqali so'rovlar"
-        description="Mijozlaringiz aloqa formasiga yozgan har bir xabar to'g'ridan-to'g'ri Telegram botingizga tushadi. Shu yerda ro'yxat holatida ham ko'rsatamiz."
-        hint="Telegram bot ulanishi keyingi bosqichda tayyor bo'ladi."
+        title={S.inboxTitle}
+        description={S.inboxDesc}
+        hint={S.inboxHint}
       />
     </>
   );

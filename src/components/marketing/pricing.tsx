@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/cn";
 import { apiBaseUrl } from "@/lib/api-base";
 import { FALLBACK_PUBLIC_PRICING, type PublicPricing } from "@/lib/vizitka-pricing";
+import type { Dict } from "@/lib/i18n/dict";
+import { getDict } from "@/lib/i18n/server";
 
 type Plan = {
   id: string;
@@ -38,12 +40,16 @@ async function loadPricing(): Promise<PublicPricing> {
   }
 }
 
+/** Ikkala tilda ham bo'shliq bilan guruhlash: 1 180 000 */
 function formatPrice(value: number) {
   return value.toLocaleString("ru-RU").replace(/\u00a0/g, " ");
 }
 
 export async function Pricing() {
+  const { t } = await getDict();
+  const P = t.pricing;
   const pricing = await loadPricing();
+  const fmt = formatPrice;
   const v6 = pricing.pricesSom["6"];
   const v12 = pricing.pricesSom["12"];
   const perMoV = Math.round(v6 / 6 / 100) * 100;
@@ -53,34 +59,25 @@ export async function Pricing() {
   const plans: Plan[] = [
     {
       id: "vizitka",
-      name: "Vizitka",
+      name: P.vizitka.name,
       price: v6,
-      priceSuffix: "· 6 oy",
-      secondaryPriceLine: `${formatPrice(v12)} so'm · 12 oy`,
-      perMonthApproxLine: `≈ ${formatPrice(perMoV)} so'm/oy (6 oy paketi)`,
-      priceNote: "6 oy va 1 yil paketlari",
-      tagline: "Bir ekranli biznes kartasi",
-      features: [
-        "1 ekranli sayt",
-        "Telefon, manzil, ijtimoiy tarmoq linklari",
-        "Mobil telefonda mukammal",
-      ],
+      priceSuffix: P.months6,
+      secondaryPriceLine: `${fmt(v12)} ${t.common.som} ${P.months12}`,
+      perMonthApproxLine: P.perMonth(fmt(perMoV)),
+      priceNote: P.packagesNote,
+      tagline: P.vizitka.tagline,
+      features: P.vizitka.features,
       highlighted: false,
     },
     {
       id: "landing",
-      name: "Landing",
+      name: P.landing.name,
       price: l6,
-      priceSuffix: "· 6 oy",
-      secondaryPriceLine: `${formatPrice(l12)} so'm · 12 oy`,
-      perMonthApproxLine: `≈ ${formatPrice(perMoL)} so'm/oy (6 oy paketi)`,
-      tagline: "Bir nechta bo'limli sayt",
-      features: [
-        "Vizitka tarifidagi barchasi",
-        "Xizmatlar va narxlar jadvali",
-        "Aloqa formasi (Telegram bot)",
-        "Galereya va sharhlar",
-      ],
+      priceSuffix: P.months6,
+      secondaryPriceLine: `${fmt(l12)} ${t.common.som} ${P.months12}`,
+      perMonthApproxLine: P.perMonth(fmt(perMoL)),
+      tagline: P.landing.tagline,
+      features: P.landing.features,
       highlighted: true,
     },
   ];
@@ -104,20 +101,19 @@ export async function Pricing() {
       <Container className="w-full">
         <div className="mx-auto mb-14 max-w-xl text-center">
           <p className="mb-4 inline-flex items-center rounded-full border border-brand-200 bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-700">
-            Tariflar
+            {P.eyebrow}
           </p>
           <h2 className="text-balance text-3xl font-semibold tracking-tight text-[color:var(--foreground)] sm:text-4xl md:text-5xl">
-            Oddiy va tushunarli
+            {P.title}
           </h2>
           <p className="mt-4 text-base text-[color:var(--muted-foreground)]">
-            {pricing.freePublishDays}{" "}
-            kun bepul. Karta ma&apos;lumotisiz. Istalgan vaqtda bekor qiling.
+            {P.subtitle(pricing.freePublishDays)}
           </p>
         </div>
 
         <div className="mx-auto grid max-w-4xl grid-cols-1 items-start gap-5 md:grid-cols-2">
           {plans.map((plan) => (
-            <PricingCard key={plan.id} plan={plan} />
+            <PricingCard key={plan.id} plan={plan} t={t} />
           ))}
         </div>
       </Container>
@@ -125,7 +121,7 @@ export async function Pricing() {
   );
 }
 
-function PricingCard({ plan }: { plan: Plan }) {
+function PricingCard({ plan, t }: { plan: Plan; t: Dict }) {
   return (
     <div
       className={cn(
@@ -137,7 +133,7 @@ function PricingCard({ plan }: { plan: Plan }) {
     >
       {plan.highlighted ? (
         <span className="pl-gradient absolute -top-3 left-1/2 inline-flex -translate-x-1/2 items-center rounded-full px-3.5 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-white shadow-[var(--shadow-brand)]">
-          Tavsiya
+          {t.pricing.recommended}
         </span>
       ) : null}
 
@@ -159,7 +155,7 @@ function PricingCard({ plan }: { plan: Plan }) {
             {formatPrice(plan.price)}
           </span>
           <span className="text-sm text-[color:var(--muted-foreground)]">
-            so&apos;m {plan.priceSuffix}
+            {t.common.som} {plan.priceSuffix}
           </span>
         </div>
         {plan.secondaryPriceLine ? (
@@ -219,7 +215,7 @@ function PricingCard({ plan }: { plan: Plan }) {
           variant={plan.highlighted ? "primary" : "secondary"}
           className="w-full"
         >
-          Tanlash
+          {t.pricing.choose}
         </Button>
       </div>
     </div>

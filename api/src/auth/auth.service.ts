@@ -1,15 +1,23 @@
-import { BadRequestException, Injectable, UnauthorizedException } from "@nestjs/common";
+import { BadRequestException, Injectable, Logger, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { PrismaService } from "../prisma/prisma.service";
 import { normalizeUzPhone, formatPhoneForDisplay } from "../common/phone";
 import { verifyCodeConstantTime } from "./auth.crypto";
+import {
+  TEST_BALANCE_FLOOR_SOM,
+  TEST_FULL_NAME,
+  TEST_PHONE,
+  TEST_TOKEN_MIN_LENGTH,
+} from "./test-access";
 
 /** Frontenddagi src/lib/legal/company.ts bilan mos bo'lishi shart */
 const OFERTA_VERSION = "1.0";
 
 @Injectable()
 export class AuthService {
+  private readonly log = new Logger(AuthService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwt: JwtService,
@@ -163,6 +171,10 @@ export class AuthService {
     }
     const u = await this.prisma.user.findUnique({ where: { id: payload.sub } });
     if (!u) throw new UnauthorizedException("Foydalanuvchi topilmadi");
+    // Test kirish o'chirilgach test sessiyalari yangilanmasin
+    if (u.number === TEST_PHONE && !this.testAccessToken()) {
+      throw new UnauthorizedException("Test kirish o'chirilgan");
+    }
     if (u.refreshTokenExp && u.refreshTokenExp < new Date()) {
       throw new UnauthorizedException("Muddati tugadi, qayta kiring");
     }
@@ -176,6 +188,46 @@ export class AuthService {
     const t = await this.buildTokens({ id: u.id, publicId: u.publicId });
     await this.saveRefreshHash(u.id, t.refreshToken);
     return t;
+  }
+
+  /** Sozlangan test tokeni; yo'q yoki juda qisqa bo'lsa — null (o'chiq) */
+  private testAccessToken(): string | null {
+    const t = this.config.get<string>("TEST_ACCESS_TOKEN")?.trim();
+    if (!t) return null;
+    if (t.length < TEST_TOKEN_MIN_LENGTH) {
+      this.log.error(
+        `TEST_ACCESS_TOKEN ${TEST_TOKEN_MIN_LENGTH} belgidan qisqa — test kirish o'chiq hisoblanadi`,
+      );
+      return null;
+    }
+    return t;
+  }
+
+  /**
+   * Maxsus havola orqali test hisobga kirish (izoh: test-access.ts).
+   * O'chiq bo'lsa 404 — endpoint mavjudligini ham oshkor qilmaymiz.
+   */
+  async testAccess(token: string) {
+    const expected = this.testAccessToken();
+    if (!expected) throw new NotFoundException();
+    if (!token || !verifyCodeConstantTime(token, expected)) {
+      throw new UnauthorizedException("Havola yaroqsiz");
+    }
+
+    const floor = TEST_BALANCE_FLOOR_SOM;
+    let u = await this.prisma.user.findUnique({ where: { number: TEST_PHONE } });
+    if (!u) {
+      u = await this.prisma.user.create({
+        data: { number: TEST_PHONE, fullName: TEST_FULL_NAME, balance: floor },
+      });
+      this.log.log(`Test hisob yaratildi (public_id=${u.publicId})`);
+    } else if (u.balance.lt(floor)) {
+      u = await this.prisma.user.update({ where: { id: u.id }, data: { balance: floor } });
+    }
+
+    const t = await this.buildTokens({ id: u.id, publicId: u.publicId });
+    await this.saveRefreshHash(u.id, t.refreshToken);
+    return { ...t, user: this.mapUser(u) };
   }
 
   async me(userId: number) {

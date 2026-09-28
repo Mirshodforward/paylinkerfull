@@ -10,6 +10,8 @@ import { api } from "@/lib/api";
 import { e164ToDisplay } from "@/lib/phone";
 import { clearTokens, getAccessToken } from "@/lib/auth-storage";
 import { useMobileNav } from "@/components/dashboard/mobile-nav-context";
+import type { Dict } from "@/lib/i18n/dict";
+import { useI18n } from "@/lib/i18n/provider";
 
 type MeUser = {
   number: string;
@@ -20,12 +22,17 @@ type MeUser = {
 
 const SUPPORT_URL = BRAND_SUPPORT_URL;
 
-const navItems = [
-  { label: "Bosh sahifa", href: "/dashboard", icon: <HomeIcon />, exact: true },
-  { label: "Saytlarim", href: "/dashboard/sites", icon: <SitesIcon /> },
-  { label: "Aloqa so'rovlari", href: "/dashboard/inbox", icon: <InboxIcon /> },
-  { label: "To'lov va obuna", href: "/dashboard/billing", icon: <CardIcon /> },
-  { label: "Sozlamalar", href: "/dashboard/settings", icon: <GearIcon /> },
+const navItems: {
+  key: keyof Dict["dash"]["nav"];
+  href: string;
+  icon: React.ReactNode;
+  exact?: boolean;
+}[] = [
+  { key: "home", href: "/dashboard", icon: <HomeIcon />, exact: true },
+  { key: "sites", href: "/dashboard/sites", icon: <SitesIcon /> },
+  { key: "inbox", href: "/dashboard/inbox", icon: <InboxIcon /> },
+  { key: "billing", href: "/dashboard/billing", icon: <CardIcon /> },
+  { key: "settings", href: "/dashboard/settings", icon: <GearIcon /> },
 ];
 
 function formatUzs(n: number) {
@@ -39,9 +46,9 @@ function userInitial(u: MeUser) {
   return d.slice(-1) || "?";
 }
 
-function userTitle(u: MeUser) {
+function userTitle(u: MeUser, fallback: string) {
   if (u.fullName?.trim()) return u.fullName.trim();
-  return "Mijoz";
+  return fallback;
 }
 
 function userSubtitle(u: MeUser) {
@@ -106,6 +113,8 @@ function ChevronDownIcon({ className }: { className?: string }) {
 }
 
 function SidebarUserCard({ onNavigate }: { onNavigate?: () => void }) {
+  const { t } = useI18n();
+  const U = t.dash.user;
   const router = useRouter();
   const pathname = usePathname();
   const [user, setUser] = useState<MeUser | null | "loading">("loading");
@@ -161,7 +170,7 @@ function SidebarUserCard({ onNavigate }: { onNavigate?: () => void }) {
         aria-expanded={expanded}
         aria-controls={expanded ? "sidebar-user-menu" : undefined}
         id="sidebar-user-profile-trigger"
-        aria-label={expanded ? "Profil menyusini yopish" : "Profil menyusini ochish"}
+        aria-label={expanded ? U.closeProfile : U.openProfile}
       >
         <div
           className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-brand-500 text-sm font-semibold text-white"
@@ -170,7 +179,7 @@ function SidebarUserCard({ onNavigate }: { onNavigate?: () => void }) {
           {userInitial(user)}
         </div>
         <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-semibold text-neutral-900">{userTitle(user)}</p>
+          <p className="truncate text-sm font-semibold text-neutral-900">{userTitle(user, U.client)}</p>
           <p className="mt-0.5 truncate text-xs text-neutral-500">{userSubtitle(user)}</p>
         </div>
         <ChevronDownIcon
@@ -194,15 +203,15 @@ function SidebarUserCard({ onNavigate }: { onNavigate?: () => void }) {
               <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-[0.625rem] bg-brand-50 text-brand-700">
                 <WalletIcon />
               </span>
-              <span className="min-w-0 flex-1 font-medium">Balans +</span>
-              <span className="shrink-0 text-xs text-neutral-500" title="so'm">
-                {formatUzs(user.balance)} <span className="text-[10px]">so'm</span>
+              <span className="min-w-0 flex-1 font-medium">{U.balance}</span>
+              <span className="shrink-0 text-xs text-neutral-500" title={t.common.som}>
+                {formatUzs(user.balance)} <span className="text-[10px]">{t.common.som}</span>
               </span>
             </Link>
           </li>
           <li>
             <MenuRowLink href={SUPPORT_URL} external icon={<HeadsetIcon />} onNavigate={onNavigate}>
-              Support
+              {U.support}
             </MenuRowLink>
           </li>
           <li>
@@ -214,12 +223,12 @@ function SidebarUserCard({ onNavigate }: { onNavigate?: () => void }) {
               <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-[0.625rem] bg-brand-50 text-brand-700">
                 <PersonIcon />
               </span>
-              <span className="min-w-0 flex-1 font-medium">Profil</span>
+              <span className="min-w-0 flex-1 font-medium">{U.profile}</span>
             </Link>
           </li>
           <li className="!mt-1.5 border-t border-neutral-100 pt-1.5">
             <MenuRowButton onClick={onLogout} icon={<LogoutIcon />}>
-              Chiqish
+              {U.logout}
             </MenuRowButton>
           </li>
         </ul>
@@ -229,13 +238,14 @@ function SidebarUserCard({ onNavigate }: { onNavigate?: () => void }) {
 }
 
 function SidebarBrand({ onPress }: { onPress?: () => void }) {
+  const { t } = useI18n();
   if (onPress) {
     return (
       <button
         type="button"
         onClick={onPress}
         className="inline-flex items-center gap-2.5 text-left text-[16px] font-semibold tracking-tight text-[color:var(--foreground)]"
-        aria-label="Menyuni yopish"
+        aria-label={t.nav.closeMenu}
       >
         <LogoMark size={24} />
         <span>{BRAND_NAME}</span>
@@ -252,6 +262,7 @@ function SidebarPanel({
   onNavigate?: () => void;
   onLogoClick?: () => void;
 }) {
+  const { t } = useI18n();
   const pathname = usePathname() ?? "";
   return (
     <>
@@ -259,7 +270,7 @@ function SidebarPanel({
         <SidebarBrand onPress={onLogoClick} />
       </div>
 
-      <nav className="min-h-0 flex-1 overflow-y-auto px-3 py-4" aria-label="Dashboard navigatsiya">
+      <nav className="min-h-0 flex-1 overflow-y-auto px-3 py-4" aria-label={t.dash.nav.aria}>
         <ul className="flex flex-col gap-0.5">
           {navItems.map((item) => {
             const active = item.exact ? pathname === item.href : pathname.startsWith(item.href);
@@ -277,7 +288,7 @@ function SidebarPanel({
                   )}
                 >
                   <span className="flex h-4 w-4 items-center justify-center">{item.icon}</span>
-                  {item.label}
+                  {t.dash.nav[item.key]}
                 </Link>
               </li>
             );
@@ -293,6 +304,7 @@ function SidebarPanel({
 }
 
 export function Sidebar() {
+  const { t } = useI18n();
   const pathname = usePathname() ?? "";
   const { mobileOpen, setMobileOpen } = useMobileNav();
 
@@ -326,14 +338,14 @@ export function Sidebar() {
             mobileOpen ? "opacity-100" : "opacity-0",
           )}
           onClick={() => setMobileOpen(false)}
-          aria-label="Menyuni yopish"
+          aria-label={t.nav.closeMenu}
           tabIndex={mobileOpen ? 0 : -1}
         />
         <aside
           id="dashboard-mobile-nav"
           role="dialog"
           aria-modal="true"
-          aria-label="Dashboard menyusi"
+          aria-label={t.dash.nav.menuAria}
           className={cn(
             "absolute left-0 top-0 flex h-full min-h-0 w-64 max-w-[85vw] flex-col border-r border-[color:var(--border)] bg-white shadow-xl transition-transform duration-200 ease-out",
             mobileOpen ? "translate-x-0" : "-translate-x-full pointer-events-none",

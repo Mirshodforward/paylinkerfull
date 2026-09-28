@@ -1,48 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { LEGAL_LINKS } from "@/components/marketing/nav";
 import { Container } from "@/components/ui/container";
 import { cn } from "@/lib/cn";
+import { LANGS } from "@/lib/i18n/config";
+import { useI18n } from "@/lib/i18n/provider";
 import { TODO } from "@/lib/legal/company";
 import type { Bilingual, Block, LegalDoc } from "@/lib/legal/types";
 
-type Lang = "uz" | "ru";
-
-const UI = {
-  uz: {
-    langLabel: "Til",
-    contents: "Mundarija",
-    back: "Bosh sahifa",
-    docs: "Hujjatlar",
-    print: "Chop etish",
-    todo: "To'ldirilishi kerak",
-  },
-  ru: {
-    langLabel: "Язык",
-    contents: "Содержание",
-    back: "Главная",
-    docs: "Документы",
-    print: "Печать",
-    todo: "Требует заполнения",
-  },
-} as const;
-
-export const LEGAL_LINKS = [
-  { href: "/oferta", uz: "Ommaviy oferta", ru: "Публичная оферта" },
-  { href: "/tolov", uz: "To'lov va pul qaytarish", ru: "Оплата и возврат" },
-  { href: "/xavfsizlik", uz: "Xavfsizlik", ru: "Безопасность" },
-] as const;
-
+/** Hujjat matni ikkala tilda ham lug'atdan emas, o'z faylidan keladi
+ *  (src/lib/legal/*) — bu yerda faqat sahifa interfeysi tarjima qilinadi. */
 export function LegalPage({ doc, current }: { doc: Bilingual; current: string }) {
-  const [lang, setLang] = useState<Lang>("uz");
+  const { lang, setLang, t } = useI18n();
   const d: LegalDoc = doc[lang];
-  const t = UI[lang];
 
   return (
     <div className="bg-[color:var(--surface-2)] pb-20">
       <Container className="pt-10">
-        {/* Yuqori qator: orqaga + til almashtirgich */}
+        {/* Yuqori qator: orqaga + til almashtirgich (global tilni o'zgartiradi) */}
         <div className="flex flex-wrap items-center justify-between gap-3">
           <Link
             href="/"
@@ -51,19 +27,19 @@ export function LegalPage({ doc, current }: { doc: Bilingual; current: string })
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
               <path d="M10 12L6 8l4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            {t.back}
+            {t.legal.back}
           </Link>
 
           <div
             className="inline-flex rounded-[var(--radius-control)] border border-[color:var(--border)] bg-white p-1"
             role="group"
-            aria-label={t.langLabel}
+            aria-label={t.common.language}
           >
-            {(["uz", "ru"] as const).map((l) => (
+            {LANGS.map((l) => (
               <button
                 key={l}
                 type="button"
-                onClick={() => setLang(l)}
+                onClick={() => l !== lang && setLang(l)}
                 aria-pressed={lang === l}
                 className={cn(
                   "rounded-[0.5rem] px-3 py-1.5 text-sm font-semibold transition-colors",
@@ -79,7 +55,7 @@ export function LegalPage({ doc, current }: { doc: Bilingual; current: string })
         </div>
 
         {/* Hujjatlar orasida o'tish */}
-        <nav className="mt-6 flex flex-wrap gap-2" aria-label={t.docs}>
+        <nav className="mt-6 flex flex-wrap gap-2" aria-label={t.legal.docs}>
           {LEGAL_LINKS.map((l) => (
             <Link
               key={l.href}
@@ -92,7 +68,7 @@ export function LegalPage({ doc, current }: { doc: Bilingual; current: string })
                   : "border-[color:var(--border)] bg-white text-[color:var(--muted-foreground)] hover:border-brand-300 hover:text-brand-700",
               )}
             >
-              {lang === "uz" ? l.uz : l.ru}
+              {t.legalLinks[l.key]}
             </Link>
           ))}
         </nav>
@@ -113,17 +89,17 @@ export function LegalPage({ doc, current }: { doc: Bilingual; current: string })
           <div className="px-6 py-8 sm:px-10">
             <div className="space-y-4">
               {d.intro.map((b, i) => (
-                <BlockView key={i} b={b} lang={lang} />
+                <BlockView key={i} b={b} />
               ))}
             </div>
 
             {/* Mundarija */}
             <nav
-              aria-label={t.contents}
+              aria-label={t.legal.contents}
               className="mt-10 rounded-[var(--radius-card)] border border-[color:var(--border)] bg-[color:var(--surface-2)] p-5"
             >
               <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[color:var(--muted-foreground)]">
-                {t.contents}
+                {t.legal.contents}
               </p>
               <ol className="mt-3 grid grid-cols-1 gap-x-6 gap-y-1.5 sm:grid-cols-2">
                 {d.sections.map((s) => (
@@ -146,7 +122,7 @@ export function LegalPage({ doc, current }: { doc: Bilingual; current: string })
                 </h2>
                 <div className="mt-3 space-y-3">
                   {s.blocks.map((b, i) => (
-                    <BlockView key={i} b={b} lang={lang} />
+                    <BlockView key={i} b={b} />
                   ))}
                 </div>
               </section>
@@ -158,13 +134,13 @@ export function LegalPage({ doc, current }: { doc: Bilingual; current: string })
   );
 }
 
-function BlockView({ b, lang }: { b: Block; lang: Lang }) {
-  const t = UI[lang];
+function BlockView({ b }: { b: Block }) {
+  const { t } = useI18n();
   switch (b.t) {
     case "p":
       return (
         <p className="text-[15px] leading-[1.75] text-[color:var(--foreground)]">
-          <Rich text={b.text} todo={t.todo} />
+          <Rich text={b.text} todo={t.legal.todo} />
         </p>
       );
     case "ul":
@@ -173,7 +149,7 @@ function BlockView({ b, lang }: { b: Block; lang: Lang }) {
           {b.items.map((it, i) => (
             <li key={i} className="flex gap-3 text-[15px] leading-[1.7] text-[color:var(--foreground)]">
               <span aria-hidden className="mt-[0.6em] h-1.5 w-1.5 shrink-0 rounded-full bg-brand-400" />
-              <span><Rich text={it} todo={t.todo} /></span>
+              <span><Rich text={it} todo={t.legal.todo} /></span>
             </li>
           ))}
         </ul>
@@ -189,7 +165,7 @@ function BlockView({ b, lang }: { b: Block; lang: Lang }) {
               >
                 {i + 1}
               </span>
-              <span><Rich text={it} todo={t.todo} /></span>
+              <span><Rich text={it} todo={t.legal.todo} /></span>
             </li>
           ))}
         </ol>
@@ -197,13 +173,13 @@ function BlockView({ b, lang }: { b: Block; lang: Lang }) {
     case "note":
       return (
         <p className="rounded-[var(--radius-card)] border border-brand-200 bg-brand-50 px-4 py-3 text-[15px] leading-[1.7] text-brand-900">
-          <Rich text={b.text} todo={t.todo} />
+          <Rich text={b.text} todo={t.legal.todo} />
         </p>
       );
     case "warn":
       return (
         <p className="rounded-[var(--radius-card)] border border-[color:var(--warning-border)] bg-[color:var(--warning-bg)] px-4 py-3 text-[15px] leading-[1.7] text-[color:var(--warning)]">
-          <Rich text={b.text} todo={t.todo} />
+          <Rich text={b.text} todo={t.legal.todo} />
         </p>
       );
     case "table":
@@ -235,7 +211,7 @@ function BlockView({ b, lang }: { b: Block; lang: Lang }) {
                           : "text-[color:var(--muted-foreground)]",
                       )}
                     >
-                      <Rich text={c} todo={t.todo} />
+                      <Rich text={c} todo={t.legal.todo} />
                     </td>
                   ))}
                 </tr>

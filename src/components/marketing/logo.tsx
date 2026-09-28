@@ -1,7 +1,10 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { BRAND_NAME, LOGO_SRC } from "@/lib/brand";
 import { cn } from "@/lib/cn";
+import { useI18n } from "@/lib/i18n/provider";
 
 /** @deprecated Logo endi bitta rasm — variantlar saqlanib qolgan (chaqiruvchilar buzilmasin uchun) */
 export type LogoVariantKey = "v1" | "v2" | "v3";
@@ -23,10 +26,11 @@ export function Logo({
   markOnly = false,
 }: LogoProps) {
   const inverse = variant === "inverse";
+  const { t } = useI18n();
   return (
     <Link
       href="/"
-      aria-label={`${BRAND_NAME} bosh sahifa`}
+      aria-label={`${BRAND_NAME} — ${t.common.homeAria}`}
       className={cn(
         "inline-flex items-center gap-2 text-[16px] font-semibold tracking-tight",
         inverse ? "text-white" : "text-[color:var(--foreground)]",

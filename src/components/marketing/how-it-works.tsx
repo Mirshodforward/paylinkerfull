@@ -1,31 +1,16 @@
 import { Container } from "@/components/ui/container";
 import { SITE_DOMAIN } from "@/lib/brand";
+import { fill } from "@/lib/i18n/dict";
+import { getDict } from "@/lib/i18n/server";
 import { SectionIntro } from "./products";
 
-const STEPS = [
-  {
-    n: "01",
-    title: "Telegram orqali kiring",
-    body: "Telefon raqamingizni kiriting, botdan kelgan 6 xonali kodni yozing. Parol kerak emas.",
-  },
-  {
-    n: "02",
-    title: "Shablon tanlang",
-    body: "Vizitka uchun 7 ta, landing uchun 3 ta shablon. Rang temasi va fon naqshini bir bosishda almashtirasiz.",
-  },
-  {
-    n: "03",
-    title: "Matn va rasm yozing",
-    body: "Tahrirlagichda o'zgartirishni darhol telefon ekrani ko'rinishida ko'rasiz. Saqlash tugmasi bir joyda.",
-  },
-  {
-    n: "04",
-    title: "Chop eting",
-    body: `Sayt ${SITE_DOMAIN}/nomingiz manzilida ochiladi. Havolani ulashing yoki QR kodni chop eting.`,
-  },
-];
-
-export function HowItWorks() {
+export async function HowItWorks() {
+  const { t } = await getDict();
+  const STEPS = t.how.steps.map((st, i) => ({
+    n: String(i + 1).padStart(2, "0"),
+    title: st.title,
+    body: fill(st.body, { domain: SITE_DOMAIN }),
+  }));
   return (
     <section
       id="qanday"
@@ -33,9 +18,9 @@ export function HowItWorks() {
     >
       <Container>
         <SectionIntro
-          eyebrow="Qanday ishlaydi"
-          title="To'rt qadam — taxminan 15 daqiqa"
-          description="Ro'yxatdan o'tishdan chop etishgacha. Hech qanday texnik sozlama yo'q."
+          eyebrow={t.how.eyebrow}
+          title={t.how.title}
+          description={t.how.description}
         />
 
         <ol className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">

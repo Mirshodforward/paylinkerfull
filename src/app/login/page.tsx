@@ -1,13 +1,17 @@
 import Image from "next/image";
 import { LoginForm } from "@/components/auth/login-form";
+import type { Metadata } from "next";
+import { LangSwitch } from "@/components/i18n/lang-switch";
 import { BRAND_NAME, LOGO_SRC } from "@/lib/brand";
+import { getDict } from "@/lib/i18n/server";
 
-export const metadata = {
-  title: `Kirish — ${BRAND_NAME}`,
-  description: "Telegram orqali tezkor kirish",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getDict();
+  return { title: `${t.meta.login} — ${BRAND_NAME}`, description: t.meta.loginDescription };
+}
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const { t } = await getDict();
   return (
     <div className="relative isolate flex min-h-full flex-1 items-center justify-center overflow-hidden px-4 py-12">
       <div aria-hidden className="pl-grid absolute inset-0 -z-10" />
@@ -22,6 +26,8 @@ export default function LoginPage() {
         style={{ background: "var(--brand-to)", opacity: 0.12 }}
       />
 
+      <LangSwitch className="absolute right-4 top-4 sm:right-6 sm:top-6" />
+
       <div className="pl-rise w-full max-w-md rounded-[var(--radius-panel)] border border-[color:var(--border)] bg-white/90 p-6 shadow-[var(--shadow-lg)] backdrop-blur-xl sm:p-8">
         <div className="flex flex-col items-center text-center">
           <Image
@@ -33,10 +39,10 @@ export default function LoginPage() {
             priority
           />
           <h1 className="mt-5 text-2xl font-semibold tracking-tight text-[color:var(--foreground)]">
-            Kirish
+            {t.login.title}
           </h1>
           <p className="mt-1 text-sm text-[color:var(--muted-foreground)]">
-            Telegram bot — tezkor kirish
+            {t.login.subtitle}
           </p>
         </div>
         <div className="mt-7">

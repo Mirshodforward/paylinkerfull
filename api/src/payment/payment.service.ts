@@ -3,6 +3,8 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
+  Logger,
+  ServiceUnavailableException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Prisma } from '@prisma/client';
@@ -57,6 +59,8 @@ function parseClickAction(data: Record<string, unknown>): number | undefined {
 
 @Injectable()
 export class PaymentService {
+  private readonly log = new Logger(PaymentService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly config: ConfigService,
@@ -120,7 +124,16 @@ export class PaymentService {
     const hasViz = opts?.vizitkaId != null;
     const hasLnd = opts?.landingId != null;
     const hasMo = opts?.subscriptionMonths != null;
-    if (!hasMo || (hasViz === hasLnd)) {
+    /**
+     * Ikki xil to'lov:
+     *  1) Obuna uchun — subscriptionMonths + (vizitkaId YOKI landingId).
+     *     handleComplete obunani to'g'ridan-to'g'ri uzaytiradi.
+     *  2) Hisobni to'ldirish — hech biri yo'q, faqat summa (/dashboard/billing).
+     *     handleComplete summani balansga qo'shadi.
+     * Aralash holat (masalan faqat muddat yoki ikkala ID) — xato.
+     */
+    const isTopUp = !hasViz && !hasLnd && !hasMo;
+    if (!isTopUp && (!hasMo || hasViz === hasLnd)) {
       throw new BadRequestException(
         'subscriptionMonths bilan vizitkaId yoki landingId (bittasi) yuborilishi kerak',
       );
@@ -158,9 +171,11 @@ export class PaymentService {
     const merchantIdRaw = this.config.get<string>('CLICK_MERCHANT_ID')?.trim();
     const merchantUserId = this.config.get<string>('CLICK_MERCHANT_USER_ID')?.trim();
     if (!serviceIdRaw || !merchantIdRaw || !merchantUserId) {
-      throw new InternalServerErrorException(
+      // Sozlama nomlari foydalanuvchiga ko'rsatilmasin — faqat jurnalda
+      this.log.error(
         'CLICK_SERVICE_ID, CLICK_MERCHANT_ID yoki CLICK_MERCHANT_USER_ID sozlanmagan',
       );
+      throw new ServiceUnavailableException("To'lov tizimi vaqtincha mavjud emas");
     }
     const serviceId = Number(serviceIdRaw);
     const merchantId = Number(merchantIdRaw);

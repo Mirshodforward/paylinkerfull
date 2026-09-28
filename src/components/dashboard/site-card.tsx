@@ -10,6 +10,8 @@ import { downloadSiteQRCode } from "@/components/editor/qr-code";
 import { cn } from "@/lib/cn";
 import { SITE_DOMAIN, siteFileName } from "@/lib/brand";
 import { api, ApiError } from "@/lib/api";
+import type { Dict } from "@/lib/i18n/dict";
+import { useI18n } from "@/lib/i18n/provider";
 
 type SiteCardProps = {
   site: UnknownSite;
@@ -17,6 +19,8 @@ type SiteCardProps = {
 };
 
 export function SiteCard({ site, onUpdated }: SiteCardProps) {
+  const { t } = useI18n();
+  const C = t.dash.card;
   const [extendOpen, setExtendOpen] = useState(false);
   const [current, setCurrent] = useState(site);
 
@@ -66,13 +70,13 @@ export function SiteCard({ site, onUpdated }: SiteCardProps) {
 
       <div className="grid grid-cols-3 gap-1.5 rounded-lg border border-[color:var(--border)] bg-neutral-50 p-2.5 text-center sm:gap-3 sm:p-3">
         <Meta
-          label="Tarif"
-          value={current.type === "vizitka" ? "Vizitka" : "Landing"}
+          label={C.tariff}
+          value={current.type === "vizitka" ? t.dash.list.vizitka : t.dash.list.landing}
         />
-        <Meta label="Oxirgi" value={formatRelative(current.updatedAt)} />
+        <Meta label={C.last} value={formatRelative(current.updatedAt, C)} />
         <Meta
-          label="Obuna"
-          value={days > 0 ? `${days} kun` : "Tugagan"}
+          label={C.sub}
+          value={days > 0 ? C.days(days) : C.expired}
           warning={days <= 0}
         />
       </div>
@@ -94,7 +98,7 @@ export function SiteCard({ site, onUpdated }: SiteCardProps) {
           <button
             type="button"
             className="absolute inset-0 bg-[color:var(--brand-950)]/50"
-            aria-label="Yopish"
+            aria-label={C.close}
             onClick={() => setExtendOpen(false)}
           />
           <div className="relative z-10 max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-t-2xl border border-[color:var(--border)] bg-white p-4 shadow-xl sm:rounded-[var(--radius-card)] sm:p-5">
@@ -103,13 +107,13 @@ export function SiteCard({ site, onUpdated }: SiteCardProps) {
                 id="extend-vizitka-title"
                 className="text-lg font-semibold text-[color:var(--foreground)]"
               >
-                Obunani uzaytirish
+                {C.extend}
               </h2>
               <button
                 type="button"
                 onClick={() => setExtendOpen(false)}
                 className="inline-flex h-8 w-8 items-center justify-center rounded-md text-neutral-500 hover:bg-neutral-100 hover:text-brand-700"
-                aria-label="Yopish"
+                aria-label={C.close}
               >
                 ×
               </button>
@@ -152,17 +156,19 @@ function Meta({
 }
 
 function StatusBadge({ status }: { status: UnknownSite["status"] }) {
+  const { t } = useI18n();
+  const C = t.dash.card;
   const map: Record<UnknownSite["status"], { label: string; cls: string }> = {
     draft: {
-      label: "Qoralama",
+      label: C.draft,
       cls: "border-[color:var(--border)] text-neutral-700 bg-white",
     },
     published: {
-      label: "Nashrda",
+      label: C.published,
       cls: "pl-gradient border-transparent text-white",
     },
     paused: {
-      label: "Pauza",
+      label: C.paused,
       cls: "border-[color:var(--border)] text-neutral-500 bg-neutral-100",
     },
   };
@@ -180,6 +186,8 @@ function StatusBadge({ status }: { status: UnknownSite["status"] }) {
 }
 
 function Menu({ site }: { site: UnknownSite }) {
+  const { t } = useI18n();
+  const C = t.dash.card;
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
@@ -255,7 +263,7 @@ function Menu({ site }: { site: UnknownSite }) {
       setDeleteOpen(false);
     } catch (e) {
       const msg =
-        e instanceof ApiError ? e.message : "O'chirishda xato yuz berdi. Qayta urinib ko'ring.";
+        e instanceof ApiError ? e.message : C.deleteError;
       setDeleteError(msg);
     } finally {
       setDeleting(false);
@@ -266,7 +274,7 @@ function Menu({ site }: { site: UnknownSite }) {
     <div ref={ref} className="relative">
       <button
         type="button"
-        aria-label="Qo'shimcha amallar"
+        aria-label={C.moreActions}
         aria-expanded={open}
         onClick={(e) => {
           e.stopPropagation();
@@ -285,12 +293,12 @@ function Menu({ site }: { site: UnknownSite }) {
           className="absolute right-0 top-11 z-10 w-44 overflow-hidden rounded-lg border border-[color:var(--border)] bg-white shadow-[0_14px_40px_-18px_rgba(0,0,0,0.3)]"
           onClick={(e) => e.stopPropagation()}
         >
-          <MenuButton onClick={handleDownloadQR}>QR yuklash</MenuButton>
+          <MenuButton onClick={handleDownloadQR}>{C.qr}</MenuButton>
           <div className="h-px bg-[color:var(--border)]" />
-          <MenuButton onClick={handleDuplicate}>Nusxa olish</MenuButton>
+          <MenuButton onClick={handleDuplicate}>{C.duplicate}</MenuButton>
           <div className="h-px bg-[color:var(--border)]" />
           <MenuButton destructive onClick={handleDeleteClick}>
-            O&apos;chirish
+            {C.delete}
           </MenuButton>
         </div>
       ) : null}
@@ -306,18 +314,17 @@ function Menu({ site }: { site: UnknownSite }) {
           <button
             type="button"
             className="absolute inset-0 bg-[color:var(--brand-950)]/50"
-            aria-label="Bekor qilish"
+            aria-label={C.cancel}
             disabled={deleting}
             onClick={() => !deleting && setDeleteOpen(false)}
           />
           <div className="relative z-10 w-full max-w-md rounded-[var(--radius-card)] border border-[color:var(--border)] bg-white p-6 shadow-xl">
             <h2 id="delete-site-title" className="text-lg font-semibold text-[color:var(--foreground)]">
-              Saytni o&apos;chirish
+              {C.deleteSiteTitle}
             </h2>
             <p id="delete-site-desc" className="mt-3 text-sm leading-relaxed text-neutral-600">
               <span className="font-semibold text-[color:var(--foreground)]">{site.content.businessName}</span> (
-              <span className="font-mono text-neutral-800">{site.slug}</span>) butunlay o&apos;chiriladi.
-              Bu amaldan keyin ma&apos;lumotlarni qayta tiklab bo&apos;lmaydi.
+              <span className="font-mono text-neutral-800">{site.slug}</span>) {C.deleteSiteBody}
             </p>
             {deleteError ? (
               <p className="mt-3 text-sm text-red-600" role="alert">
@@ -331,7 +338,7 @@ function Menu({ site }: { site: UnknownSite }) {
                 onClick={() => setDeleteOpen(false)}
                 className="inline-flex h-10 items-center rounded-md border border-[color:var(--border)] bg-white px-4 text-sm font-medium text-[color:var(--foreground)] transition-colors hover:bg-neutral-50 disabled:opacity-50"
               >
-                Bekor qilish
+                {C.cancel}
               </button>
               <button
                 type="button"
@@ -339,7 +346,7 @@ function Menu({ site }: { site: UnknownSite }) {
                 onClick={() => void runDelete()}
                 className="inline-flex h-10 items-center rounded-md bg-red-600 px-4 text-sm font-medium text-white transition-colors hover:bg-red-700 disabled:opacity-50"
               >
-                {deleting ? "O'chirilmoqda…" : "Ha, o'chirish"}
+                {deleting ? C.deleting : C.confirmDelete}
               </button>
             </div>
           </div>
@@ -374,14 +381,14 @@ function MenuButton({
   );
 }
 
-function formatRelative(iso: string): string {
+function formatRelative(iso: string, C: Dict["dash"]["card"]): string {
   const diffMs = Date.now() - new Date(iso).getTime();
   const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-  if (days <= 0) return "bugun";
-  if (days === 1) return "kecha";
-  if (days < 7) return `${days} kun oldin`;
+  if (days <= 0) return C.today;
+  if (days === 1) return C.yesterday;
+  if (days < 7) return C.daysAgo(days);
   const weeks = Math.floor(days / 7);
-  if (weeks < 4) return `${weeks} hafta oldin`;
+  if (weeks < 4) return C.weeksAgo(weeks);
   const months = Math.floor(days / 30);
-  return `${months} oy oldin`;
+  return C.monthsAgo(months);
 }

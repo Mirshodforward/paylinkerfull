@@ -1,13 +1,15 @@
 import { Topbar } from "@/components/dashboard/topbar";
 import { ComingSoon } from "@/components/dashboard/coming-soon";
+import { getDict } from "@/lib/i18n/server";
 
-export default function SettingsPage() {
+export default async function SettingsPage() {
+  const { t } = await getDict();
   return (
     <>
-      <Topbar breadcrumb="Sozlamalar" title="Sozlamalar" />
+      <Topbar breadcrumb={t.dash.pages.breadcrumb} title={t.dash.pages.settings} />
       <ComingSoon
-        title="Hisob sozlamalari"
-        description="Shaxsiy ma'lumotlar, xavfsizlik va bildirishnomalar. Auth tizimi ulangandan keyin faollashadi."
+        title={t.dash.soon.settingsTitle}
+        description={t.dash.soon.settingsDesc}
       />
     </>
   );

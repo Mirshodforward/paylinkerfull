@@ -1,9 +1,9 @@
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
+import { getDict } from "@/lib/i18n/server";
 
-const POINTS = ["Dasturchisiz", "Mobilga mos", "10 kun bepul"];
-
-export function Hero() {
+export async function Hero() {
+  const { t } = await getDict();
   return (
     <section className="relative isolate flex min-h-[min(88dvh,46rem)] items-center overflow-hidden">
       {/* Fon: nozik brend to'ri + ikkita yumshoq nur */}
@@ -23,21 +23,21 @@ export function Hero() {
         <div className="mx-auto max-w-3xl text-center">
           <p className="pl-rise pl-rise-1 mx-auto inline-flex items-center gap-2 rounded-full border border-brand-200 bg-white/70 px-3.5 py-1.5 text-[13px] font-medium text-brand-700 shadow-[var(--shadow-sm)] backdrop-blur">
             <span className="pl-gradient h-1.5 w-1.5 rounded-full" aria-hidden />
-            Vizitka va landing — bir platformada
+            {t.hero.badge}
           </p>
 
           <h1 className="pl-rise pl-rise-2 mt-6 text-balance text-5xl font-semibold leading-[1.04] tracking-tight text-[color:var(--foreground)] sm:text-6xl md:text-7xl">
-            <span className="pl-gradient-text">15 daqiqada</span> biznes
-            saytingizni yarating
+            <span className="pl-gradient-text">{t.hero.titleAccent}</span>{" "}
+            {t.hero.titleRest}
           </h1>
 
           <p className="pl-rise pl-rise-3 mx-auto mt-6 max-w-xl text-balance text-lg leading-relaxed text-[color:var(--muted-foreground)] sm:text-xl">
-            Dasturchisiz va dizaynersiz. Shablon tanlang, matn yozing — tayyor.
+            {t.hero.lead}
           </p>
 
           <div className="pl-rise pl-rise-4 mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Button href="/signup" size="lg" className="w-full sm:w-auto">
-              Boshlash
+              {t.hero.start}
             </Button>
             <Button
               href="/demo"
@@ -45,12 +45,12 @@ export function Hero() {
               size="lg"
               className="w-full sm:w-auto"
             >
-              Namunani ko&apos;rish
+              {t.hero.demo}
             </Button>
           </div>
 
           <ul className="pl-rise pl-rise-4 mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-[color:var(--muted-foreground)]">
-            {POINTS.map((p) => (
+            {t.hero.points.map((p) => (
               <li key={p} className="inline-flex items-center gap-2">
                 <CheckDot />
                 {p}
@@ -59,7 +59,7 @@ export function Hero() {
           </ul>
 
           <p className="mt-5 text-sm text-[color:var(--muted-foreground)]">
-            Karta ma&apos;lumotisiz · Istalgan vaqtda bekor qilish
+            {t.hero.trust}
           </p>
         </div>
       </Container>

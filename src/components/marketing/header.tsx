@@ -4,12 +4,14 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
-import { LEGAL_LINKS } from "@/components/legal/legal-page";
+import { LangSwitch } from "@/components/i18n/lang-switch";
 import { cn } from "@/lib/cn";
+import { useI18n } from "@/lib/i18n/provider";
 import { Logo } from "./logo";
-import { NAV_SECTIONS } from "./nav";
+import { LEGAL_LINKS, NAV_SECTIONS } from "./nav";
 
 export function Header() {
+  const { t } = useI18n();
   const [open, setOpen] = useState(false);
   const [docsOpen, setDocsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -64,10 +66,10 @@ export function Header() {
       <Container className="flex h-16 items-center justify-between gap-4">
         <Logo />
 
-        <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Asosiy navigatsiya">
+        <nav className="hidden items-center gap-0.5 lg:flex" aria-label={t.nav.ariaMain}>
           {NAV_SECTIONS.map((s) => (
-            <a key={s.id} href={`#${s.id}`} className={navLink}>
-              {s.label}
+            <a key={s.id} href={`/#${s.id}`} className={navLink}>
+              {t.nav[s.key]}
             </a>
           ))}
 
@@ -80,7 +82,7 @@ export function Header() {
               aria-haspopup="menu"
               className={cn(navLink, "inline-flex items-center gap-1", docsOpen && "bg-brand-50 text-brand-700")}
             >
-              Hujjatlar
+              {t.nav.docs}
               <svg
                 width="14"
                 height="14"
@@ -106,7 +108,7 @@ export function Header() {
                     onClick={() => setDocsOpen(false)}
                     className="block rounded-[0.625rem] px-3 py-2.5 text-sm font-medium text-[color:var(--muted-foreground)] transition-colors hover:bg-brand-50 hover:text-brand-700"
                   >
-                    {l.uz}
+                    {t.legalLinks[l.key]}
                   </Link>
                 ))}
               </div>
@@ -115,15 +117,16 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <LangSwitch />
           <Button href="/login" size="sm" className="min-w-[5.5rem]">
-            Kirish
+            {t.nav.login}
           </Button>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-controls="mobil-menyu"
-            aria-label={open ? "Menyuni yopish" : "Menyuni ochish"}
+            aria-label={open ? t.nav.closeMenu : t.nav.openMenu}
             className="inline-flex h-10 w-10 items-center justify-center rounded-[var(--radius-control)] text-[color:var(--foreground)] transition-colors hover:bg-brand-50 hover:text-brand-700 lg:hidden"
           >
             {open ? <CloseIcon /> : <MenuIcon />}
@@ -137,16 +140,16 @@ export function Header() {
             {NAV_SECTIONS.map((s) => (
               <a
                 key={s.id}
-                href={`#${s.id}`}
+                href={`/#${s.id}`}
                 onClick={() => setOpen(false)}
                 className="rounded-[var(--radius-control)] px-3 py-3 text-[15px] font-medium text-[color:var(--foreground)] transition-colors hover:bg-brand-50 hover:text-brand-700"
               >
-                {s.label}
+                {t.nav[s.key]}
               </a>
             ))}
 
             <p className="mt-2 border-t border-[color:var(--border)] px-3 pb-1 pt-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-[color:var(--muted-foreground)]">
-              Hujjatlar
+              {t.nav.docs}
             </p>
             {LEGAL_LINKS.map((l) => (
               <Link
@@ -155,7 +158,7 @@ export function Header() {
                 onClick={() => setOpen(false)}
                 className="rounded-[var(--radius-control)] px-3 py-3 text-[15px] font-medium text-[color:var(--foreground)] transition-colors hover:bg-brand-50 hover:text-brand-700"
               >
-                {l.uz}
+                {t.legalLinks[l.key]}
               </Link>
             ))}
           </Container>

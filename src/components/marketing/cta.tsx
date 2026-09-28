@@ -1,7 +1,9 @@
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
+import { getDict } from "@/lib/i18n/server";
 
-export function Cta() {
+export async function Cta() {
+  const { t } = await getDict();
   return (
     <section className="border-t border-[color:var(--border)] bg-white py-20 sm:py-24">
       <Container>
@@ -19,17 +21,17 @@ export function Cta() {
 
           <div className="relative">
             <h2 className="text-balance text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-              Bugun boshlang — 10 kun bepul
+              {t.cta.title}
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-balance text-base leading-relaxed text-white/70">
-              Karta ma&apos;lumotisiz. Yoqmasa hech narsa to&apos;lamaysiz.
+              {t.cta.lead}
             </p>
             <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Button href="/signup" size="lg" variant="inverse" className="w-full sm:w-auto">
-                Saytimni yaratish
+                {t.cta.primary}
               </Button>
               <Button href="/demo" size="lg" variant="outline" className="w-full sm:w-auto">
-                Namunani ko&apos;rish
+                {t.cta.secondary}
               </Button>
             </div>
           </div>

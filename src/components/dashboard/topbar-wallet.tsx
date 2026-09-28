@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { getAccessToken } from "@/lib/auth-storage";
 import { cn } from "@/lib/cn";
+import { useI18n } from "@/lib/i18n/provider";
 
 type MeUser = { balance: number };
 
@@ -19,6 +20,7 @@ export function TopbarWalletActions({
 }: {
   className?: string;
 }) {
+  const { t } = useI18n();
   const pathname = usePathname();
   const hideNewPlus = pathname === "/dashboard/sites/new";
   const [balance, setBalance] = useState<number | null>(null);
@@ -46,7 +48,7 @@ export function TopbarWalletActions({
           {balance != null ? (
             <>
               {formatUzs(balance)}{" "}
-              <span className="text-xs font-normal text-neutral-500">so&apos;m</span>
+              <span className="text-xs font-normal text-neutral-500">{t.common.som}</span>
             </>
           ) : (
             <span className="inline-block h-4 w-16 animate-pulse rounded bg-neutral-200/90" />
@@ -57,8 +59,8 @@ export function TopbarWalletActions({
         <Link
           href="/dashboard/sites/new"
           className="inline-flex h-10 w-10 shrink-0 items-center justify-center pl-gradient rounded-xl text-white shadow-sm transition-colors hover:brightness-[1.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/30 focus-visible:ring-offset-2"
-          aria-label="Yangi sayt yaratish"
-          title="Yangi sayt"
+          aria-label={t.dash.wallet.newSiteAria}
+          title={t.dash.wallet.newSite}
         >
           <PlusGlyph className="h-5 w-5" />
         </Link>

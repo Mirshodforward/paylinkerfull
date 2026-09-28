@@ -1,13 +1,16 @@
+import type { Metadata } from "next";
+import { BRAND_NAME } from "@/lib/brand";
+import { getLang } from "@/lib/i18n/server";
 import { Header } from "@/components/marketing/header";
 import { Footer } from "@/components/marketing/footer";
 import { LegalPage } from "@/components/legal/legal-page";
 import { XAVFSIZLIK_RU, XAVFSIZLIK_UZ } from "@/lib/legal/xavfsizlik";
 
-export const metadata = {
-  title: "Xavfsizlik va firibgarlikka qarshi choralar — Paylinker",
-  description:
-    "Paylinker firibgarlik operatsiyalari xavfini qanday cheklaydi va nazorat qiladi: amaldagi cheklovlar, monitoring va foydalanuvchi uchun tavsiyalar.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const lang = await getLang();
+  const d = lang === "ru" ? XAVFSIZLIK_RU : XAVFSIZLIK_UZ;
+  return { title: `${d.title} — ${BRAND_NAME}`, description: d.subtitle };
+}
 
 export default function XavfsizlikPage() {
   return (

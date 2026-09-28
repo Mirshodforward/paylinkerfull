@@ -1,52 +1,21 @@
 import { Container } from "@/components/ui/container";
+import { SITE_DOMAIN } from "@/lib/brand";
+import { getDict } from "@/lib/i18n/server";
 import { SectionIntro } from "./products";
 
-type Feature = { icon: React.ReactNode; title: string; body: string };
-
-const FEATURES: Feature[] = [
-  {
-    icon: <LinkIcon />,
-    title: "O'z manzilingiz",
-    body: "Sayt paylinker.uz/nomingiz manzilida ochiladi. Domen sotib olish yoki hosting sozlash shart emas.",
-  },
-  {
-    icon: <TelegramIcon />,
-    title: "Telegram orqali kirish",
-    body: "Parol o'ylab topish va eslab qolish kerak emas — telefon raqam va botdan kelgan kod yetarli.",
-  },
-  {
-    icon: <PaletteIcon />,
-    title: "16 rang temasi",
-    body: "8 ta yorug', 8 ta to'q tema va 6 xil fon naqshi. Bir bosishda butun sayt ko'rinishi o'zgaradi.",
-  },
-  {
-    icon: <PhoneIcon />,
-    title: "Mobilga mos",
-    body: "Mijozlarning ko'pchiligi telefondan kiradi. Har bir shablon avval telefon ekrani uchun ishlangan.",
-  },
-  {
-    icon: <QrIcon />,
-    title: "QR kod",
-    body: "Saytingizning QR kodini yuklab oling — menyu, vizitka kartochkasi yoki afishaga chop eting.",
-  },
-  {
-    icon: <InboxIcon />,
-    title: "Aloqa so'rovlari",
-    body: "Landing saytdagi formani to'ldirgan mijoz so'rovi to'g'ridan-to'g'ri Telegram botingizga tushadi.",
-  },
-  {
-    icon: <MapIcon />,
-    title: "Xarita va ish vaqti",
-    body: "Manzil xaritada, ish vaqti jadvalda. Mijoz qayerga borishini va qachon ochiqligini darrov ko'radi.",
-  },
-  {
-    icon: <CardIcon />,
-    title: "CLICK orqali to'lov",
-    body: "Obunani kabinetdan CLICK orqali to'laysiz. Karta ma'lumotlari Paylinkerda saqlanmaydi.",
-  },
-];
-
-export function Features() {
+export async function Features() {
+  const { t } = await getDict();
+  const I = t.features.items;
+  const FEATURES = [
+    { icon: <LinkIcon />, title: I.address.title, body: I.address.body(SITE_DOMAIN) },
+    { icon: <TelegramIcon />, ...I.telegram },
+    { icon: <PaletteIcon />, ...I.themes },
+    { icon: <PhoneIcon />, ...I.mobile },
+    { icon: <QrIcon />, ...I.qr },
+    { icon: <InboxIcon />, ...I.inbox },
+    { icon: <MapIcon />, ...I.map },
+    { icon: <CardIcon />, ...I.click },
+  ];
   return (
     <section
       id="imkoniyatlar"
@@ -54,9 +23,9 @@ export function Features() {
     >
       <Container>
         <SectionIntro
-          eyebrow="Imkoniyatlar"
-          title="Sayt uchun kerak bo'ladigan hammasi"
-          description="Dasturchi, dizayner, hosting va domen — hech biri kerak emas. Hammasi platformaning ichida."
+          eyebrow={t.features.eyebrow}
+          title={t.features.title}
+          description={t.features.description}
         />
 
         <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">

@@ -2,9 +2,12 @@ import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { BRAND_NAME, SITE_DOMAIN, SUPPORT_URL, TELEGRAM_BOT } from "@/lib/brand";
 import { Logo } from "./logo";
-import { NAV_SECTIONS } from "./nav";
+import { getDict } from "@/lib/i18n/server";
+import { LEGAL_LINKS, NAV_SECTIONS } from "./nav";
 
-export function Footer() {
+export async function Footer() {
+  const { t } = await getDict();
+  const F = t.footer;
   return (
     <footer className="border-t border-[color:var(--border)] bg-[color:var(--surface-2)]">
       <Container className="py-14">
@@ -12,35 +15,36 @@ export function Footer() {
           <div className="col-span-2 sm:col-span-4 lg:col-span-1">
             <Logo />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-[color:var(--muted-foreground)]">
-              O&apos;zbekistondagi kichik va o&apos;rta biznes uchun vizitka va
-              landing sayt yaratish platformasi.
+              {F.about}
             </p>
           </div>
 
-          <FooterCol title="Sahifa">
+          <FooterCol title={F.colPage}>
             {NAV_SECTIONS.map((s) => (
-              <FooterLink key={s.id} href={`#${s.id}`}>
-                {s.label}
+              <FooterLink key={s.id} href={`/#${s.id}`}>
+                {t.nav[s.key]}
               </FooterLink>
             ))}
           </FooterCol>
 
-          <FooterCol title="Mahsulot">
-            <FooterLink href="/signup?plan=vizitka">Vizitka</FooterLink>
-            <FooterLink href="/signup?plan=landing">Landing</FooterLink>
-            <FooterLink href="/demo">Namuna</FooterLink>
-            <FooterLink href="/login">Kirish</FooterLink>
+          <FooterCol title={F.colProduct}>
+            <FooterLink href="/signup?plan=vizitka">{F.vizitka}</FooterLink>
+            <FooterLink href="/signup?plan=landing">{F.landing}</FooterLink>
+            <FooterLink href="/demo">{F.demo}</FooterLink>
+            <FooterLink href="/login">{F.login}</FooterLink>
           </FooterCol>
 
-          <FooterCol title="Hujjatlar">
-            <FooterLink href="/oferta">Ommaviy oferta</FooterLink>
-            <FooterLink href="/tolov">To&apos;lov va qaytarish</FooterLink>
-            <FooterLink href="/xavfsizlik">Xavfsizlik</FooterLink>
+          <FooterCol title={F.colDocs}>
+            {LEGAL_LINKS.map((l) => (
+              <FooterLink key={l.href} href={l.href}>
+                {t.legalLinks[l.key]}
+              </FooterLink>
+            ))}
           </FooterCol>
 
-          <FooterCol title="Aloqa">
+          <FooterCol title={F.colContact}>
             <FooterLink href={SUPPORT_URL} external>
-              Telegram yordam
+              {F.support}
             </FooterLink>
             <FooterLink href={`https://t.me/${TELEGRAM_BOT}`} external>
               @{TELEGRAM_BOT}
