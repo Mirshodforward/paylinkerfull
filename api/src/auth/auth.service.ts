@@ -221,8 +221,14 @@ export class AuthService {
         data: { number: TEST_PHONE, fullName: TEST_FULL_NAME, balance: floor },
       });
       this.log.log(`Test hisob yaratildi (public_id=${u.publicId})`);
-    } else if (u.balance.lt(floor)) {
-      u = await this.prisma.user.update({ where: { id: u.id }, data: { balance: floor } });
+    } else if (u.balance.lt(floor) || u.fullName !== TEST_FULL_NAME) {
+      u = await this.prisma.user.update({
+        where: { id: u.id },
+        data: {
+          fullName: TEST_FULL_NAME,
+          ...(u.balance.lt(floor) ? { balance: floor } : {}),
+        },
+      });
     }
 
     const t = await this.buildTokens({ id: u.id, publicId: u.publicId });

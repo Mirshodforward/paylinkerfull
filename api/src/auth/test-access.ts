@@ -17,7 +17,8 @@
  */
 export const TEST_PHONE = "+998000000000";
 
-export const TEST_FULL_NAME = "Test hisob (tekshiruv uchun)";
+/** Ikkala tilda ham tushunarli, neytral ism (kabinet profil kartasida ko'rinadi) */
+export const TEST_FULL_NAME = "Test";
 
 /**
  * Har kirishda balans shu miqdordan kam bo'lsa, shunga to'ldiriladi —
