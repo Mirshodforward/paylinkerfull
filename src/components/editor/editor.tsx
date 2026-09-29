@@ -749,7 +749,7 @@ function LandingSections({
   const isSimple = templateId === "simple";
   const isMarketing = templateId === "marketing";
 
-  const blocksFallback = defaultLandingContent(content.businessName).sectionBlocks!;
+  const blocksFallback = defaultLandingContent(content.businessName, tr).sectionBlocks!;
   const block = (i: 0 | 1): LandingSectionBlock =>
     (content.sectionBlocks ?? blocksFallback)[i] ?? blocksFallback[i]!;
   const patchBlock = (i: 0 | 1, patch: Partial<LandingSectionBlock>) => {
@@ -839,7 +839,7 @@ function LandingSections({
             </Field>
           </Section>
           <ProcessStepsEditor
-            steps={content.processSteps ?? defaultLandingContent(content.businessName).processSteps!}
+            steps={content.processSteps ?? defaultLandingContent(content.businessName, tr).processSteps!}
             onChange={(processSteps) => update("processSteps", processSteps)}
           />
           <Anchor id="faq" />
@@ -852,7 +852,7 @@ function LandingSections({
             </Field>
           </Section>
           <FaqEditor
-            items={content.faqItems ?? defaultLandingContent(content.businessName).faqItems!}
+            items={content.faqItems ?? defaultLandingContent(content.businessName, tr).faqItems!}
             onChange={(faqItems) => update("faqItems", faqItems)}
           />
           <Anchor id="simple-contact" />

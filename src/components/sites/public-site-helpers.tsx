@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { Logo } from "@/components/marketing/logo";
 import { BRAND_NAME, SITE_DOMAIN } from "@/lib/brand";
+import { getDict } from "@/lib/i18n/server";
 
-export function NotFoundPublic({ slug }: { slug?: string }) {
+export async function NotFoundPublic({ slug }: { slug?: string }) {
+  const { tr } = await getDict();
   const displaySlug = slug?.trim() || "name";
 
   return (
@@ -26,27 +28,26 @@ export function NotFoundPublic({ slug }: { slug?: string }) {
             404 · {SITE_DOMAIN}
           </p>
           <h1 className="mt-4 text-3xl font-semibold tracking-tight text-[color:var(--foreground)] sm:text-4xl">
-            Bunday sayt topilmadi
+            {tr("Bunday sayt topilmadi")}
           </h1>
           <p className="mt-4 text-sm leading-relaxed text-neutral-600">
             <span className="font-mono text-neutral-800">
               {SITE_DOMAIN}/{displaySlug}
             </span>{" "}
-            manzilida hozircha hech qanday sayt yo&apos;q. Bu nom ostida sizning
-            saytingiz bo&apos;lishi mumkin.
+            {tr("manzilida hozircha hech qanday sayt yo'q. Bu nom ostida sizning saytingiz bo'lishi mumkin.")}
           </p>
           <div className="mt-8 flex flex-col items-center gap-2 sm:flex-row sm:justify-center">
             <Link
               href="/"
               className="pl-gradient inline-flex h-11 w-full items-center justify-center rounded-[var(--radius-control)] px-5 text-sm font-semibold text-white shadow-[var(--shadow-brand)] transition hover:brightness-[1.06] sm:w-auto"
             >
-              {BRAND_NAME} haqida
+              {BRAND_NAME} {tr("haqida")}
             </Link>
             <Link
               href="/dashboard/sites/new"
               className="inline-flex h-11 w-full items-center justify-center rounded-[var(--radius-control)] border border-brand-200 bg-white px-5 text-sm font-medium text-brand-700 transition hover:border-brand-400 hover:bg-brand-50 sm:w-auto"
             >
-              O&apos;z saytingizni yarating
+              {tr("O'z saytingizni yarating")}
             </Link>
           </div>
         </div>

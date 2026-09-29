@@ -47,7 +47,7 @@ import {
   computeClickTopUpNeedSom,
 } from "@/lib/click-invoice-amount";
 import { chargeLandingAiStarter, chargeLandingCreatePackage } from "@/lib/landing-client";
-import { DEFAULT_LANDING_HERO_DESCRIPTION } from "@/lib/landings/defaults";
+import { defaultLandingHeroDescription } from "@/lib/landings/defaults";
 import { TAHRIR_WIZARD_FROM_CREATE_KEY } from "@/lib/landings/preview-storage";
 import {
   buildLandingFreePackage,
@@ -470,7 +470,7 @@ export function CreateSiteForm() {
           name: normalizedSlug,
           brandName: businessName.trim(),
           heroTitle: businessName.trim(),
-          description: DEFAULT_LANDING_HERO_DESCRIPTION,
+          description: defaultLandingHeroDescription(tr),
           category: category.trim(),
           subscriptionMonths:
             landingTier === 6 || landingTier === 12 ? landingTier : undefined,
@@ -560,7 +560,7 @@ export function CreateSiteForm() {
           }
           setFinishError(tr("Server javob bermadi. Qayta urinib ko‘ring."));
         } catch (e) {
-          setFinishError(e instanceof Error ? e.message : tr("Saqlashda xato"));
+          setFinishError(e instanceof Error ? tr(e.message) : tr("Saqlashda xato"));
           return;
         }
         return;
@@ -748,11 +748,11 @@ export function CreateSiteForm() {
               </p>
             ) : landingTier === "ai" ? (
               <p className="mt-0.5 text-[11px] text-neutral-600">
-                {tr("AI bilan landing —")}{" "}{formatSom(LANDING_AI_STARTER_PRICE_SOM)}
+                {tr("AI bilan landing —")}{" "}{formatSom(LANDING_AI_STARTER_PRICE_SOM, tr)}
               </p>
             ) : (
               <p className="mt-0.5 text-[11px] text-neutral-600">
-                {landingTier} {tr("oy —")}{" "}{formatSom(landingPriceByMonths[landingTier])}
+                {landingTier} {tr("oy —")}{" "}{formatSom(landingPriceByMonths[landingTier], tr)}
               </p>
             )}
           </div>
@@ -797,11 +797,11 @@ export function CreateSiteForm() {
               </p>
             ) : landingTier === "ai" ? (
               <p className="mt-0.5 text-[11px] text-neutral-600">
-                {tr("AI bilan landing —")}{" "}{formatSom(LANDING_AI_STARTER_PRICE_SOM)}
+                {tr("AI bilan landing —")}{" "}{formatSom(LANDING_AI_STARTER_PRICE_SOM, tr)}
               </p>
             ) : (
               <p className="mt-0.5 text-[11px] text-neutral-600">
-                {landingTier} {tr("oy —")}{" "}{formatSom(landingPriceByMonths[landingTier])}
+                {landingTier} {tr("oy —")}{" "}{formatSom(landingPriceByMonths[landingTier], tr)}
               </p>
             )}
           </div>
@@ -856,7 +856,7 @@ export function CreateSiteForm() {
             ) : (
               <p className="mt-0.5 text-[11px] text-neutral-600">
                 {vizitkaTier} {tr("oy —")}{" "}
-                {formatSom(priceByMonths[vizitkaTier])}
+                {formatSom(priceByMonths[vizitkaTier], tr)}
               </p>
             )
           ) : null}
@@ -867,12 +867,12 @@ export function CreateSiteForm() {
               </p>
             ) : landingTier === "ai" ? (
               <p className="mt-0.5 text-[11px] text-neutral-600">
-                {tr("AI bilan landing —")}{" "}{formatSom(LANDING_AI_STARTER_PRICE_SOM)}
+                {tr("AI bilan landing —")}{" "}{formatSom(LANDING_AI_STARTER_PRICE_SOM, tr)}
               </p>
             ) : (
               <p className="mt-0.5 text-[11px] text-neutral-600">
                 {landingTier} {tr("oy —")}{" "}
-                {formatSom(landingPriceByMonths[landingTier])}
+                {formatSom(landingPriceByMonths[landingTier], tr)}
               </p>
             )
           ) : null}
@@ -997,10 +997,10 @@ function VizitkaPackagePicker({
 }) {
   const { tr } = useI18n();
   const freePackage = useMemo(
-    () => buildVizitkaFreePackage(pricing.freePublishDays),
+    () => buildVizitkaFreePackage(pricing.freePublishDays, tr),
     [pricing.freePublishDays],
   );
-  const packages = useMemo(() => buildVizitkaPackages(pricing), [pricing]);
+  const packages = useMemo(() => buildVizitkaPackages(pricing, tr), [pricing]);
   const busy = payingTier !== null;
   return (
     <div>
@@ -1066,7 +1066,7 @@ function VizitkaPackagePicker({
             <div className="mt-1">
               <p className="text-lg font-semibold text-[color:var(--foreground)]">{p.title}</p>
               <p className="mt-2 text-2xl font-bold tabular-nums tracking-tight text-neutral-900">
-                {formatSom(p.priceSom)}
+                {formatSom(p.priceSom, tr)}
               </p>
               <p className="mt-1 text-xs text-neutral-600">{p.subtitle}</p>
               {p.hint ? (
@@ -1111,15 +1111,15 @@ function LandingPackagePicker({
   const { tr } = useI18n();
   const [selectedMonths, setSelectedMonths] = useState<6 | 12 | null>(null);
   const freePackage = useMemo(
-    () => buildLandingFreePackage(pricing.freePublishDays),
+    () => buildLandingFreePackage(pricing.freePublishDays, tr),
     [pricing.freePublishDays],
   );
   const pkg6 = useMemo(() => {
-    const list = buildLandingPackages(pricing);
+    const list = buildLandingPackages(pricing, tr);
     return list.find((p) => p.months === 6) ?? list[0];
   }, [pricing]);
   const pkg12 = useMemo(() => {
-    const list = buildLandingPackages(pricing);
+    const list = buildLandingPackages(pricing, tr);
     return list.find((p) => p.months === 12) ?? list[list.length - 1];
   }, [pricing]);
   const busy = payingTier !== null;
@@ -1179,7 +1179,7 @@ function LandingPackagePicker({
           <div className="mt-1">
             <p className="text-lg font-semibold text-[color:var(--foreground)]">{tr("AI bilan landing")}</p>
             <p className="mt-2 text-2xl font-bold tabular-nums tracking-tight text-violet-900/80">
-              {formatSom(LANDING_AI_STARTER_PRICE_SOM)}
+              {formatSom(LANDING_AI_STARTER_PRICE_SOM, tr)}
             </p>
             <p className="mt-1 text-xs text-neutral-600">
               {tr("Sun'iy intellekt yordamida matn va tuzilmani tezda yig'ish — bir martalik boshlang'ich paket.")}
@@ -1213,13 +1213,13 @@ function LandingPackagePicker({
                 </p>
                 <p className="mt-1 text-xs text-neutral-600">{pkg6.subtitle}</p>
                 <p className="mt-2 text-[20px] font-medium tabular-nums text-neutral-500">
-                  {formatSom(pkg6.priceSom)}
+                  {formatSom(pkg6.priceSom, tr)}
                 </p>
               </>
             ) : (
               <>
                 <p className="mt-2 text-2xl font-bold tabular-nums tracking-tight text-neutral-900">
-                  {formatSom(pkg6.priceSom)}
+                  {formatSom(pkg6.priceSom, tr)}
                 </p>
                 <p className="mt-1 text-xs text-neutral-600">{pkg6.subtitle}</p>
               </>
@@ -1253,13 +1253,13 @@ function LandingPackagePicker({
                 </p>
                 <p className="mt-1 text-xs text-neutral-600">{pkg12.subtitle}</p>
                 <p className="mt-2 text-[20px] font-medium tabular-nums text-neutral-500">
-                  {formatSom(pkg12.priceSom)}
+                  {formatSom(pkg12.priceSom, tr)}
                 </p>
               </>
             ) : (
               <>
                 <p className="mt-2 text-2xl font-bold tabular-nums tracking-tight text-neutral-900">
-                  {formatSom(pkg12.priceSom)}
+                  {formatSom(pkg12.priceSom, tr)}
                 </p>
                 <p className="mt-1 text-xs text-neutral-600">{pkg12.subtitle}</p>
               </>
@@ -1274,7 +1274,7 @@ function LandingPackagePicker({
       {selectedMonths != null && selectedPkg ? (
         <div className="mt-6 rounded-[var(--radius-card)] border border-[color:var(--border)] bg-white p-5 shadow-sm sm:p-6">
           <p className="text-sm font-semibold text-[color:var(--foreground)]">
-            {selectedPkg.title} — {formatSom(selectedPkg.priceSom)}
+            {selectedPkg.title} — {formatSom(selectedPkg.priceSom, tr)}
           </p>
           <p className="mt-1 text-xs text-neutral-600">
             {tr("Bepul")}{" "}{pricing.freePublishDays} {tr("kun sinov bilan boshlang yoki paketni hozir to‘lang.")}
@@ -1323,8 +1323,8 @@ function TypePicker({
   pricing: PublicPricing;
 }) {
   const { tr } = useI18n();
-  const startPrice = formatSom(pricing.pricesSom["6"]);
-  const landingLine = tr("Bepul shablon · AI {LANDING_AI_STARTER_PRICE_SOM} · 6 oy {formatSom}", { LANDING_AI_STARTER_PRICE_SOM: formatSom(LANDING_AI_STARTER_PRICE_SOM), formatSom: formatSom(pricing.landingPricesSom["6"]) });
+  const startPrice = formatSom(pricing.pricesSom["6"], tr);
+  const landingLine = tr("Bepul shablon · AI {LANDING_AI_STARTER_PRICE_SOM} · 6 oy {formatSom}", { LANDING_AI_STARTER_PRICE_SOM: formatSom(LANDING_AI_STARTER_PRICE_SOM, tr), formatSom: formatSom(pricing.landingPricesSom["6"], tr) });
   return (
     <div>
       <div className="mb-8 text-center">
@@ -1815,7 +1815,7 @@ function StepTwoVizitka({
                         {tpl.name}
                       </p>
                       <p className="mt-0.5 line-clamp-2 text-[11px] leading-snug text-neutral-500">
-                        {tpl.description}
+                        {tr(tpl.description)}
                       </p>
                     </div>
                     <Radio checked={selected} />

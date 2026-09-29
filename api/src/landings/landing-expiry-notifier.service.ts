@@ -49,7 +49,7 @@ export class LandingExpiryNotifierService {
         expiryNoticeSentAt: null,
       },
       include: {
-        user: { select: { number: true, fullName: true } },
+        user: { select: { number: true, fullName: true, lang: true } },
       },
     });
 
@@ -75,8 +75,11 @@ export class LandingExpiryNotifierService {
       }
 
       const text =
-        `Paylinker: "${title}" (${slug}) landing obunasi tugadi. ` +
-        `Sayt vaqtincha yopildi. Obunani uzaytirish: ${renewUrl}`;
+        l.user.lang === 'RU'
+          ? `Paylinker: подписка лендинга "${title}" (${slug}) истекла. ` +
+            `Сайт временно закрыт. Продлить подписку: ${renewUrl}`
+          : `Paylinker: "${title}" (${slug}) landing obunasi tugadi. ` +
+            `Sayt vaqtincha yopildi. Obunani uzaytirish: ${renewUrl}`;
 
       const ok = await this.sms.sendText(phone, text);
       if (ok) {

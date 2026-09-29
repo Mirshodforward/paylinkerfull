@@ -46,7 +46,7 @@ export function PatternPicker({
                 selected ? "pl-gradient text-white" : "text-[color:var(--foreground)]",
               )}
             >
-              {p.name}
+              {tr(p.name)}
             </span>
           </button>
         );

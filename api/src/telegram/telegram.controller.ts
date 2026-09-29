@@ -19,8 +19,8 @@ export class TelegramController {
   async webhook(@Body() body: Record<string, unknown>) {
     await this.tg.handleUpdate(
       body as {
-        message?: { chat: { id: number }; from?: { id: number; username?: string; first_name?: string }; text?: string; contact?: { phone_number?: string; first_name?: string; last_name?: string } };
-        callback_query?: { id: string; from: { id: number }; data?: string; message?: { chat: { id: number }; message_id: number } };
+        message?: { chat: { id: number }; from?: { id: number; username?: string; first_name?: string; language_code?: string }; text?: string; contact?: { phone_number?: string; first_name?: string; last_name?: string } };
+        callback_query?: { id: string; from: { id: number; language_code?: string }; data?: string; message?: { chat: { id: number }; message_id: number } };
       },
     );
     return { ok: true };

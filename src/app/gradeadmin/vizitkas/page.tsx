@@ -128,7 +128,7 @@ export default function AdminVizitkasPage() {
       try {
         await reload();
       } catch (e) {
-        setErr(e instanceof ApiError ? e.message : tr("Xato"));
+        setErr(e instanceof ApiError ? tr(e.message) : tr("Xato"));
       }
     })();
   }, [reload]);
@@ -146,7 +146,7 @@ export default function AdminVizitkasPage() {
       }
       await reload();
     } catch (e) {
-      setErr(e instanceof ApiError ? e.message : tr("Xato"));
+      setErr(e instanceof ApiError ? tr(e.message) : tr("Xato"));
     } finally {
       setBusyId(null);
     }
@@ -168,7 +168,7 @@ export default function AdminVizitkasPage() {
       });
       await reload();
     } catch (e) {
-      setErr(e instanceof ApiError ? e.message : tr("O‘chirishda xato"));
+      setErr(e instanceof ApiError ? tr(e.message) : tr("O‘chirishda xato"));
     } finally {
       setBusyId(null);
     }

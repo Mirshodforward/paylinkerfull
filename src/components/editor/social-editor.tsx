@@ -54,11 +54,11 @@ export function SocialEditor({
                 </span>
                 <div className="flex-1">
                   <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-600">
-                    {meta.name}
+                    {tr(meta.name)}
                   </p>
                   <TextInput
                     prefix={meta.prefix}
-                    placeholder={meta.placeholder}
+                    placeholder={tr(meta.placeholder)}
                     value={item.value}
                     onChange={(v) => updateItem(item.id, { value: v })}
                   />
@@ -97,7 +97,7 @@ export function SocialEditor({
                 className="flex items-center gap-2 rounded-md border border-[color:var(--border)] bg-white px-2.5 py-2 text-xs font-medium text-[color:var(--foreground)] transition-colors hover:border-brand-300"
               >
                 <SocialGlyph kind={id} />
-                {SOCIAL_NETWORKS[id].name}
+                {tr(SOCIAL_NETWORKS[id].name)}
               </button>
             ))}
           </div>

@@ -36,7 +36,7 @@ export default function AdminUsersPage() {
         const r = await api<{ items: Row[] }>("/api/admin/users");
         setItems(r.items ?? []);
       } catch (e) {
-        setErr(e instanceof ApiError ? e.message : tr("Xato"));
+        setErr(e instanceof ApiError ? tr(e.message) : tr("Xato"));
       }
     })();
   }, []);

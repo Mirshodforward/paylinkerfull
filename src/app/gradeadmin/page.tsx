@@ -97,7 +97,7 @@ export default function AdminHomePage() {
         const s = await api<Stats>("/api/admin/stats");
         setStats(s);
       } catch (e) {
-        setErr(e instanceof ApiError ? e.message : tr("Xato"));
+        setErr(e instanceof ApiError ? tr(e.message) : tr("Xato"));
       }
     })();
   }, []);

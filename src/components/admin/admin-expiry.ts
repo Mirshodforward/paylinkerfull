@@ -1,3 +1,6 @@
+import { makeTr, type Tr } from "@/lib/i18n/tr";
+import { LOCALE, type Lang } from "@/lib/i18n/config";
+
 /** Kalendar bo‘yicha qolgan kunlar (00:00 oralig‘ida) */
 export function calendarDaysUntilExpiry(iso: string): number | null {
   try {
@@ -12,7 +15,7 @@ export function calendarDaysUntilExpiry(iso: string): number | null {
   }
 }
 
-export function expiryParts(iso: string | null | undefined): {
+export function expiryParts(iso: string | null | undefined, tr: Tr = makeTr("uz"), lang: Lang = "uz"): {
   dateLine: string;
   daysLine: string;
   daysClass: string;
@@ -20,7 +23,7 @@ export function expiryParts(iso: string | null | undefined): {
   if (!iso?.trim()) {
     return {
       dateLine: "—",
-      daysLine: "Tugash sanasi yo‘q",
+      daysLine: tr("Tugash sanasi yo‘q"),
       daysClass: "text-zinc-400",
     };
   }
@@ -28,11 +31,11 @@ export function expiryParts(iso: string | null | undefined): {
   if (Number.isNaN(end.getTime())) {
     return {
       dateLine: "—",
-      daysLine: "Noto‘g‘ri sana",
+      daysLine: tr("Noto‘g‘ri sana"),
       daysClass: "text-amber-700",
     };
   }
-  const dateLine = end.toLocaleString("uz-UZ", {
+  const dateLine = end.toLocaleString(LOCALE[lang], {
     dateStyle: "short",
     timeStyle: "short",
   });
@@ -43,26 +46,26 @@ export function expiryParts(iso: string | null | undefined): {
   if (left > 0) {
     return {
       dateLine,
-      daysLine: `${left} kun qoldi`,
+      daysLine: tr("{left} kun qoldi", { left }),
       daysClass: left <= 7 ? "text-amber-700" : "text-brand-700",
     };
   }
   if (left === 0) {
     return {
       dateLine,
-      daysLine: "Bugun tugaydi",
+      daysLine: tr("Bugun tugaydi"),
       daysClass: "text-amber-800",
     };
   }
   return {
     dateLine,
-    daysLine: `Tugagan (${Math.abs(left)} kun oldin)`,
+    daysLine: tr("Tugagan ({n} kun oldin)", { n: Math.abs(left) }),
     daysClass: "text-red-700",
   };
 }
 
-export function formatTodayUz(): string {
-  return new Date().toLocaleDateString("uz-UZ", {
+export function formatToday(lang: Lang = "uz"): string {
+  return new Date().toLocaleDateString(LOCALE[lang], {
     weekday: "long",
     day: "numeric",
     month: "long",
@@ -70,9 +73,9 @@ export function formatTodayUz(): string {
   });
 }
 
-export function planLabel(plan: string): string {
-  if (plan === "10kun") return "Sinov (10 kun)";
-  if (plan === "6oy") return "6 oy";
-  if (plan === "12oy") return "12 oy";
+export function planLabel(plan: string, tr: Tr = makeTr("uz")): string {
+  if (plan === "10kun") return tr("Sinov (10 kun)");
+  if (plan === "6oy") return tr("6 oy");
+  if (plan === "12oy") return tr("12 oy");
   return plan || "—";
 }

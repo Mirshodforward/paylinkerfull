@@ -43,7 +43,7 @@ export default function AdminUserDetailPage() {
           setBalanceInput(String(r.user.balance));
         }
       } catch (e) {
-        if (c) setErr(e instanceof ApiError ? e.message : tr("Xato"));
+        if (c) setErr(e instanceof ApiError ? tr(e.message) : tr("Xato"));
       } finally {
         if (c) setLoading(false);
       }
@@ -73,7 +73,7 @@ export default function AdminUserDetailPage() {
       setBalanceInput(String(r.user.balance));
       router.refresh();
     } catch (e) {
-      setErr(e instanceof ApiError ? e.message : tr("Saqlashda xato"));
+      setErr(e instanceof ApiError ? tr(e.message) : tr("Saqlashda xato"));
     } finally {
       setSaving(false);
     }

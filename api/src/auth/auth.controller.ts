@@ -6,6 +6,7 @@ import { RefreshDto } from "./dto/refresh.dto";
 import { TestAccessDto } from "./dto/test-access.dto";
 import { JwtAccessGuard } from "./jwt-access.guard";
 import { Throttle } from "@nestjs/throttler";
+import { langFromRequest } from "../common/i18n";
 
 @Controller("auth")
 export class AuthController {
@@ -29,15 +30,16 @@ export class AuthController {
    */
   @Throttle({ default: { ttl: 60_000, limit: 10 } })
   @Post("verify")
-  async verify(@Body() body: VerifyDto) {
-    return this.auth.verify(body.phone, body.code);
+  async verify(@Body() body: VerifyDto, @Req() req: { headers: Record<string, string | undefined> }) {
+    // Kirishda tanlangan til users.lang ga yoziladi — eslatmalar (Telegram/SMS) shu tilda boradi
+    return this.auth.verify(body.phone, body.code, langFromRequest(req));
   }
 
   /** Tekshiruvchilar uchun maxsus havola — faqat .env da yoqilganda ishlaydi */
   @Throttle({ default: { ttl: 60_000, limit: 10 } })
   @Post("test-access")
-  async testAccess(@Body() body: TestAccessDto) {
-    return this.auth.testAccess(body.token);
+  async testAccess(@Body() body: TestAccessDto, @Req() req: { headers: Record<string, string | undefined> }) {
+    return this.auth.testAccess(body.token, langFromRequest(req));
   }
 
   @Post("refresh")

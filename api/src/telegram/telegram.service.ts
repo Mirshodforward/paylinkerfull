@@ -12,6 +12,12 @@ export function escapeHtml(s: string) {
 }
 
 /** /start, /start@bot, /start payload */
+/** Telegram `from.language_code` (ru, ru-RU, en, uz ...) -> bot tili */
+export type BotLang = "uz" | "ru";
+export function botLang(code?: string | null): BotLang {
+  return (code ?? "").toLowerCase().startsWith("ru") ? "ru" : "uz";
+}
+
 export function isStartCommand(text: string | undefined): boolean {
   if (!text) return false;
   const t = text.trim();
@@ -119,18 +125,18 @@ export class TelegramService {
     return code;
   }
 
-  private inlineKeyboardWithCopy(code: string) {
+  private inlineKeyboardWithCopy(code: string, lang: BotLang = "uz") {
     return {
       inline_keyboard: [
         [
           {
-            text: "📋 Kodni nusxalash",
+            text: lang === "ru" ? "📋 Скопировать код" : "📋 Kodni nusxalash",
             copy_text: { text: code },
           },
         ],
         [
           {
-            text: "Kodni yangilash",
+            text: lang === "ru" ? "Обновить код" : "Kodni yangilash",
             callback_data: CALLBACK_REFRESH,
           },
         ],
@@ -138,7 +144,18 @@ export class TelegramService {
     };
   }
 
-  private otpMessageHtml(isExisting: boolean, code: string) {
+  private otpMessageHtml(isExisting: boolean, code: string, lang: BotLang = "uz") {
+    if (lang === "ru") {
+      const t = isExisting
+        ? "Ваш код для входа (введите на сайте):"
+        : "Ваш код регистрации (введите на сайте):";
+      return (
+        `🔐 <b>${escapeHtml(t)}</b>\n\n` +
+        `<code>${escapeHtml(code)}</code>\n\n` +
+        "Код действует 2 минуты. " +
+        "Нажмите <b>«Скопировать код»</b> ниже или на сам код, чтобы скопировать."
+      );
+    }
     const t = isExisting
       ? "Kirish kodingiz (saytga kiriting):"
       : "Ro'yxatdan o'tish kodingiz (saytga kiriting):";
@@ -151,25 +168,28 @@ export class TelegramService {
     );
   }
 
-  private async sendCodeToChatFixed(chatId: number, code: string, isExisting: boolean) {
+  private async sendCodeToChatFixed(chatId: number, code: string, isExisting: boolean, lang: BotLang = "uz") {
     return this.callJson("sendMessage", {
       chat_id: chatId,
-      text: this.otpMessageHtml(isExisting, code),
+      text: this.otpMessageHtml(isExisting, code, lang),
       parse_mode: "HTML",
-      reply_markup: this.inlineKeyboardWithCopy(code),
+      reply_markup: this.inlineKeyboardWithCopy(code, lang),
     });
   }
 
-  private async onStartMessage(chatId: number) {
+  private async onStartMessage(chatId: number, lang: BotLang = "uz") {
     return this.callJson("sendMessage", {
       chat_id: chatId,
-      text: "Iltimos, ro'yxatdan o'tish uchun **Kontaktni ulash** tugmasini bosing.",
+      text:
+        lang === "ru"
+          ? "Пожалуйста, нажмите кнопку **Поделиться контактом**, чтобы зарегистрироваться."
+          : "Iltimos, ro'yxatdan o'tish uchun **Kontaktni ulash** tugmasini bosing.",
       parse_mode: "Markdown",
       reply_markup: {
         keyboard: [
           [
             {
-              text: "📱 Kontaktni ulash",
+              text: lang === "ru" ? "📱 Поделиться контактом" : "📱 Kontaktni ulash",
               request_contact: true,
             },
           ],
@@ -182,7 +202,7 @@ export class TelegramService {
 
   private async onContactMessage(msg: {
     chat: { id: number };
-    from?: { id: number; username?: string; first_name?: string };
+    from?: { id: number; username?: string; first_name?: string; language_code?: string };
     contact?: { phone_number?: string; first_name?: string; last_name?: string };
   }) {
     const contact = msg.contact;
@@ -192,6 +212,7 @@ export class TelegramService {
     const chatId = msg.chat.id;
     const fromId = String(msg.from?.id ?? 0);
     if (!fromId) return;
+    const lang = botLang(msg.from?.language_code);
     const fullName =
       [contact.first_name, contact.last_name].filter(Boolean).join(" ") ||
       msg.from?.first_name ||
@@ -199,17 +220,18 @@ export class TelegramService {
     const existing = await this.prisma.user.findUnique({ where: { number: phone } });
     if (existing) {
       const code = await this.setOtpForExistingUser(phone, fromId);
-      if (code) await this.sendCodeToChatFixed(chatId, code, true);
+      if (code) await this.sendCodeToChatFixed(chatId, code, true, lang);
       return;
     }
     const code = await this.setOtpForTgUser(phone, fromId, fullName, msg.from?.username ?? null);
-    if (code) await this.sendCodeToChatFixed(chatId, code, false);
+    if (code) await this.sendCodeToChatFixed(chatId, code, false, lang);
   }
 
   private async onRefreshCallback(
-    data: { id: string; from: { id: number }; message?: { chat: { id: number }; message_id: number } },
+    data: { id: string; from: { id: number; language_code?: string }; message?: { chat: { id: number }; message_id: number } },
   ) {
     const fromId = String(data.from.id);
+    const lang = botLang(data.from.language_code);
     const u = await this.prisma.user.findFirst({ where: { telegramId: fromId } });
     const tgu = u ? null : await this.prisma.tgUser.findUnique({ where: { telegramUserId: fromId } });
     const code = this.makeOtp();
@@ -227,27 +249,30 @@ export class TelegramService {
     } else {
       await this.callJson("answerCallbackQuery", {
         callback_query_id: data.id,
-        text: "Kontaktni qayta ulashing: /start",
+        text: lang === "ru" ? "Поделитесь контактом заново: /start" : "Kontaktni qayta ulashing: /start",
         show_alert: true,
       });
       return;
     }
     if (data.message) {
-      const text = `🔐 <b>Yangi kod</b>\n\n<code>${escapeHtml(code)}</code>\n\n2 daqiqagacha amal qiladi. Pastdagi <b>«Kodni nusxalash»</b> yordamida oling.`;
+      const text =
+        lang === "ru"
+          ? `🔐 <b>Новый код</b>\n\n<code>${escapeHtml(code)}</code>\n\nДействует 2 минуты. Скопируйте кнопкой <b>«Скопировать код»</b> ниже.`
+          : `🔐 <b>Yangi kod</b>\n\n<code>${escapeHtml(code)}</code>\n\n2 daqiqagacha amal qiladi. Pastdagi <b>«Kodni nusxalash»</b> yordamida oling.`;
       await this.callJson("editMessageText", {
         chat_id: data.message.chat.id,
         message_id: data.message.message_id,
         text,
         parse_mode: "HTML",
-        reply_markup: this.inlineKeyboardWithCopy(code),
+        reply_markup: this.inlineKeyboardWithCopy(code, lang),
       });
     }
     await this.callJson("answerCallbackQuery", { callback_query_id: data.id });
   }
 
   async handleUpdate(raw: {
-    message?: { chat: { id: number }; from?: { id: number; username?: string; first_name?: string }; text?: string; contact?: { phone_number?: string; first_name?: string; last_name?: string } };
-    callback_query?: { id: string; from: { id: number }; data?: string; message?: { chat: { id: number }; message_id: number } };
+    message?: { chat: { id: number }; from?: { id: number; username?: string; first_name?: string; language_code?: string }; text?: string; contact?: { phone_number?: string; first_name?: string; last_name?: string } };
+    callback_query?: { id: string; from: { id: number; language_code?: string }; data?: string; message?: { chat: { id: number }; message_id: number } };
   }) {
     if (raw.callback_query && raw.callback_query.data === CALLBACK_REFRESH) {
       return this.onRefreshCallback(raw.callback_query);
@@ -258,7 +283,7 @@ export class TelegramService {
       );
     }
     if (isStartCommand(raw.message?.text)) {
-      return this.onStartMessage(raw.message!.chat.id);
+      return this.onStartMessage(raw.message!.chat.id, botLang(raw.message!.from?.language_code));
     }
   }
 }

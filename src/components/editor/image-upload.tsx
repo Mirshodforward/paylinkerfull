@@ -75,7 +75,7 @@ export function ImageUpload({
           setError(tr("Javobda hero kelmadi"));
         }
       } catch (e) {
-        setError(e instanceof Error ? e.message : tr("Yuklashda xato"));
+        setError(e instanceof Error ? tr(e.message) : tr("Yuklashda xato"));
       } finally {
         setUploading(false);
         if (inputRef.current) inputRef.current.value = "";
@@ -97,7 +97,7 @@ export function ImageUpload({
           setError(tr("Javobda logo kelmadi"));
         }
       } catch (e) {
-        setError(e instanceof Error ? e.message : tr("Yuklashda xato"));
+        setError(e instanceof Error ? tr(e.message) : tr("Yuklashda xato"));
       } finally {
         setUploading(false);
         if (inputRef.current) inputRef.current.value = "";
@@ -123,7 +123,7 @@ export function ImageUpload({
         onServerSync?.(next);
         onChange(undefined);
       } catch (e) {
-        setError(e instanceof Error ? e.message : tr("O‘chirishda xato"));
+        setError(e instanceof Error ? tr(e.message) : tr("O‘chirishda xato"));
       } finally {
         setUploading(false);
       }
@@ -139,7 +139,7 @@ export function ImageUpload({
         onServerSync?.(next);
         onChange(undefined);
       } catch (e) {
-        setError(e instanceof Error ? e.message : tr("O‘chirishda xato"));
+        setError(e instanceof Error ? tr(e.message) : tr("O‘chirishda xato"));
       } finally {
         setUploading(false);
       }

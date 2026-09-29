@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { I18nExceptionFilter } from './common/i18n-exception.filter';
 import { ScheduleModule } from '@nestjs/schedule';
 import { join } from 'node:path';
 import { AppController } from './app.controller';
@@ -45,6 +46,8 @@ import { SmsModule } from './sms/sms.module';
   controllers: [AppController],
   providers: [
     { provide: APP_GUARD, useClass: ThrottlerGuard },
+    // Xato xabarlarini mijoz tiliga o'giradi (pl_lang cookie / x-lang)
+    { provide: APP_FILTER, useClass: I18nExceptionFilter },
     AppService,
   ],
 })

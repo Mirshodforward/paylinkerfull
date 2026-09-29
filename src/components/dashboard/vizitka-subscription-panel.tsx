@@ -30,7 +30,7 @@ type Props = {
 };
 
 export function VizitkaSubscriptionPanel({ site, onExtended }: Props) {
-  const { lang, t } = useI18n();
+  const { lang, t, tr } = useI18n();
   const S = t.dash.sub;
   const fmt = (n: number) => n.toLocaleString(LOCALE[lang]).replace(/\u00a0/g, " ");
   const som = (n: number) => `${fmt(n)} ${t.common.som}`;
@@ -44,7 +44,7 @@ export function VizitkaSubscriptionPanel({ site, onExtended }: Props) {
     void fetchVizitkaPricing().then(setPricing).catch(() => {});
   }, []);
 
-  const packages = useMemo(() => buildVizitkaPackages(pricing), [pricing]);
+  const packages = useMemo(() => buildVizitkaPackages(pricing, tr), [pricing, tr]);
   const priceByMonths = useMemo(() => packagePriceByMonths(pricing), [pricing]);
 
   if (site.type !== "vizitka") return null;

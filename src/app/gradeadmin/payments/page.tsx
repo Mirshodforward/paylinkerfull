@@ -49,7 +49,7 @@ export default function AdminPaymentsPage() {
         setItems(r.items ?? []);
         setTotal(r.total ?? 0);
       } catch (e) {
-        setErr(e instanceof ApiError ? e.message : tr("Xato"));
+        setErr(e instanceof ApiError ? tr(e.message) : tr("Xato"));
       }
     })();
   }, [skip]);

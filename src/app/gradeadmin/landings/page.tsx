@@ -5,7 +5,7 @@ import Link from "next/link";
 import { api, ApiError } from "@/lib/api";
 import {
   expiryParts,
-  formatTodayUz,
+  formatToday,
   planLabel,
 } from "@/components/admin/admin-expiry";
 import {
@@ -33,7 +33,7 @@ type Row = {
 };
 
 export default function AdminLandingsPage() {
-  const { tr } = useI18n();
+  const { tr, lang } = useI18n();
   const [items, setItems] = useState<Row[]>([]);
   const [err, setErr] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
@@ -49,7 +49,7 @@ export default function AdminLandingsPage() {
       try {
         await reload();
       } catch (e) {
-        setErr(e instanceof ApiError ? e.message : tr("Xato"));
+        setErr(e instanceof ApiError ? tr(e.message) : tr("Xato"));
       }
     })();
   }, [reload]);
@@ -83,7 +83,7 @@ export default function AdminLandingsPage() {
       }
       await reload();
     } catch (e) {
-      setErr(e instanceof ApiError ? e.message : tr("Xato"));
+      setErr(e instanceof ApiError ? tr(e.message) : tr("Xato"));
     } finally {
       setBusyId(null);
     }
@@ -105,7 +105,7 @@ export default function AdminLandingsPage() {
       });
       await reload();
     } catch (e) {
-      setErr(e instanceof ApiError ? e.message : tr("O‘chirishda xato"));
+      setErr(e instanceof ApiError ? tr(e.message) : tr("O‘chirishda xato"));
     } finally {
       setBusyId(null);
     }
@@ -131,7 +131,7 @@ export default function AdminLandingsPage() {
               {tr("Bugungi sana")}
             </p>
             <p className="mt-1 max-w-[240px] text-sm font-semibold leading-snug text-zinc-900">
-              {formatTodayUz()}
+              {formatToday(lang)}
             </p>
           </div>
         }
@@ -184,7 +184,7 @@ export default function AdminLandingsPage() {
                 const daysNum = parseInt(daysVal, 10);
                 const canAddDays =
                   Number.isFinite(daysNum) && daysNum >= 1 && daysNum <= 3650;
-                const exp = expiryParts(l.expiredAt ?? undefined);
+                const exp = expiryParts(l.expiredAt ?? undefined, tr, lang);
                 return (
                   <tr key={l.id} className={cn(adminTr, busy && "opacity-70")}>
                     <td className={`${adminTd} font-mono text-xs text-zinc-600`}>
@@ -195,7 +195,7 @@ export default function AdminLandingsPage() {
                     </td>
                     <td className={adminTd}>
                       <span className="inline-flex rounded-md bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-800">
-                        {planLabel(l.plan)}
+                        {planLabel(l.plan, tr)}
                       </span>
                     </td>
                     <td className={adminTd}>

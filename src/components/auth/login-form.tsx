@@ -56,7 +56,7 @@ export function LoginForm() {
       setBot(res.bot || BOT);
       setStep(2);
     } catch (e) {
-      setErr(e instanceof Error ? e.message : t.common.error);
+      setErr(e instanceof Error ? tr(e.message) : t.common.error);
     } finally {
       setLoad(false);
     }
@@ -97,7 +97,7 @@ export function LoginForm() {
       setTokens(r.accessToken, r.refreshToken);
       router.replace("/dashboard");
     } catch (e) {
-      setErr(e instanceof Error ? e.message : L.errCodeWrong);
+      setErr(e instanceof Error ? tr(e.message) : L.errCodeWrong);
     } finally {
       setLoad(false);
     }

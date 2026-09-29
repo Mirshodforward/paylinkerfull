@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import { DemoChoyxonaSite } from "@/components/demo/demo-choyxona-site";
 import { defaultDemoChoyxonaContent } from "@/lib/demo-choyxona/defaults";
+import { getDict } from "@/lib/i18n/server";
 
 const inter = Inter({ subsets: ["latin", "cyrillic"] });
 const display = Playfair_Display({
@@ -9,10 +10,13 @@ const display = Playfair_Display({
   subsets: ["latin", "cyrillic"],
 });
 
-export const metadata: Metadata = {
-  title: "Demo — choyxona",
-  description: "Milliy ta’m va shinam muhit — demo landing.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { tr } = await getDict();
+  return {
+    title: tr("Demo — choyxona"),
+    description: tr("Milliy ta’m va shinam muhit — demo landing."),
+  };
+}
 
 export default function DemoPage() {
   return (

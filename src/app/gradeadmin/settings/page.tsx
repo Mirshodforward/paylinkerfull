@@ -42,7 +42,7 @@ export default function AdminSettingsPage() {
         landingPaket12Som: String(r.landingPaket12Som),
       });
     } catch (e) {
-      setErr(e instanceof ApiError ? e.message : tr("Yuklashda xato"));
+      setErr(e instanceof ApiError ? tr(e.message) : tr("Yuklashda xato"));
     } finally {
       setLoading(false);
     }
@@ -99,7 +99,7 @@ export default function AdminSettingsPage() {
         landingPaket12Som: String(r.landingPaket12Som),
       });
     } catch (e) {
-      setErr(e instanceof ApiError ? e.message : tr("Saqlashda xato"));
+      setErr(e instanceof ApiError ? tr(e.message) : tr("Saqlashda xato"));
     } finally {
       setSaving(false);
     }

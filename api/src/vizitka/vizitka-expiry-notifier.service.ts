@@ -62,7 +62,7 @@ export class VizitkaExpiryNotifierService {
         expiryNoticeSentAt: null,
       },
       include: {
-        user: { select: { telegramId: true, fullName: true } },
+        user: { select: { telegramId: true, fullName: true, lang: true } },
       },
     });
 
@@ -86,12 +86,19 @@ export class VizitkaExpiryNotifierService {
         continue;
       }
 
+      // Foydalanuvchi tili — kirishda tanlangan (users.lang)
       const html =
-        `⚠️ <b>Obuna muddati tugadi</b>\n\n` +
-        `<b>${escapeHtml(title)}</b> (${escapeHtml(slug)}) manzilli vizitka saytingiz muddati tugadi va ` +
-        `<b>pausa</b> holatiga o‘tdi.\n\n` +
-        `Saytga kiring va paket sotib oling — vizitka yana ochiladi.\n\n` +
-        `👉 <a href="${escapeHtml(dashUrl)}">Boshqaruv — obunani uzaytirish</a>`;
+        v.user.lang === 'RU'
+          ? `⚠️ <b>Срок подписки истёк</b>\n\n` +
+            `Срок подписки вашего сайта-визитки <b>${escapeHtml(title)}</b> (${escapeHtml(slug)}) истёк, ` +
+            `сайт переведён в режим <b>паузы</b>.\n\n` +
+            `Войдите в кабинет и оплатите пакет — визитка снова откроется.\n\n` +
+            `👉 <a href="${escapeHtml(dashUrl)}">Кабинет — продлить подписку</a>`
+          : `⚠️ <b>Obuna muddati tugadi</b>\n\n` +
+            `<b>${escapeHtml(title)}</b> (${escapeHtml(slug)}) manzilli vizitka saytingiz muddati tugadi va ` +
+            `<b>pausa</b> holatiga o‘tdi.\n\n` +
+            `Saytga kiring va paket sotib oling — vizitka yana ochiladi.\n\n` +
+            `👉 <a href="${escapeHtml(dashUrl)}">Boshqaruv — obunani uzaytirish</a>`;
 
       const ok = await this.telegram.sendHtmlMessage(tg, html);
       if (ok) {

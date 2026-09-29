@@ -28,7 +28,7 @@ type Props = {
 };
 
 export function LandingSubscriptionPanel({ landing, onExtended }: Props) {
-  const { lang, t } = useI18n();
+  const { lang, t, tr } = useI18n();
   const S = t.dash.sub;
   const fmt = (n: number) => n.toLocaleString(LOCALE[lang]).replace(/\u00a0/g, " ");
   const som = (n: number) => `${fmt(n)} ${t.common.som}`;
@@ -42,7 +42,7 @@ export function LandingSubscriptionPanel({ landing, onExtended }: Props) {
     void fetchVizitkaPricing().then(setPricing).catch(() => {});
   }, []);
 
-  const packages = useMemo(() => buildLandingPackages(pricing), [pricing]);
+  const packages = useMemo(() => buildLandingPackages(pricing, tr), [pricing, tr]);
   const priceByMonths = useMemo(
     () => landingPackagePriceByMonths(pricing),
     [pricing],

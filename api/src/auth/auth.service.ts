@@ -1,7 +1,9 @@
 import { BadRequestException, Injectable, Logger, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
+import { Lang } from "@prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
+import type { ApiLang } from "../common/i18n";
 import { normalizeUzPhone, formatPhoneForDisplay } from "../common/phone";
 import { verifyCodeConstantTime } from "./auth.crypto";
 import {
@@ -98,9 +100,10 @@ export class AuthService {
     });
   }
 
-  async verify(phone: string, code: string) {
+  async verify(phone: string, code: string, lang: ApiLang = "uz") {
     const normalized = normalizeUzPhone(phone);
     const now = new Date();
+    const dbLang = lang === "ru" ? Lang.RU : Lang.UZ;
 
     const u = await this.prisma.user.findUnique({ where: { number: normalized } });
     if (u?.loginOtp && u.loginOtpExpiresAt && u.loginOtpExpiresAt > now) {
@@ -114,6 +117,7 @@ export class AuthService {
             // har bir muvaffaqiyatli kirishda joriy tahrir qayd etiladi
             ofertaAcceptedAt: now,
             ofertaVersion: OFERTA_VERSION,
+            lang: dbLang,
           },
         });
         const t = await this.buildTokens({ id: u.id, publicId: u.publicId });
@@ -142,6 +146,7 @@ export class AuthService {
             userId: null,
             ofertaAcceptedAt: now,
             ofertaVersion: OFERTA_VERSION,
+            lang: dbLang,
           },
         });
         const upd = await tx.user.update({
@@ -207,7 +212,7 @@ export class AuthService {
    * Maxsus havola orqali test hisobga kirish (izoh: test-access.ts).
    * O'chiq bo'lsa 404 — endpoint mavjudligini ham oshkor qilmaymiz.
    */
-  async testAccess(token: string) {
+  async testAccess(token: string, lang: ApiLang = "uz") {
     const expected = this.testAccessToken();
     if (!expected) throw new NotFoundException();
     if (!token || !verifyCodeConstantTime(token, expected)) {
@@ -215,17 +220,19 @@ export class AuthService {
     }
 
     const floor = TEST_BALANCE_FLOOR_SOM;
+    const dbLang = lang === "ru" ? Lang.RU : Lang.UZ;
     let u = await this.prisma.user.findUnique({ where: { number: TEST_PHONE } });
     if (!u) {
       u = await this.prisma.user.create({
-        data: { number: TEST_PHONE, fullName: TEST_FULL_NAME, balance: floor },
+        data: { number: TEST_PHONE, fullName: TEST_FULL_NAME, balance: floor, lang: dbLang },
       });
       this.log.log(`Test hisob yaratildi (public_id=${u.publicId})`);
-    } else if (u.balance.lt(floor) || u.fullName !== TEST_FULL_NAME) {
+    } else if (u.balance.lt(floor) || u.fullName !== TEST_FULL_NAME || u.lang !== dbLang) {
       u = await this.prisma.user.update({
         where: { id: u.id },
         data: {
           fullName: TEST_FULL_NAME,
+          lang: dbLang,
           ...(u.balance.lt(floor) ? { balance: floor } : {}),
         },
       });

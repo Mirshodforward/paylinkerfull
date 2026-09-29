@@ -63,7 +63,7 @@ export default function AdminVizitkaEditPage() {
           setDtLocal(toDatetimeLocalValue(r.vizitka.expiredAt));
         }
       } catch (e) {
-        if (c) setErr(e instanceof ApiError ? e.message : tr("Xato"));
+        if (c) setErr(e instanceof ApiError ? tr(e.message) : tr("Xato"));
       } finally {
         if (c) setLoading(false);
       }
@@ -95,7 +95,7 @@ export default function AdminVizitkaEditPage() {
       setDtLocal(toDatetimeLocalValue(r.vizitka.expiredAt));
       router.refresh();
     } catch (e) {
-      setErr(e instanceof ApiError ? e.message : tr("Saqlashda xato"));
+      setErr(e instanceof ApiError ? tr(e.message) : tr("Saqlashda xato"));
     } finally {
       setSaving(false);
     }
@@ -116,7 +116,7 @@ export default function AdminVizitkaEditPage() {
       setDtLocal(toDatetimeLocalValue(r.vizitka.expiredAt));
       router.refresh();
     } catch (e) {
-      setErr(e instanceof ApiError ? e.message : tr("Xato"));
+      setErr(e instanceof ApiError ? tr(e.message) : tr("Xato"));
     } finally {
       setSaving(false);
     }
@@ -137,7 +137,7 @@ export default function AdminVizitkaEditPage() {
       setForm(r.vizitka);
       router.refresh();
     } catch (e) {
-      setErr(e instanceof ApiError ? e.message : tr("Xato"));
+      setErr(e instanceof ApiError ? tr(e.message) : tr("Xato"));
     } finally {
       setSaving(false);
     }

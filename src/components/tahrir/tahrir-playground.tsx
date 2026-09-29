@@ -12,7 +12,7 @@ import {
 } from "react";
 import { DemoChoyxonaSite } from "@/components/demo/demo-choyxona-site";
 import { SITE_DOMAIN } from "@/lib/brand";
-import { sampleLanding, DEFAULT_LANDING_HERO_DESCRIPTION } from "@/lib/landings/defaults";
+import { sampleLanding, defaultLandingHeroDescription } from "@/lib/landings/defaults";
 import {
   TAHRIR_PREVIEW_LANDING_SESSION_KEY,
   TAHRIR_WIZARD_FROM_CREATE_KEY,
@@ -47,8 +47,8 @@ type Props = {
 
 const LOCAL_KEY = "tahrir:landing:v2";
 
-function initialLandingState(): LandingRecord {
-  const base = sampleLanding();
+function initialLandingState(tr: Tr): LandingRecord {
+  const base = sampleLanding(tr);
   if (typeof window === "undefined") return base;
   try {
     const raw = window.localStorage.getItem(LOCAL_KEY);
@@ -168,7 +168,7 @@ export function TahrirPlayground({
   const router = useRouter();
   const searchParams = useSearchParams();
   const landingIdFromUrl = searchParams.get("id");
-  const [landing, setLanding] = useState<LandingRecord>(() => initialLandingState());
+  const [landing, setLanding] = useState<LandingRecord>(() => initialLandingState(tr));
   /** Kichik ekranda: forma vs joydagi jonli preview (to‘liq ekran — alohida «Ko‘rish» tugmasi) */
   const [embedPanel, setEmbedPanel] = useState<"edit" | "live">("edit");
   const [dirty, setDirty] = useState(false);
@@ -429,7 +429,7 @@ export function TahrirPlayground({
     } catch (e) {
       showToast({
         kind: "err",
-        text: e instanceof Error ? e.message : tr("Saqlashda xato"),
+        text: e instanceof Error ? tr(e.message) : tr("Saqlashda xato"),
       });
     } finally {
       setSaving(false);
@@ -475,7 +475,7 @@ export function TahrirPlayground({
     } catch (e) {
       showToast({
         kind: "err",
-        text: e instanceof Error ? e.message : tr("Yaratishda xato"),
+        text: e instanceof Error ? tr(e.message) : tr("Yaratishda xato"),
       });
     } finally {
       setCreating(false);
@@ -509,7 +509,7 @@ export function TahrirPlayground({
       } catch (e) {
         showToast({
           kind: "err",
-          text: e instanceof Error ? e.message : tr("Rasm yuklanmadi"),
+          text: e instanceof Error ? tr(e.message) : tr("Rasm yuklanmadi"),
         });
       }
     },
@@ -957,7 +957,7 @@ function ImageField(props: {
     try {
       await props.onUpload(file);
     } catch (e) {
-      setErr(e instanceof Error ? e.message : tr("Xato"));
+      setErr(e instanceof Error ? tr(e.message) : tr("Xato"));
     } finally {
       setBusy(false);
       if (fileRef.current) fileRef.current.value = "";
@@ -1151,7 +1151,7 @@ function HeroSection(props: {
           rows={3}
           value={landing.description}
           onChange={(v) => onChange({ description: v })}
-          placeholder={DEFAULT_LANDING_HERO_DESCRIPTION}
+          placeholder={defaultLandingHeroDescription(tr)}
         />
       </Field>
       <Field label={tr("Asosiy tugma matni")}>
@@ -1394,7 +1394,7 @@ function ThemePicker(props: {
               type="button"
               onClick={() => onSelect(id)}
               aria-pressed={isActive}
-              title={t.title}
+              title={tr(t.title)}
               className={[
                 "group relative flex flex-col gap-2 overflow-hidden rounded-xl border-2 p-2 text-left transition-all",
                 isActive
@@ -1419,7 +1419,7 @@ function ThemePicker(props: {
               </span>
               <span className="flex items-center justify-between gap-1.5">
                 <span className="truncate text-[12px] font-bold text-neutral-900">
-                  {t.title}
+                  {tr(t.title)}
                 </span>
                 <span className="flex shrink-0 items-center gap-0.5">
                   {t.swatches.map((c, i) => (
