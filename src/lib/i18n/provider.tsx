@@ -4,8 +4,9 @@ import { useRouter } from "next/navigation";
 import { createContext, useCallback, useContext, useMemo, useState } from "react";
 import { LANG_COOKIE, LANG_COOKIE_MAX_AGE, type Lang } from "./config";
 import { DICT, type Dict } from "./dict";
+import { makeTr, type Tr } from "./tr";
 
-type Ctx = { lang: Lang; t: Dict; setLang: (l: Lang) => void };
+type Ctx = { lang: Lang; t: Dict; tr: Tr; setLang: (l: Lang) => void };
 
 const I18nContext = createContext<Ctx | null>(null);
 
@@ -30,7 +31,8 @@ export function LangProvider({
     [router],
   );
 
-  const value = useMemo(() => ({ lang, t: DICT[lang], setLang }), [lang, setLang]);
+  // `tr` til bilan birga o'zgaradi — useMemo/useCallback deps ga qo'yish uchun barqaror
+  const value = useMemo(() => ({ lang, t: DICT[lang], tr: makeTr(lang), setLang }), [lang, setLang]);
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 }
 
