@@ -50,6 +50,8 @@ import { ColorPicker } from "./color-picker";
 import { VizitkaSubscriptionPanel } from "@/components/dashboard/vizitka-subscription-panel";
 import { MapEmbed } from "@/components/sites/map-embed";
 import { cn } from "@/lib/cn";
+import type { Tr } from "@/lib/i18n/tr";
+import { useI18n } from "@/lib/i18n/provider";
 
 type SaveState = "saved" | "saving" | "error";
 
@@ -76,63 +78,64 @@ const RESERVED_SLUGS = new Set([
 
 type SectionMeta = { id: string; label: string };
 
-const VIZITKA_SECTIONS: SectionMeta[] = [
-  { id: "design", label: "Dizayn" },
-  { id: "general", label: "Umumiy" },
-  { id: "contact", label: "Aloqa" },
-  { id: "subscription", label: "Obuna" },
-  { id: "social", label: "Ijtimoiy" },
-  { id: "qr", label: "QR kod" },
-  { id: "danger", label: "Xavfli zona" },
-];
+const VIZITKA_SECTIONS = (tr: Tr): SectionMeta[] => ([
+  { id: "design", label: tr("Dizayn") },
+  { id: "general", label: tr("Umumiy") },
+  { id: "contact", label: tr("Aloqa") },
+  { id: "subscription", label: tr("Obuna") },
+  { id: "social", label: tr("Ijtimoiy") },
+  { id: "qr", label: tr("QR kod") },
+  { id: "danger", label: tr("Xavfli zona") },
+]);
 
-const LANDING_SECTIONS: SectionMeta[] = [
-  { id: "design", label: "Dizayn" },
-  { id: "general", label: "Umumiy" },
-  { id: "contact", label: "Aloqa" },
-  { id: "social", label: "Ijtimoiy" },
-  { id: "hero", label: "Hero" },
-  { id: "about", label: "Biz haqimizda" },
-  { id: "stats", label: "Statistika" },
-  { id: "features", label: "Afzalliklar" },
-  { id: "services", label: "Xizmatlar" },
-  { id: "gallery", label: "Galereya" },
-  { id: "testimonials", label: "Mijozlar fikri" },
-  { id: "cta", label: "Aloqa chaqiruvi" },
-  { id: "qr", label: "QR kod" },
-  { id: "danger", label: "Xavfli zona" },
-];
+const LANDING_SECTIONS = (tr: Tr): SectionMeta[] => ([
+  { id: "design", label: tr("Dizayn") },
+  { id: "general", label: tr("Umumiy") },
+  { id: "contact", label: tr("Aloqa") },
+  { id: "social", label: tr("Ijtimoiy") },
+  { id: "hero", label: tr("Hero") },
+  { id: "about", label: tr("Biz haqimizda") },
+  { id: "stats", label: tr("Statistika") },
+  { id: "features", label: tr("Afzalliklar") },
+  { id: "services", label: tr("Xizmatlar") },
+  { id: "gallery", label: tr("Galereya") },
+  { id: "testimonials", label: tr("Mijozlar fikri") },
+  { id: "cta", label: tr("Aloqa chaqiruvi") },
+  { id: "qr", label: tr("QR kod") },
+  { id: "danger", label: tr("Xavfli zona") },
+]);
 
-const LANDING_SECTIONS_SIMPLE: SectionMeta[] = [
-  { id: "design", label: "Dizayn" },
-  { id: "general", label: "Umumiy" },
-  { id: "contact", label: "Aloqa" },
-  { id: "social", label: "Ijtimoiy" },
-  { id: "hero", label: "Hero" },
-  { id: "sections", label: "Bo‘limlar" },
-  { id: "simple-contact", label: "Ariza matni" },
-  { id: "qr", label: "QR kod" },
-  { id: "danger", label: "Xavfli zona" },
-];
+const LANDING_SECTIONS_SIMPLE = (tr: Tr): SectionMeta[] => ([
+  { id: "design", label: tr("Dizayn") },
+  { id: "general", label: tr("Umumiy") },
+  { id: "contact", label: tr("Aloqa") },
+  { id: "social", label: tr("Ijtimoiy") },
+  { id: "hero", label: tr("Hero") },
+  { id: "sections", label: tr("Bo‘limlar") },
+  { id: "simple-contact", label: tr("Ariza matni") },
+  { id: "qr", label: tr("QR kod") },
+  { id: "danger", label: tr("Xavfli zona") },
+]);
 
-const LANDING_SECTIONS_MARKETING: SectionMeta[] = [
-  { id: "design", label: "Dizayn" },
-  { id: "general", label: "Umumiy" },
-  { id: "contact", label: "Aloqa" },
-  { id: "social", label: "Ijtimoiy" },
-  { id: "hero", label: "Hero" },
-  { id: "services", label: "Xizmatlar" },
-  { id: "process", label: "Jarayon" },
+const LANDING_SECTIONS_MARKETING = (tr: Tr): SectionMeta[] => ([
+  { id: "design", label: tr("Dizayn") },
+  { id: "general", label: tr("Umumiy") },
+  { id: "contact", label: tr("Aloqa") },
+  { id: "social", label: tr("Ijtimoiy") },
+  { id: "hero", label: tr("Hero") },
+  { id: "services", label: tr("Xizmatlar") },
+  { id: "process", label: tr("Jarayon") },
   { id: "faq", label: "FAQ" },
-  { id: "simple-contact", label: "Ariza matni" },
-  { id: "qr", label: "QR kod" },
-  { id: "danger", label: "Xavfli zona" },
-];
+  { id: "simple-contact", label: tr("Ariza matni") },
+  { id: "qr", label: tr("QR kod") },
+  { id: "danger", label: tr("Xavfli zona") },
+]);
 
 export function Editor({
   initialSite,
   serverBackedVizitka = false,
 }: Props) {
+  const { tr } = useI18n();
   const router = useRouter();
   const [draft, setDraft] = useState<UnknownSite>(initialSite);
   const [slugInput, setSlugInput] = useState(initialSite.slug);
@@ -143,13 +146,13 @@ export function Editor({
 
   const normalizedSlug = useMemo(() => normalizeSlug(slugInput), [slugInput]);
   const slugError = useMemo(() => {
-    if (!normalizedSlug) return "Manzilni kiriting";
-    if (normalizedSlug.length < 3) return "Kamida 3 ta belgi";
-    if (RESERVED_SLUGS.has(normalizedSlug)) return "Bu manzil band";
+    if (!normalizedSlug) return tr("Manzilni kiriting");
+    if (normalizedSlug.length < 3) return tr("Kamida 3 ta belgi");
+    if (RESERVED_SLUGS.has(normalizedSlug)) return tr("Bu manzil band");
     if (normalizedSlug !== draft.slug && slugExists(normalizedSlug, draft.id))
-      return "Bu manzil ishlatilgan";
+      return tr("Bu manzil ishlatilgan");
     return null;
-  }, [normalizedSlug, draft.slug, draft.id]);
+  }, [normalizedSlug, draft.slug, draft.id, tr]);
 
   useEffect(() => {
     if (slugError) return;
@@ -232,7 +235,7 @@ export function Editor({
   };
 
   const handleDelete = () => {
-    if (confirm("Saytni butunlay o'chirib tashlamoqchimisiz? Qaytarib bo'lmaydi.")) {
+    if (confirm(tr("Saytni butunlay o'chirib tashlamoqchimisiz? Qaytarib bo'lmaydi."))) {
       deleteSite(draft.id);
       router.push("/dashboard/sites");
     }
@@ -240,12 +243,12 @@ export function Editor({
 
   const isLanding = draft.type === "landing";
   const sections = useMemo(() => {
-    if (!isLanding) return VIZITKA_SECTIONS;
+    if (!isLanding) return VIZITKA_SECTIONS(tr);
     const tid = draft.templateId;
-    if (tid === "marketing") return LANDING_SECTIONS_MARKETING;
-    if (tid === "simple") return LANDING_SECTIONS_SIMPLE;
-    return LANDING_SECTIONS;
-  }, [isLanding, draft.templateId]);
+    if (tid === "marketing") return LANDING_SECTIONS_MARKETING(tr);
+    if (tid === "simple") return LANDING_SECTIONS_SIMPLE(tr);
+    return LANDING_SECTIONS(tr);
+  }, [isLanding, draft.templateId, tr]);
 
   const templateMeta = VIZITKA_TEMPLATES.find(
     (t) => t.id === draft.templateId,
@@ -279,31 +282,31 @@ export function Editor({
           <div className="flex-1 overflow-y-auto">
             <Anchor id="design" />
             <Section
-              title="Dizayn"
+              title={tr("Dizayn")}
               description={
                 isLanding
-                  ? "Logo rasmi yuklash mumkin"
-                  : "Shablon va rasmlarni shu yerdan boshqaring"
+                  ? tr("Logo rasmi yuklash mumkin")
+                  : tr("Shablon va rasmlarni shu yerdan boshqaring")
               }
             >
               {!isLanding ? (
                 <>
                   <Field
-                    label="Joylashuv"
-                    hint="4 ta dizayn varianti"
+                    label={tr("Joylashuv")}
+                    hint={tr("4 ta dizayn varianti")}
                   >
                     <VizitkaTemplateSwitcher
                       value={draft.templateId as VizitkaTemplateId}
                       onChange={updateTemplate}
                     />
                   </Field>
-                  <Field label="Rang" hint="8 ta rang varianti">
+                  <Field label={tr("Rang")} hint={tr("8 ta rang varianti")}>
                     <ColorPicker
                       value={(draft.content.colorTheme ?? "mono") as ColorThemeId}
                       onChange={updateColorTheme}
                     />
                   </Field>
-                  <Field label="Naqsh" hint="Shablon fonidagi bezak">
+                  <Field label={tr("Naqsh")} hint={tr("Shablon fonidagi bezak")}>
                     <PatternPicker
                       value={draft.content.pattern ?? "none"}
                       onChange={(p: PatternId) => updateContent("pattern", p)}
@@ -314,8 +317,8 @@ export function Editor({
               ) : (
                 <>
                   <Field
-                    label="Shablon"
-                    hint="Marketing — xizmat kartochkalari, jarayon, FAQ; oddiy — 2 ta matn bo‘limi; to‘liq — barcha bo‘limlar."
+                    label={tr("Shablon")}
+                    hint={tr("Marketing — xizmat kartochkalari, jarayon, FAQ; oddiy — 2 ta matn bo‘limi; to‘liq — barcha bo‘limlar.")}
                   >
                     <select
                       className="h-11 w-full rounded-xl border border-[color:var(--border)] bg-white px-3 text-sm outline-none focus:border-brand-500"
@@ -337,13 +340,13 @@ export function Editor({
                         )
                       }
                     >
-                      <option value="simple">Oddiy (2 bo‘lim + ariza)</option>
-                      <option value="marketing">Marketing (xizmatlar, jarayon, FAQ)</option>
-                      <option value="default">To‘liq (xizmatlar, galereya, …)</option>
+                      <option value="simple">{tr("Oddiy (2 bo‘lim + ariza)")}</option>
+                      <option value="marketing">{tr("Marketing (xizmatlar, jarayon, FAQ)")}</option>
+                      <option value="default">{tr("To‘liq (xizmatlar, galereya, …)")}</option>
                     </select>
                   </Field>
                   {draft.templateId === "marketing" ? (
-                    <Field label="Asosiy rang" hint="Hero gradient va tugmalar">
+                    <Field label={tr("Asosiy rang")} hint={tr("Hero gradient va tugmalar")}>
                       <ColorPicker
                         value={(draft.content.colorTheme ?? "mono") as ColorThemeId}
                         onChange={updateColorTheme}
@@ -355,8 +358,8 @@ export function Editor({
 
               {supportsHero ? (
                 <ImageUpload
-                  label="Hero rasm"
-                  hint="Tepadagi katta rasm. 16:9 nisbat tavsiya etiladi."
+                  label={tr("Hero rasm")}
+                  hint={tr("Tepadagi katta rasm. 16:9 nisbat tavsiya etiladi.")}
                   value={draft.content.heroImage}
                   onChange={updateHeroImage}
                   aspect="wide"
@@ -377,8 +380,8 @@ export function Editor({
               ) : null}
 
               <ImageUpload
-                label="Logo rasm"
-                hint="Rasm yuklamagan bo'lsangiz bosh harflar ishlatiladi"
+                label={tr("Logo rasm")}
+                hint={tr("Rasm yuklamagan bo'lsangiz bosh harflar ishlatiladi")}
                 value={draft.content.logoImage}
                 onChange={updateLogoImage}
                 aspect="square"
@@ -399,8 +402,8 @@ export function Editor({
             </Section>
 
             <Anchor id="general" />
-            <Section title="Umumiy" description="Sayt nomi va qisqacha tavsif">
-              <Field label="Biznes nomi">
+            <Section title={tr("Umumiy")} description={tr("Sayt nomi va qisqacha tavsif")}>
+              <Field label={tr("Biznes nomi")}>
                 <TextInput
                   value={draft.content.businessName}
                   onChange={(v) => {
@@ -410,21 +413,21 @@ export function Editor({
                 />
               </Field>
               <Field
-                label="Kategoriya"
-                hint="Masalan: Chayxana, Beauty salon, Fitnes markazi"
+                label={tr("Kategoriya")}
+                hint={tr("Masalan: Chayxana, Beauty salon, Fitnes markazi")}
               >
                 <TextInput
                   value={draft.content.category}
                   onChange={(v) => updateContent("category", v)}
                 />
               </Field>
-              <Field label="Qisqa taqdimot" hint="Biznes nomi ostida chiqadi">
+              <Field label={tr("Qisqa taqdimot")} hint={tr("Biznes nomi ostida chiqadi")}>
                 <TextInput
                   value={draft.content.tagline}
                   onChange={(v) => updateContent("tagline", v)}
                 />
               </Field>
-              <Field label="Tavsif" hint="1-2 jumlada biznesingiz haqida">
+              <Field label={tr("Tavsif")} hint={tr("1-2 jumlada biznesingiz haqida")}>
                 <TextAreaInput
                   value={draft.content.description}
                   onChange={(v) => updateContent("description", v)}
@@ -434,11 +437,11 @@ export function Editor({
             </Section>
 
             <Anchor id="contact" />
-            <Section title="Manzil va aloqa">
+            <Section title={tr("Manzil va aloqa")}>
               <Field
-                label="Veb-manzil"
+                label={tr("Veb-manzil")}
                 error={slugError}
-                hint="Sayt havolasi (slug), jismoniy manzil emas"
+                hint={tr("Sayt havolasi (slug), jismoniy manzil emas")}
               >
                 <TextInput
                   prefix={`${SITE_DOMAIN}/`}
@@ -446,7 +449,7 @@ export function Editor({
                   onChange={(v) => setSlugInput(normalizeSlug(v))}
                 />
               </Field>
-              <Field label="Telefon">
+              <Field label={tr("Telefon")}>
                 <TextInput
                   type="tel"
                   value={draft.content.phone}
@@ -455,36 +458,36 @@ export function Editor({
                 />
               </Field>
               <Field
-                label="Manzil"
-                hint="Ko‘cha, shahar — xarita kartochkasi shu matn bo‘yicha"
+                label={tr("Manzil")}
+                hint={tr("Ko‘cha, shahar — xarita kartochkasi shu matn bo‘yicha")}
               >
                 <TextInput
                   value={draft.content.address}
                   onChange={(v) => updateContent("address", v)}
-                  placeholder="Toshkent, Chilonzor"
+                  placeholder={tr("Toshkent, Chilonzor")}
                 />
               </Field>
-              <Field label="Ish vaqti" hint="Presetlardan tanlang yoki moslang">
+              <Field label={tr("Ish vaqti")} hint={tr("Presetlardan tanlang yoki moslang")}>
                 <HoursEditor
                   value={draft.content.hoursLine}
                   onChange={(v) => updateContent("hoursLine", v)}
                 />
               </Field>
               <Field
-                label="Xarita havolasi (ixtiyoriy)"
-                hint="To‘liq sahifa havolasi — kartochka ustiga bosganda shu yerga ochiladi"
+                label={tr("Xarita havolasi (ixtiyoriy)")}
+                hint={tr("To‘liq sahifa havolasi — kartochka ustiga bosganda shu yerga ochiladi")}
               >
                 <TextInput
                   value={draft.content.mapsUrl ?? ""}
                   onChange={(v) => updateContent("mapsUrl", v)}
-                  placeholder="https://maps.google.com/..."
+                  placeholder={tr("https://maps.google.com/...")}
                 />
               </Field>
               {!isLanding &&
               (draft.content.address?.trim() || draft.content.mapsUrl?.trim()) ? (
                 <div className="space-y-2">
                   <p className="text-[11px] text-neutral-500">
-                    Ko‘rinish — manzil bo‘yicha; bosilsa pastdagi xarita havolasi ochiladi (bo‘lsa)
+                    {tr("Ko‘rinish — manzil bo‘yicha; bosilsa pastdagi xarita havolasi ochiladi (bo‘lsa)")}
                   </p>
                   <MapEmbed
                     address={draft.content.address ?? ""}
@@ -501,8 +504,8 @@ export function Editor({
               <>
                 <Anchor id="subscription" />
                 <Section
-                  title="Obuna va paketlar"
-                  description="Muddatni uzaytirish uchun CLICK orqali to‘lang — balansga qo‘shilmaydi."
+                  title={tr("Obuna va paketlar")}
+                  description={tr("Muddatni uzaytirish uchun CLICK orqali to‘lang — balansga qo‘shilmaydi.")}
                 >
                   <VizitkaSubscriptionPanel site={draft} />
                 </Section>
@@ -511,8 +514,8 @@ export function Editor({
 
             <Anchor id="social" />
             <Section
-              title="Ijtimoiy tarmoqlar"
-              description="Kerakli tarmoqni tanlab, username yoki havolani kiriting"
+              title={tr("Ijtimoiy tarmoqlar")}
+              description={tr("Kerakli tarmoqni tanlab, username yoki havolani kiriting")}
             >
               <SocialEditor value={draft.content.social} onChange={updateSocial} />
             </Section>
@@ -527,8 +530,8 @@ export function Editor({
 
             <Anchor id="qr" />
             <Section
-              title="QR kod"
-              description="Saytingizga olib boruvchi QR. Menyu, vizitka kartochkasi yoki afishaga chop eting."
+              title={tr("QR kod")}
+              description={tr("Saytingizga olib boruvchi QR. Menyu, vizitka kartochkasi yoki afishaga chop eting.")}
             >
               <SiteQRCode
                 url={buildSiteUrl(draft.slug)}
@@ -537,13 +540,13 @@ export function Editor({
             </Section>
 
             <Anchor id="danger" />
-            <Section title="Xavfli zona">
+            <Section title={tr("Xavfli zona")}>
               <button
                 type="button"
                 onClick={handleDelete}
                 className="inline-flex h-9 items-center justify-center rounded-md border border-red-200 px-4 text-sm font-medium text-red-700 transition-colors hover:border-red-700 hover:bg-red-50"
               >
-                Saytni o&apos;chirish
+                {tr("Saytni o'chirish")}
               </button>
             </Section>
           </div>
@@ -615,6 +618,7 @@ function EditorHeader({
   savedAt: Date | null;
   onTogglePublish: () => void | Promise<void>;
 }) {
+  const { tr } = useI18n();
   return (
     <header className="flex h-14 items-center justify-between border-b border-[color:var(--border)] bg-white px-4 lg:px-6">
       <div className="flex min-w-0 items-center gap-3">
@@ -622,7 +626,7 @@ function EditorHeader({
           href="/dashboard/sites"
           className="inline-flex h-9 items-center rounded-md border border-[color:var(--border)] px-3 text-xs font-medium text-[color:var(--foreground)] hover:border-brand-300"
         >
-          ← Saytlar
+          {tr("← Saytlar")}
         </Link>
         <div className="min-w-0">
           <p className="truncate text-sm font-semibold text-[color:var(--foreground)]">
@@ -642,14 +646,14 @@ function EditorHeader({
           href={`/${site.slug}`}
           target="_blank"
         >
-          Ochib ko&apos;rish
+          {tr("Ochib ko'rish")}
         </Button>
         <Button
           size="sm"
           onClick={() => void onTogglePublish()}
           variant={site.status === "published" ? "secondary" : "primary"}
         >
-          {site.status === "published" ? "Qoralama" : "Nashr qilish"}
+          {site.status === "published" ? tr("Qoralama") : tr("Nashr qilish")}
         </Button>
       </div>
     </header>
@@ -663,23 +667,24 @@ function SaveIndicator({
   state: SaveState;
   savedAt: Date | null;
 }) {
+  const { tr } = useI18n();
   if (state === "saving") {
     return (
       <span className="hidden items-center gap-2 text-xs text-neutral-500 sm:inline-flex">
-        <Dot spinning /> Saqlanmoqda...
+        <Dot spinning /> {tr("Saqlanmoqda...")}
       </span>
     );
   }
   if (state === "error") {
     return (
       <span className="hidden items-center gap-2 text-xs text-red-700 sm:inline-flex">
-        Saqlash amalga oshmadi
+        {tr("Saqlash amalga oshmadi")}
       </span>
     );
   }
   return (
     <span className="hidden items-center gap-2 text-xs text-neutral-500 sm:inline-flex">
-      <Dot /> Saqlandi{savedAt ? ` · ${formatTime(savedAt)}` : ""}
+      <Dot /> {tr("Saqlandi")}{savedAt ? ` · ${formatTime(savedAt)}` : ""}
     </span>
   );
 }
@@ -703,6 +708,7 @@ function PreviewToolbar({
   slug: string;
   variant?: "vizitka" | "landing";
 }) {
+  const { tr } = useI18n();
   return (
     <div className="flex min-h-10 flex-wrap items-center justify-between gap-2 border-b border-[color:var(--border)] bg-white px-4 py-2 text-xs text-neutral-600">
       <div className="flex items-center gap-1.5">
@@ -716,14 +722,14 @@ function PreviewToolbar({
         </span>
         {variant === "landing" ? (
           <span className="hidden text-[10px] text-neutral-500 sm:inline">
-            to‘liq sahifa
+            {tr("to‘liq sahifa")}
           </span>
         ) : null}
       </div>
       <div className="flex flex-col items-end text-right leading-tight">
-        <span className="text-[11px] uppercase tracking-[0.12em]">jonli ko&apos;rinish</span>
+        <span className="text-[11px] uppercase tracking-[0.12em]">{tr("jonli ko'rinish")}</span>
         {variant === "landing" ? (
-          <span className="text-[10px] text-neutral-500">brauzer oynasi</span>
+          <span className="text-[10px] text-neutral-500">{tr("brauzer oynasi")}</span>
         ) : null}
       </div>
     </div>
@@ -739,6 +745,7 @@ function LandingSections({
   update: <K extends keyof LandingContent>(key: K, value: LandingContent[K]) => void;
   templateId: TemplateId;
 }) {
+  const { tr } = useI18n();
   const isSimple = templateId === "simple";
   const isMarketing = templateId === "marketing";
 
@@ -755,21 +762,21 @@ function LandingSections({
   return (
     <>
       <Anchor id="hero" />
-      <Section title="Hero bo'limi" description="Sayt yuqorisidagi katta sarlavha">
-        <Field label="Kichik yorliq (eyebrow)" hint="Sarlavha ustida chiqadi">
+      <Section title={tr("Hero bo'limi")} description={tr("Sayt yuqorisidagi katta sarlavha")}>
+        <Field label={tr("Kichik yorliq (eyebrow)")} hint={tr("Sarlavha ustida chiqadi")}>
           <TextInput
             value={content.heroEyebrow}
             onChange={(v) => update("heroEyebrow", v)}
           />
         </Field>
-        <Field label="Asosiy sarlavha">
+        <Field label={tr("Asosiy sarlavha")}>
           <TextAreaInput
             value={content.heroTitle}
             onChange={(v) => update("heroTitle", v)}
             rows={2}
           />
         </Field>
-        <Field label="Pastki matn">
+        <Field label={tr("Pastki matn")}>
           <TextAreaInput
             value={content.heroSubtitle}
             onChange={(v) => update("heroSubtitle", v)}
@@ -778,13 +785,13 @@ function LandingSections({
         </Field>
         {isMarketing ? (
           <>
-            <Field label="Birinchi tugma matni" hint="Pastki ariza bo‘limiga (#contact)">
+            <Field label={tr("Birinchi tugma matni")} hint={tr("Pastki ariza bo‘limiga (#contact)")}>
               <TextInput
                 value={content.heroCtaPrimaryLabel ?? ""}
                 onChange={(v) => update("heroCtaPrimaryLabel", v)}
               />
             </Field>
-            <Field label="Ikkinchi tugma matni" hint="Xizmatlar bo‘limiga (#services)">
+            <Field label={tr("Ikkinchi tugma matni")} hint={tr("Xizmatlar bo‘limiga (#services)")}>
               <TextInput
                 value={content.heroCtaSecondaryLabel ?? ""}
                 onChange={(v) => update("heroCtaSecondaryLabel", v)}
@@ -798,16 +805,16 @@ function LandingSections({
         <>
           <Anchor id="services" />
           <Section
-            title="Xizmatlar bo‘limi"
-            description="Sahifadagi katta sarlavha va izoh — kartochkalar keyingi bo‘limda"
+            title={tr("Xizmatlar bo‘limi")}
+            description={tr("Sahifadagi katta sarlavha va izoh — kartochkalar keyingi bo‘limda")}
           >
-            <Field label="Bo‘lim sarlavhasi">
+            <Field label={tr("Bo‘lim sarlavhasi")}>
               <TextInput
                 value={content.servicesSectionTitle ?? ""}
                 onChange={(v) => update("servicesSectionTitle", v)}
               />
             </Field>
-            <Field label="Bo‘lim izohi">
+            <Field label={tr("Bo‘lim izohi")}>
               <TextAreaInput
                 value={content.servicesSectionSubtitle ?? ""}
                 onChange={(v) => update("servicesSectionSubtitle", v)}
@@ -816,15 +823,15 @@ function LandingSections({
             </Field>
           </Section>
           <ServicesEditor
-            title="Tarif kartochkalari"
-            description="Har kartochkada nom, narx, tavsif va ixtiyoriy punktlar ro‘yxati"
+            title={tr("Tarif kartochkalari")}
+            description={tr("Har kartochkada nom, narx, tavsif va ixtiyoriy punktlar ro‘yxati")}
             showBullets
             services={content.services}
             onChange={(services) => update("services", services)}
           />
           <Anchor id="process" />
-          <Section title="Jarayon bo‘limi" description="Marketing sahifasidagi kichik sarlavha">
-            <Field label="Bo‘lim sarlavhasi">
+          <Section title={tr("Jarayon bo‘limi")} description={tr("Marketing sahifasidagi kichik sarlavha")}>
+            <Field label={tr("Bo‘lim sarlavhasi")}>
               <TextInput
                 value={content.processSectionTitle ?? ""}
                 onChange={(v) => update("processSectionTitle", v)}
@@ -836,8 +843,8 @@ function LandingSections({
             onChange={(processSteps) => update("processSteps", processSteps)}
           />
           <Anchor id="faq" />
-          <Section title="FAQ bo‘limi" description="Accordion savollar">
-            <Field label="Bo‘lim sarlavhasi">
+          <Section title={tr("FAQ bo‘limi")} description={tr("Accordion savollar")}>
+            <Field label={tr("Bo‘lim sarlavhasi")}>
               <TextInput
                 value={content.faqSectionTitle ?? ""}
                 onChange={(v) => update("faqSectionTitle", v)}
@@ -849,14 +856,14 @@ function LandingSections({
             onChange={(faqItems) => update("faqItems", faqItems)}
           />
           <Anchor id="simple-contact" />
-          <Section title="Aloqa formasi" description="Pastki forma ustidagi sarlavha va izoh">
-            <Field label="Sarlavha">
+          <Section title={tr("Aloqa formasi")} description={tr("Pastki forma ustidagi sarlavha va izoh")}>
+            <Field label={tr("Sarlavha")}>
               <TextInput
                 value={content.contactSectionTitle ?? ""}
                 onChange={(v) => update("contactSectionTitle", v)}
               />
             </Field>
-            <Field label="Qisqa izoh">
+            <Field label={tr("Qisqa izoh")}>
               <TextAreaInput
                 value={content.contactSectionSubtitle ?? ""}
                 onChange={(v) => update("contactSectionSubtitle", v)}
@@ -871,29 +878,29 @@ function LandingSections({
         <>
           <Anchor id="sections" />
           <Section
-            title="O‘rta bo‘limlar"
-            description="Ikkita matn bloki — bosh sahifada ketma-ket chiqadi"
+            title={tr("O‘rta bo‘limlar")}
+            description={tr("Ikkita matn bloki — bosh sahifada ketma-ket chiqadi")}
           >
-            <Field label="1-bo‘lim sarlavhasi">
+            <Field label={tr("1-bo‘lim sarlavhasi")}>
               <TextInput
                 value={block(0).title}
                 onChange={(v) => patchBlock(0, { title: v })}
               />
             </Field>
-            <Field label="1-bo‘lim matni">
+            <Field label={tr("1-bo‘lim matni")}>
               <TextAreaInput
                 value={block(0).body}
                 onChange={(v) => patchBlock(0, { body: v })}
                 rows={5}
               />
             </Field>
-            <Field label="2-bo‘lim sarlavhasi">
+            <Field label={tr("2-bo‘lim sarlavhasi")}>
               <TextInput
                 value={block(1).title}
                 onChange={(v) => patchBlock(1, { title: v })}
               />
             </Field>
-            <Field label="2-bo‘lim matni">
+            <Field label={tr("2-bo‘lim matni")}>
               <TextAreaInput
                 value={block(1).body}
                 onChange={(v) => patchBlock(1, { body: v })}
@@ -902,14 +909,14 @@ function LandingSections({
             </Field>
           </Section>
           <Anchor id="simple-contact" />
-          <Section title="Aloqa formasi" description="Pastki forma ustidagi sarlavha va izoh">
-            <Field label="Sarlavha">
+          <Section title={tr("Aloqa formasi")} description={tr("Pastki forma ustidagi sarlavha va izoh")}>
+            <Field label={tr("Sarlavha")}>
               <TextInput
                 value={content.contactSectionTitle ?? ""}
                 onChange={(v) => update("contactSectionTitle", v)}
               />
             </Field>
-            <Field label="Qisqa izoh">
+            <Field label={tr("Qisqa izoh")}>
               <TextAreaInput
                 value={content.contactSectionSubtitle ?? ""}
                 onChange={(v) => update("contactSectionSubtitle", v)}
@@ -923,15 +930,15 @@ function LandingSections({
       {!isSimple && templateId !== "marketing" ? (
         <>
           <Anchor id="about" />
-      <Section title="Biz haqimizda">
-        <Field label="Tavsif matni">
+      <Section title={tr("Biz haqimizda")}>
+        <Field label={tr("Tavsif matni")}>
           <TextAreaInput
             value={content.about}
             onChange={(v) => update("about", v)}
             rows={4}
           />
         </Field>
-        <Field label="Ish vaqti (ko'p qatorli)" hint="Har qatorga alohida">
+        <Field label={tr("Ish vaqti (ko'p qatorli)")} hint={tr("Har qatorga alohida")}>
           <TextAreaInput
             value={content.hours}
             onChange={(v) => update("hours", v)}
@@ -959,7 +966,7 @@ function LandingSections({
       />
 
       <Anchor id="gallery" />
-      <Section title="Galereya" description="4 ta kartochka uchun joy">
+      <Section title={tr("Galereya")} description={tr("4 ta kartochka uchun joy")}>
         <div className="grid grid-cols-2 gap-3">
           {content.gallery.map((item, idx) => (
             <div
@@ -979,7 +986,7 @@ function LandingSections({
                     ),
                   )
                 }
-                placeholder="Emoji (ixtiyoriy)"
+                placeholder={tr("Emoji (ixtiyoriy)")}
               />
               <TextInput
                 value={item.caption ?? ""}
@@ -991,7 +998,7 @@ function LandingSections({
                     ),
                   )
                 }
-                placeholder="Izoh"
+                placeholder={tr("Izoh")}
               />
             </div>
           ))}
@@ -1005,15 +1012,15 @@ function LandingSections({
       />
 
       <Anchor id="cta" />
-      <Section title="Aloqa chaqiruvi" description="Eng pastki qora bo'lim">
-        <Field label="Sarlavha">
+      <Section title={tr("Aloqa chaqiruvi")} description={tr("Eng pastki qora bo'lim")}>
+        <Field label={tr("Sarlavha")}>
           <TextAreaInput
             value={content.ctaTitle}
             onChange={(v) => update("ctaTitle", v)}
             rows={2}
           />
         </Field>
-        <Field label="Pastki matn">
+        <Field label={tr("Pastki matn")}>
           <TextAreaInput
             value={content.ctaSubtitle}
             onChange={(v) => update("ctaSubtitle", v)}
@@ -1034,8 +1041,9 @@ function StatsEditor({
   stats: StatItem[];
   onChange: (next: StatItem[]) => void;
 }) {
+  const { tr } = useI18n();
   return (
-    <Section title="Statistika" description="Maksimum 4 ta raqam — ishonch qozonish uchun">
+    <Section title={tr("Statistika")} description={tr("Maksimum 4 ta raqam — ishonch qozonish uchun")}>
       <div className="space-y-3">
         {stats.map((stat, idx) => (
           <div
@@ -1044,12 +1052,12 @@ function StatsEditor({
           >
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-500">
-                Raqam #{idx + 1}
+                {tr("Raqam #")}{idx + 1}
               </span>
               {stats.length > 1 ? (
                 <IconButton
                   onClick={() => onChange(stats.filter((s) => s.id !== stat.id))}
-                  label="O'chirish"
+                  label={tr("O'chirish")}
                   destructive
                 >
                   <XIcon />
@@ -1057,7 +1065,7 @@ function StatsEditor({
               ) : null}
             </div>
             <div className="grid grid-cols-2 gap-3">
-              <Field label="Qiymat">
+              <Field label={tr("Qiymat")}>
                 <TextInput
                   value={stat.value}
                   onChange={(v) =>
@@ -1066,13 +1074,13 @@ function StatsEditor({
                   placeholder="500+"
                 />
               </Field>
-              <Field label="Izoh">
+              <Field label={tr("Izoh")}>
                 <TextInput
                   value={stat.label}
                   onChange={(v) =>
                     onChange(stats.map((s) => (s.id === stat.id ? { ...s, label: v } : s)))
                   }
-                  placeholder="Mijoz"
+                  placeholder={tr("Mijoz")}
                 />
               </Field>
             </div>
@@ -1082,9 +1090,9 @@ function StatsEditor({
       {stats.length < 4 ? (
         <AddButton
           onClick={() =>
-            onChange([...stats, { id: newId(), value: "0", label: "Ko'rsatkich" }])
+            onChange([...stats, { id: newId(), value: "0", label: tr("Ko'rsatkich") }])
           }
-          label="Raqam qo'shish"
+          label={tr("Raqam qo'shish")}
         />
       ) : null}
     </Section>
@@ -1098,8 +1106,9 @@ function FeaturesEditor({
   features: FeatureItem[];
   onChange: (next: FeatureItem[]) => void;
 }) {
+  const { tr } = useI18n();
   return (
-    <Section title="Afzalliklar" description="Nima uchun mijoz sizni tanlashi kerak">
+    <Section title={tr("Afzalliklar")} description={tr("Nima uchun mijoz sizni tanlashi kerak")}>
       <div className="space-y-3">
         {features.map((feature, idx) => (
           <div
@@ -1108,14 +1117,14 @@ function FeaturesEditor({
           >
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-500">
-                Afzallik #{idx + 1}
+                {tr("Afzallik #")}{idx + 1}
               </span>
               {features.length > 1 ? (
                 <IconButton
                   onClick={() =>
                     onChange(features.filter((f) => f.id !== feature.id))
                   }
-                  label="O'chirish"
+                  label={tr("O'chirish")}
                   destructive
                 >
                   <XIcon />
@@ -1123,7 +1132,7 @@ function FeaturesEditor({
               ) : null}
             </div>
 
-            <Field label="Ikonka">
+            <Field label={tr("Ikonka")}>
               <IconPicker
                 value={feature.icon}
                 onChange={(v) =>
@@ -1135,7 +1144,7 @@ function FeaturesEditor({
                 }
               />
             </Field>
-            <Field label="Sarlavha">
+            <Field label={tr("Sarlavha")}>
               <TextInput
                 value={feature.title}
                 onChange={(v) =>
@@ -1147,7 +1156,7 @@ function FeaturesEditor({
                 }
               />
             </Field>
-            <Field label="Tavsif">
+            <Field label={tr("Tavsif")}>
               <TextAreaInput
                 value={feature.description}
                 onChange={(v) =>
@@ -1171,12 +1180,12 @@ function FeaturesEditor({
               {
                 id: newId(),
                 icon: "star",
-                title: "Yangi afzallik",
+                title: tr("Yangi afzallik"),
                 description: "",
               },
             ])
           }
-          label="Afzallik qo'shish"
+          label={tr("Afzallik qo'shish")}
         />
       ) : null}
     </Section>
@@ -1226,6 +1235,7 @@ function ServicesEditor({
   title?: string;
   description?: string;
 }) {
+  const { tr } = useI18n();
   return (
     <Section title={title} description={description}>
       <div className="space-y-3">
@@ -1236,21 +1246,21 @@ function ServicesEditor({
           >
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-500">
-                Xizmat #{idx + 1}
+                {tr("Xizmat #")}{idx + 1}
               </span>
               {services.length > 1 ? (
                 <IconButton
                   onClick={() =>
                     onChange(services.filter((s) => s.id !== service.id))
                   }
-                  label="O'chirish"
+                  label={tr("O'chirish")}
                   destructive
                 >
                   <XIcon />
                 </IconButton>
               ) : null}
             </div>
-            <Field label="Nomi">
+            <Field label={tr("Nomi")}>
               <TextInput
                 value={service.name}
                 onChange={(v) =>
@@ -1262,7 +1272,7 @@ function ServicesEditor({
                 }
               />
             </Field>
-            <Field label="Narxi">
+            <Field label={tr("Narxi")}>
               <TextInput
                 value={service.price}
                 onChange={(v) =>
@@ -1272,10 +1282,10 @@ function ServicesEditor({
                     ),
                   )
                 }
-                placeholder="100 000 so'm"
+                placeholder={tr("100 000 so'm")}
               />
             </Field>
-            <Field label="Tavsif (ixtiyoriy)">
+            <Field label={tr("Tavsif (ixtiyoriy)")}>
               <TextAreaInput
                 value={service.description ?? ""}
                 onChange={(v) =>
@@ -1290,8 +1300,8 @@ function ServicesEditor({
             </Field>
             {showBullets ? (
               <Field
-                label="Ro‘yxat punktlari"
-                hint="Har qator — bitta punkt (marketing kartochkasida ro‘yxat sifatida)"
+                label={tr("Ro‘yxat punktlari")}
+                hint={tr("Har qator — bitta punkt (marketing kartochkasida ro‘yxat sifatida)")}
               >
                 <TextAreaInput
                   value={(service.bullets ?? []).join("\n")}
@@ -1323,13 +1333,13 @@ function ServicesEditor({
             ...services,
             {
               id: newId(),
-              name: "Yangi xizmat",
-              price: "0 so'm",
+              name: tr("Yangi xizmat"),
+              price: tr("0 so'm"),
               description: "",
             },
           ])
         }
-        label="Xizmat qo'shish"
+        label={tr("Xizmat qo'shish")}
       />
     </Section>
   );
@@ -1342,8 +1352,9 @@ function ProcessStepsEditor({
   steps: ProcessStepItem[];
   onChange: (next: ProcessStepItem[]) => void;
 }) {
+  const { tr } = useI18n();
   return (
-    <Section title="Jarayon qadamlari" description="Marketing sahifasida tartib bilan chiqadi">
+    <Section title={tr("Jarayon qadamlari")} description={tr("Marketing sahifasida tartib bilan chiqadi")}>
       <div className="space-y-3">
         {steps.map((step, idx) => (
           <div
@@ -1352,12 +1363,12 @@ function ProcessStepsEditor({
           >
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-500">
-                Qadam #{idx + 1}
+                {tr("Qadam #")}{idx + 1}
               </span>
               {steps.length > 1 ? (
                 <IconButton
                   onClick={() => onChange(steps.filter((s) => s.id !== step.id))}
-                  label="O'chirish"
+                  label={tr("O'chirish")}
                   destructive
                 >
                   <XIcon />
@@ -1365,7 +1376,7 @@ function ProcessStepsEditor({
               ) : null}
             </div>
             <div className="grid grid-cols-2 gap-3">
-              <Field label="Raqam (masalan 01)">
+              <Field label={tr("Raqam (masalan 01)")}>
                 <TextInput
                   value={step.step}
                   onChange={(v) =>
@@ -1376,7 +1387,7 @@ function ProcessStepsEditor({
                 />
               </Field>
             </div>
-            <Field label="Sarlavha">
+            <Field label={tr("Sarlavha")}>
               <TextInput
                 value={step.title}
                 onChange={(v) =>
@@ -1386,7 +1397,7 @@ function ProcessStepsEditor({
                 }
               />
             </Field>
-            <Field label="Matn">
+            <Field label={tr("Matn")}>
               <TextAreaInput
                 value={step.body}
                 onChange={(v) =>
@@ -1408,12 +1419,12 @@ function ProcessStepsEditor({
               {
                 id: newId(),
                 step: String(steps.length + 1).padStart(2, "0"),
-                title: "Yangi qadam",
+                title: tr("Yangi qadam"),
                 body: "",
               },
             ])
           }
-          label="Qadam qo'shish"
+          label={tr("Qadam qo'shish")}
         />
       ) : null}
     </Section>
@@ -1427,8 +1438,9 @@ function FaqEditor({
   items: FaqItem[];
   onChange: (next: FaqItem[]) => void;
 }) {
+  const { tr } = useI18n();
   return (
-    <Section title="Savol-javoblar" description="Har bir element accordion bo‘lib ochiladi">
+    <Section title={tr("Savol-javoblar")} description={tr("Har bir element accordion bo‘lib ochiladi")}>
       <div className="space-y-3">
         {items.map((item, idx) => (
           <div
@@ -1437,19 +1449,19 @@ function FaqEditor({
           >
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-500">
-                Savol #{idx + 1}
+                {tr("Savol #")}{idx + 1}
               </span>
               {items.length > 1 ? (
                 <IconButton
                   onClick={() => onChange(items.filter((x) => x.id !== item.id))}
-                  label="O'chirish"
+                  label={tr("O'chirish")}
                   destructive
                 >
                   <XIcon />
                 </IconButton>
               ) : null}
             </div>
-            <Field label="Savol">
+            <Field label={tr("Savol")}>
               <TextInput
                 value={item.question}
                 onChange={(v) =>
@@ -1459,7 +1471,7 @@ function FaqEditor({
                 }
               />
             </Field>
-            <Field label="Javob">
+            <Field label={tr("Javob")}>
               <TextAreaInput
                 value={item.answer}
                 onChange={(v) =>
@@ -1480,12 +1492,12 @@ function FaqEditor({
               ...items,
               {
                 id: newId(),
-                question: "Yangi savol",
+                question: tr("Yangi savol"),
                 answer: "",
               },
             ])
           }
-          label="Savol qo'shish"
+          label={tr("Savol qo'shish")}
         />
       ) : null}
     </Section>
@@ -1499,10 +1511,11 @@ function TestimonialsEditor({
   testimonials: Testimonial[];
   onChange: (next: Testimonial[]) => void;
 }) {
+  const { tr } = useI18n();
   return (
     <Section
-      title="Mijozlar fikri"
-      description="Ijobiy sharhlar ishonch uyg'otadi. 2-6 ta yozing."
+      title={tr("Mijozlar fikri")}
+      description={tr("Ijobiy sharhlar ishonch uyg'otadi. 2-6 ta yozing.")}
     >
       <div className="space-y-3">
         {testimonials.map((t, idx) => (
@@ -1512,12 +1525,12 @@ function TestimonialsEditor({
           >
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-500">
-                Sharh #{idx + 1}
+                {tr("Sharh #")}{idx + 1}
               </span>
               {testimonials.length > 1 ? (
                 <IconButton
                   onClick={() => onChange(testimonials.filter((x) => x.id !== t.id))}
-                  label="O'chirish"
+                  label={tr("O'chirish")}
                   destructive
                 >
                   <XIcon />
@@ -1525,7 +1538,7 @@ function TestimonialsEditor({
               ) : null}
             </div>
 
-            <Field label="Sharh matni">
+            <Field label={tr("Sharh matni")}>
               <TextAreaInput
                 value={t.text}
                 onChange={(v) =>
@@ -1537,7 +1550,7 @@ function TestimonialsEditor({
               />
             </Field>
             <div className="grid grid-cols-2 gap-3">
-              <Field label="Ism">
+              <Field label={tr("Ism")}>
                 <TextInput
                   value={t.author}
                   onChange={(v) =>
@@ -1545,10 +1558,10 @@ function TestimonialsEditor({
                       testimonials.map((x) => (x.id === t.id ? { ...x, author: v } : x)),
                     )
                   }
-                  placeholder="Aziza K."
+                  placeholder={tr("Aziza K.")}
                 />
               </Field>
-              <Field label="Kim (ixtiyoriy)">
+              <Field label={tr("Kim (ixtiyoriy)")}>
                 <TextInput
                   value={t.role ?? ""}
                   onChange={(v) =>
@@ -1556,11 +1569,11 @@ function TestimonialsEditor({
                       testimonials.map((x) => (x.id === t.id ? { ...x, role: v } : x)),
                     )
                   }
-                  placeholder="Doimiy mijoz"
+                  placeholder={tr("Doimiy mijoz")}
                 />
               </Field>
             </div>
-            <Field label="Baho">
+            <Field label={tr("Baho")}>
               <RatingPicker
                 value={t.rating}
                 onChange={(v) =>
@@ -1580,14 +1593,14 @@ function TestimonialsEditor({
               ...testimonials,
               {
                 id: newId(),
-                author: "Yangi mijoz",
+                author: tr("Yangi mijoz"),
                 role: "",
                 text: "",
                 rating: 5,
               },
             ])
           }
-          label="Sharh qo'shish"
+          label={tr("Sharh qo'shish")}
         />
       ) : null}
     </Section>

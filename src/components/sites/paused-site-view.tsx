@@ -7,6 +7,7 @@ import { Logo } from "@/components/marketing/logo";
 import { BRAND_NAME, LOGO_SRC, SITE_DOMAIN } from "@/lib/brand";
 import type { UnknownSite } from "@/lib/store/types";
 import { SiteRenderer } from "./site-renderer";
+import { useI18n } from "@/lib/i18n/provider";
 
 function PausedSiteBackdrop({ preview }: { preview?: ReactNode }) {
   return (
@@ -36,6 +37,7 @@ export function PausedSitePreview({ site }: { site: UnknownSite }) {
 }
 
 function PaylinkerPromo({ slug }: { slug?: string }) {
+  const { tr } = useI18n();
   return (
     <div className="mt-6 w-full max-w-md overflow-hidden rounded-[var(--radius-panel)] border border-white/10 bg-[color:var(--dark-surface)] text-white shadow-[var(--shadow-lg)]">
       <div className="relative border-b border-white/10 px-6 py-5">
@@ -49,14 +51,13 @@ function PaylinkerPromo({ slug }: { slug?: string }) {
           />
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/55">
-              Taklif
+              {tr("Taklif")}
             </p>
             <p className="text-lg font-semibold tracking-tight">{BRAND_NAME}</p>
           </div>
         </div>
         <p className="mt-3 text-sm leading-relaxed text-white/75">
-          15 daqiqada biznes vizitkangiz — kontaktlar, ijtimoiy tarmoqlar va manzil
-          bitta sahifada, mobilga mos.
+          {tr("15 daqiqada biznes vizitkangiz — kontaktlar, ijtimoiy tarmoqlar va manzil bitta sahifada, mobilga mos.")}
         </p>
       </div>
       <div className="flex flex-col gap-2.5 px-6 py-5 sm:flex-row">
@@ -64,13 +65,13 @@ function PaylinkerPromo({ slug }: { slug?: string }) {
           href="/dashboard/sites/new"
           className="inline-flex h-11 flex-1 items-center justify-center rounded-[var(--radius-control)] bg-white px-4 text-sm font-semibold text-brand-700 transition hover:bg-brand-50"
         >
-          O&apos;z saytingizni yarating
+          {tr("O'z saytingizni yarating")}
         </Link>
         <Link
           href={slug ? `/?ref=${encodeURIComponent(slug)}` : "/"}
           className="inline-flex h-11 flex-1 items-center justify-center rounded-[var(--radius-control)] border border-white/25 bg-white/8 px-4 text-sm font-medium text-white transition hover:bg-white/16"
         >
-          Batafsil
+          {tr("Batafsil")}
         </Link>
       </div>
     </div>
@@ -92,6 +93,7 @@ function PausedSiteShell({
   message,
   showSlugHint,
 }: PausedShellProps) {
+  const { tr } = useI18n();
   return (
     <div className="relative min-h-screen overflow-hidden">
       <PausedSiteBackdrop preview={preview} />
@@ -116,7 +118,7 @@ function PausedSiteShell({
           </div>
 
           <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-500">
-            Vaqtincha to&apos;xtatilgan
+            {tr("Vaqtincha to'xtatilgan")}
           </p>
           <h1 className="mt-3 text-2xl font-semibold tracking-tight text-[color:var(--foreground)] sm:text-3xl">
             {businessName}
@@ -144,14 +146,14 @@ export function PausedSiteView({
   businessName: string;
   preview?: ReactNode;
 }) {
+  const { tr } = useI18n();
   return (
     <PausedSiteShell
       businessName={businessName}
       preview={preview}
       message={
         <>
-          Bu sayt vaqtincha o&apos;chirilgan. Biznes egasi obunani yangilashi bilan
-          qayta ishga tushadi.
+          {tr("Bu sayt vaqtincha o'chirilgan. Biznes egasi obunani yangilashi bilan qayta ishga tushadi.")}
         </>
       }
     />
@@ -169,6 +171,7 @@ export function PausedSiteExpiredView({
   preview?: ReactNode;
   showSlugHint?: boolean;
 }) {
+  const { tr } = useI18n();
   return (
     <PausedSiteShell
       businessName={businessName}
@@ -179,10 +182,10 @@ export function PausedSiteExpiredView({
         showSlugHint && slug ? (
           <>
             <span className="font-mono text-neutral-800">{SITE_DOMAIN}/{slug}</span>{" "}
-            manzilidagi bu nomdagi sayt vaqtincha to&apos;xtatilgan.
+            {tr("manzilidagi bu nomdagi sayt vaqtincha to'xtatilgan.")}
           </>
         ) : (
-          <>Bu nomdagi sayt vaqtincha to&apos;xtatilgan.</>
+          <>{tr("Bu nomdagi sayt vaqtincha to'xtatilgan.")}</>
         )
       }
     />

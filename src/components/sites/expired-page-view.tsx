@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { Logo } from "@/components/marketing/logo";
 import { cn } from "@/lib/cn";
 import { SITE_DOMAIN } from "@/lib/brand";
+import { useI18n } from "@/lib/i18n/provider";
 
 export type ExpiredSiteKind = "vizitka" | "landing" | "generic";
 
@@ -80,6 +81,7 @@ export function ExpiredPageView({
   preview?: ReactNode;
   showSlugHint?: boolean;
 }) {
+  const { tr } = useI18n();
   const hasSlug = Boolean(slug?.trim());
   const displaySlug = slug?.trim() ?? "";
 
@@ -107,7 +109,7 @@ export function ExpiredPageView({
               </svg>
             </div>
             <p className="mt-5 text-[11px] font-bold uppercase tracking-[0.24em] text-amber-800/80">
-              Vaqtincha to&apos;xtatilgan
+              {tr("Vaqtincha to'xtatilgan")}
             </p>
             <h1 className="mt-2 text-balance text-2xl font-semibold tracking-tight text-neutral-900 sm:text-[1.75rem]">
               {businessName}
@@ -121,10 +123,10 @@ export function ExpiredPageView({
                   <span className="font-mono text-neutral-800">
                     {SITE_DOMAIN}/{displaySlug}
                   </span>{" "}
-                  manzilidagi bu nomdagi sayt vaqtincha to&apos;xtatilgan.
+                  {tr("manzilidagi bu nomdagi sayt vaqtincha to'xtatilgan.")}
                 </>
               ) : (
-                <>Bu nomdagi sayt vaqtincha to&apos;xtatilgan.</>
+                <>{tr("Bu nomdagi sayt vaqtincha to'xtatilgan.")}</>
               )}
             </p>
             {hasSlug ? (
@@ -132,7 +134,7 @@ export function ExpiredPageView({
                 href="/login"
                 className="mt-5 inline-flex h-10 w-full items-center justify-center rounded-[var(--radius-control)] border border-brand-200 bg-white px-5 text-sm font-medium text-brand-700 transition hover:border-brand-400 hover:bg-brand-50 sm:w-auto sm:px-6"
               >
-                Egamisaniz? Kirish
+                {tr("Egamisaniz? Kirish")}
               </Link>
             ) : null}
           </div>

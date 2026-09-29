@@ -29,7 +29,7 @@ const FILTER_OPTIONS: Array<{ id: SitesFilter; key: keyof Dict["dash"]["list"] }
 ];
 
 export function SitesList() {
-  const { t } = useI18n();
+  const { t, tr } = useI18n();
   const L = t.dash.list;
   const searchParams = useSearchParams();
   const { sites, ready } = useSites();
@@ -168,12 +168,12 @@ export function SitesList() {
         aria-label={L.filterAria}
       >
         <p className="text-xs text-neutral-500">
-          Jami:{" "}
+          {tr("Jami:")}{" "}
           <span className="font-semibold text-[color:var(--foreground)]">{rows.length}</span>
           {filter !== "all" ? (
             <>
               {" "}
-              · ko&apos;rsatilmoqda:{" "}
+              {tr("· ko'rsatilmoqda:")}{" "}
               <span className="font-semibold text-[color:var(--foreground)]">
                 {filteredRows.length}
               </span>

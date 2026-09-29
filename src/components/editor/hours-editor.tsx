@@ -2,9 +2,20 @@
 
 import { useMemo, useState } from "react";
 import { cn } from "@/lib/cn";
+import type { Tr } from "@/lib/i18n/tr";
+import { useI18n } from "@/lib/i18n/provider";
+import { makeTr } from "@/lib/i18n/tr";
 
-const DAY_LABELS = ["Du", "Se", "Cho", "Pa", "Ju", "Sh", "Yak"];
-const DAY_NAMES = ["Dushanba", "Seshanba", "Chorshanba", "Payshanba", "Juma", "Shanba", "Yakshanba"];
+const DAY_LABELS = (tr: Tr) => ([tr("Du"), tr("Se"), tr("Cho"), tr("Pa"), tr("Ju"), tr("Sh"), tr("Yak")]);
+const DAY_NAMES = (tr: Tr) => ([tr("Dushanba"), tr("Seshanba"), tr("Chorshanba"), tr("Payshanba"), tr("Juma"), tr("Shanba"), tr("Yakshanba")]);
+
+/**
+ * Saqlangan "ish vaqti" matni qaysi tilda yozilgan bo'lsa ham o'qilsin:
+ * foydalanuvchi UI tilini almashtirsa, eski matn buzilmasin.
+ */
+const PARSE_TRS: Tr[] = [makeTr("uz"), makeTr("ru")];
+const EVERY_DAY_WORDS = PARSE_TRS.map((t) => t("Har kuni").toLowerCase());
+const DAY_OFF_WORDS = PARSE_TRS.map((t) => t("Dam olish").toLowerCase());
 
 const TIME_OPTIONS = buildTimeOptions();
 
@@ -23,13 +34,13 @@ type Preset = {
   value: string;
 };
 
-const PRESETS: Preset[] = [
-  { label: "Du–Sh 09:00–20:00", value: "Du–Sh: 09:00 – 20:00" },
-  { label: "Har kuni 09:00–22:00", value: "Har kuni: 09:00 – 22:00" },
-  { label: "Du–Ju 09:00–18:00", value: "Du–Ju: 09:00 – 18:00" },
-  { label: "24 soat", value: "24 soat" },
-  { label: "Kelishuv asosida", value: "Kelishuv asosida" },
-];
+const PRESETS = (tr: Tr): Preset[] => ([
+  { label: tr("Du–Sh 09:00–20:00"), value: tr("Du–Sh: 09:00 – 20:00") },
+  { label: tr("Har kuni 09:00–22:00"), value: tr("Har kuni: 09:00 – 22:00") },
+  { label: tr("Du–Ju 09:00–18:00"), value: tr("Du–Ju: 09:00 – 18:00") },
+  { label: tr("24 soat"), value: tr("24 soat") },
+  { label: tr("Kelishuv asosida"), value: tr("Kelishuv asosida") },
+]);
 
 type Mode = "preset" | "custom";
 
@@ -40,13 +51,14 @@ export function HoursEditor({
   value: string;
   onChange: (next: string) => void;
 }) {
-  const matchedPreset = PRESETS.find((p) => p.value === value);
+  const { tr } = useI18n();
+  const matchedPreset = PRESETS(tr).find((p) => p.value === value);
   const [mode, setMode] = useState<Mode>(matchedPreset || !value ? "preset" : "custom");
 
-  const { days, start, end } = useMemo(() => parseCustom(value), [value]);
+  const { days, start, end } = useMemo(() => parseCustom(value, tr), [value, tr]);
 
   const applyCustom = (nextDays: boolean[], nextStart: string, nextEnd: string) => {
-    onChange(formatCustom(nextDays, nextStart, nextEnd));
+    onChange(formatCustom(nextDays, nextStart, nextEnd, tr));
   };
 
   const toggleDay = (i: number) => {
@@ -59,16 +71,16 @@ export function HoursEditor({
     <div className="space-y-3 rounded-md border border-[color:var(--border)] bg-neutral-50 p-3">
       <div className="flex items-center gap-1.5 rounded-md bg-white p-1">
         <ModeTab active={mode === "preset"} onClick={() => setMode("preset")}>
-          Tez tanlash
+          {tr("Tez tanlash")}
         </ModeTab>
         <ModeTab active={mode === "custom"} onClick={() => setMode("custom")}>
-          Moslash
+          {tr("Moslash")}
         </ModeTab>
       </div>
 
       {mode === "preset" ? (
         <div className="flex flex-wrap gap-1.5">
-          {PRESETS.map((p) => {
+          {PRESETS(tr).map((p) => {
             const selected = value === p.value;
             return (
               <button
@@ -91,16 +103,16 @@ export function HoursEditor({
         <div className="space-y-3">
           <div>
             <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-600">
-              Ish kunlari
+              {tr("Ish kunlari")}
             </p>
             <div className="flex gap-1">
-              {DAY_LABELS.map((label, i) => (
+              {DAY_LABELS(tr).map((label, i) => (
                 <button
                   key={label}
                   type="button"
                   onClick={() => toggleDay(i)}
                   aria-pressed={days[i]}
-                  aria-label={DAY_NAMES[i]}
+                  aria-label={DAY_NAMES(tr)[i]}
                   className={cn(
                     "flex h-9 flex-1 items-center justify-center rounded-md border text-xs font-medium transition-colors",
                     days[i]
@@ -116,12 +128,12 @@ export function HoursEditor({
 
           <div className="grid grid-cols-2 gap-2">
             <TimeSelect
-              label="Ochilish"
+              label={tr("Ochilish")}
               value={start}
               onChange={(v) => applyCustom(days, v, end)}
             />
             <TimeSelect
-              label="Yopilish"
+              label={tr("Yopilish")}
               value={end}
               onChange={(v) => applyCustom(days, start, v)}
             />
@@ -130,7 +142,7 @@ export function HoursEditor({
       )}
 
       <div className="rounded-md border border-dashed border-[color:var(--border)] bg-white px-3 py-2 text-xs">
-        <span className="text-neutral-500">Saytda chiqadi:</span>{" "}
+        <span className="text-neutral-500">{tr("Saytda chiqadi:")}</span>{" "}
         <span className="font-medium text-[color:var(--foreground)]">{value || "—"}</span>
       </div>
     </div>
@@ -191,7 +203,7 @@ function TimeSelect({
   );
 }
 
-function parseCustom(value: string): { days: boolean[]; start: string; end: string } {
+function parseCustom(value: string, tr: Tr): { days: boolean[]; start: string; end: string } {
   const fallback = {
     days: [true, true, true, true, true, true, false],
     start: "09:00",
@@ -207,10 +219,10 @@ function parseCustom(value: string): { days: boolean[]; start: string; end: stri
   const lower = value.toLowerCase();
   const empty: boolean[] = [false, false, false, false, false, false, false];
 
-  if (lower.includes("har kuni")) {
+  if (EVERY_DAY_WORDS.some((w) => lower.includes(w))) {
     return { days: [true, true, true, true, true, true, true], start, end };
   }
-  if (lower.includes("dam olish")) {
+  if (DAY_OFF_WORDS.some((w) => lower.includes(w))) {
     return { days: empty, start, end };
   }
 
@@ -222,8 +234,8 @@ function parseCustom(value: string): { days: boolean[]; start: string; end: stri
 
   const rangeMatch = dayPortion.match(/^([^\s–\-—,;]+)\s*[–\-—]\s*([^\s–\-—,;]+)$/);
   if (rangeMatch) {
-    const startIdx = labelIndex(rangeMatch[1]);
-    const endIdx = labelIndex(rangeMatch[2]);
+    const startIdx = labelIndex(rangeMatch[1], tr);
+    const endIdx = labelIndex(rangeMatch[2], tr);
     if (startIdx !== -1 && endIdx !== -1 && startIdx <= endIdx) {
       for (let i = startIdx; i <= endIdx; i++) days[i] = true;
       return { days, start, end };
@@ -233,7 +245,7 @@ function parseCustom(value: string): { days: boolean[]; start: string; end: stri
   const parts = dayPortion.split(/[,;]+/).map((s) => s.trim()).filter(Boolean);
   let found = false;
   for (const p of parts) {
-    const idx = labelIndex(p);
+    const idx = labelIndex(p, tr);
     if (idx !== -1) {
       days[idx] = true;
       found = true;
@@ -244,9 +256,13 @@ function parseCustom(value: string): { days: boolean[]; start: string; end: stri
   return fallback;
 }
 
-function labelIndex(raw: string): number {
+function labelIndex(raw: string, tr: Tr): number {
   const norm = raw.toLowerCase().replace(/\s+/g, "");
-  return DAY_LABELS.findIndex((l) => l.toLowerCase() === norm);
+  for (const t of [tr, ...PARSE_TRS]) {
+    const idx = DAY_LABELS(t).findIndex((l) => l.toLowerCase() === norm);
+    if (idx !== -1) return idx;
+  }
+  return -1;
 }
 
 function normalizeTime(raw: string): string {
@@ -254,10 +270,10 @@ function normalizeTime(raw: string): string {
   return `${h.padStart(2, "0")}:${m.padStart(2, "0")}`;
 }
 
-function formatCustom(days: boolean[], start: string, end: string): string {
+function formatCustom(days: boolean[], start: string, end: string, tr: Tr): string {
   const count = days.filter(Boolean).length;
-  if (count === 0) return "Dam olish";
-  if (count === 7) return `Har kuni: ${start} – ${end}`;
+  if (count === 0) return tr("Dam olish");
+  if (count === 7) return tr("Har kuni: {start} – {end}", { start, end });
 
   const firstIdx = days.findIndex(Boolean);
   const lastIdx = days.lastIndexOf(true);
@@ -266,11 +282,11 @@ function formatCustom(days: boolean[], start: string, end: string): string {
     .every((d) => d);
 
   if (contiguous) {
-    return `${DAY_LABELS[firstIdx]}–${DAY_LABELS[lastIdx]}: ${start} – ${end}`;
+    return `${DAY_LABELS(tr)[firstIdx]}–${DAY_LABELS(tr)[lastIdx]}: ${start} – ${end}`;
   }
 
   const active = days
-    .map((d, i) => (d ? DAY_LABELS[i] : null))
+    .map((d, i) => (d ? DAY_LABELS(tr)[i] : null))
     .filter(Boolean)
     .join(", ");
   return `${active}: ${start} – ${end}`;

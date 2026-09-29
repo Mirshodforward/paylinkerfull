@@ -2,6 +2,7 @@
 
 import { DARK_THEMES, LIGHT_THEMES, ColorThemeId } from "@/lib/store/types";
 import { cn } from "@/lib/cn";
+import { useI18n } from "@/lib/i18n/provider";
 
 type Props = {
   value: ColorThemeId;
@@ -9,16 +10,17 @@ type Props = {
 };
 
 export function ColorPicker({ value, onChange }: Props) {
+  const { tr } = useI18n();
   return (
     <div className="space-y-1.5">
       <Row
-        label="To'q"
+        label={tr("To'q")}
         themes={DARK_THEMES.map((t) => ({ id: t.id, primary: t.primary }))}
         value={value}
         onChange={onChange}
       />
       <Row
-        label="Och"
+        label={tr("Och")}
         themes={LIGHT_THEMES.map((t) => ({ id: t.id, primary: t.primary }))}
         value={value}
         onChange={onChange}

@@ -15,6 +15,7 @@ import {
 import { normalizeSite } from "@/lib/store/normalize";
 import { saveSite } from "@/lib/store/store";
 import { cn } from "@/lib/cn";
+import { useI18n } from "@/lib/i18n/provider";
 
 type Props = {
   label: string;
@@ -40,6 +41,7 @@ export function ImageUpload({
   serverHeroUpload,
   onServerSync,
 }: Props) {
+  const { tr } = useI18n();
   const inputRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -51,11 +53,11 @@ export function ImageUpload({
     setError(null);
     if (!file) return;
     if (!file.type.startsWith("image/")) {
-      setError("Faqat rasm fayllari qabul qilinadi");
+      setError(tr("Faqat rasm fayllari qabul qilinadi"));
       return;
     }
     if (file.size > MAX_IMAGE_BYTES) {
-      setError(`Rasm hajmi ${formatBytes(MAX_IMAGE_BYTES)} dan oshmasligi kerak`);
+      setError(tr("Rasm hajmi {MAX_IMAGE_BYTES} dan oshmasligi kerak", { MAX_IMAGE_BYTES: formatBytes(MAX_IMAGE_BYTES) }));
       return;
     }
     if (serverHeroUpload) {
@@ -70,10 +72,10 @@ export function ImageUpload({
         if (hero) {
           onChange(hero);
         } else {
-          setError("Javobda hero kelmadi");
+          setError(tr("Javobda hero kelmadi"));
         }
       } catch (e) {
-        setError(e instanceof Error ? e.message : "Yuklashda xato");
+        setError(e instanceof Error ? e.message : tr("Yuklashda xato"));
       } finally {
         setUploading(false);
         if (inputRef.current) inputRef.current.value = "";
@@ -92,10 +94,10 @@ export function ImageUpload({
         if (logo) {
           onChange(logo);
         } else {
-          setError("Javobda logo kelmadi");
+          setError(tr("Javobda logo kelmadi"));
         }
       } catch (e) {
-        setError(e instanceof Error ? e.message : "Yuklashda xato");
+        setError(e instanceof Error ? e.message : tr("Yuklashda xato"));
       } finally {
         setUploading(false);
         if (inputRef.current) inputRef.current.value = "";
@@ -106,7 +108,7 @@ export function ImageUpload({
       const image = await fileToSiteImage(file);
       onChange(image);
     } catch {
-      setError("Rasmni yuklashda xatolik");
+      setError(tr("Rasmni yuklashda xatolik"));
     }
   };
 
@@ -121,7 +123,7 @@ export function ImageUpload({
         onServerSync?.(next);
         onChange(undefined);
       } catch (e) {
-        setError(e instanceof Error ? e.message : "O‘chirishda xato");
+        setError(e instanceof Error ? e.message : tr("O‘chirishda xato"));
       } finally {
         setUploading(false);
       }
@@ -137,7 +139,7 @@ export function ImageUpload({
         onServerSync?.(next);
         onChange(undefined);
       } catch (e) {
-        setError(e instanceof Error ? e.message : "O‘chirishda xato");
+        setError(e instanceof Error ? e.message : tr("O‘chirishda xato"));
       } finally {
         setUploading(false);
       }
@@ -174,7 +176,7 @@ export function ImageUpload({
                 onClick={() => inputRef.current?.click()}
                 className="h-8 rounded-md border border-[color:var(--border)] px-3 text-xs font-medium text-[color:var(--foreground)] transition-colors hover:border-brand-300 disabled:opacity-50"
               >
-                {uploading ? "Yuklanmoqda…" : "Almashtirish"}
+                {uploading ? "Yuklanmoqda…" : tr("Almashtirish")}
               </button>
               <button
                 type="button"
@@ -182,7 +184,7 @@ export function ImageUpload({
                 onClick={() => void onRemove()}
                 className="h-8 rounded-md border border-[color:var(--border)] px-3 text-xs font-medium text-red-700 transition-colors hover:border-red-700 hover:bg-red-50"
               >
-                O&apos;chirish
+                {tr("O'chirish")}
               </button>
             </div>
           </div>
@@ -212,10 +214,10 @@ export function ImageUpload({
         >
           <UploadIcon />
           <span className="text-sm font-medium text-[color:var(--foreground)]">
-            Rasmni shu yerga tashlang yoki tanlang
+            {tr("Rasmni shu yerga tashlang yoki tanlang")}
           </span>
           <span className="text-xs text-neutral-500">
-            JPG, PNG — {formatBytes(MAX_IMAGE_BYTES)} gacha
+            {tr("JPG, PNG —")}{" "}{formatBytes(MAX_IMAGE_BYTES)} {tr("gacha")}
           </span>
         </button>
       )}

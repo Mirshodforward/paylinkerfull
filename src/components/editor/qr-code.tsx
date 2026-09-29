@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import QRCode from "qrcode";
 import { cn } from "@/lib/cn";
+import { useI18n } from "@/lib/i18n/provider";
 
 export function SiteQRCode({
   url,
@@ -15,6 +16,7 @@ export function SiteQRCode({
   size?: number;
   className?: string;
 }) {
+  const { tr } = useI18n();
   const [dataUrl, setDataUrl] = useState<string | null>(null);
 
   useEffect(() => {
@@ -59,9 +61,9 @@ export function SiteQRCode({
       >
         {dataUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={dataUrl} alt="QR kod" width={size} height={size} />
+          <img src={dataUrl} alt={tr("QR kod")} width={size} height={size} />
         ) : (
-          <span className="text-xs text-neutral-500">Yaratilmoqda...</span>
+          <span className="text-xs text-neutral-500">{tr("Yaratilmoqda...")}</span>
         )}
       </div>
       <p className="text-[11px] font-mono text-neutral-500">{url}</p>
@@ -80,7 +82,7 @@ export function SiteQRCode({
             strokeLinejoin="round"
           />
         </svg>
-        PNG yuklash
+        {tr("PNG yuklash")}
       </button>
     </div>
   );

@@ -12,6 +12,7 @@ import {
   adminTh,
   adminTr,
 } from "@/components/admin/admin-ui";
+import { useI18n } from "@/lib/i18n/provider";
 
 type Row = {
   id: number;
@@ -25,6 +26,7 @@ type Row = {
 };
 
 export default function AdminUsersPage() {
+  const { tr } = useI18n();
   const [items, setItems] = useState<Row[]>([]);
   const [err, setErr] = useState<string | null>(null);
 
@@ -34,7 +36,7 @@ export default function AdminUsersPage() {
         const r = await api<{ items: Row[] }>("/api/admin/users");
         setItems(r.items ?? []);
       } catch (e) {
-        setErr(e instanceof ApiError ? e.message : "Xato");
+        setErr(e instanceof ApiError ? e.message : tr("Xato"));
       }
     })();
   }, []);
@@ -42,8 +44,8 @@ export default function AdminUsersPage() {
   return (
     <div className="space-y-8">
       <AdminPageHeader
-        title="Foydalanuvchilar"
-        description="Ro‘yxatdan o‘tgan mijozlar: telefon, balans va vizitkalar soni."
+        title={tr("Foydalanuvchilar")}
+        description={tr("Ro‘yxatdan o‘tgan mijozlar: telefon, balans va vizitkalar soni.")}
       />
 
       {err ? <AdminAlert>{err}</AdminAlert> : null}
@@ -53,11 +55,11 @@ export default function AdminUsersPage() {
           <thead>
             <tr className="border-b border-zinc-200 bg-zinc-50/90">
               <th className={adminTh}>ID</th>
-              <th className={adminTh}>Telefon</th>
-              <th className={adminTh}>Ism</th>
-              <th className={adminTh}>Balans</th>
-              <th className={adminTh}>Vizitkalar</th>
-              <th className={adminTh}>Ro‘yxatdan</th>
+              <th className={adminTh}>{tr("Telefon")}</th>
+              <th className={adminTh}>{tr("Ism")}</th>
+              <th className={adminTh}>{tr("Balans")}</th>
+              <th className={adminTh}>{tr("Vizitkalar")}</th>
+              <th className={adminTh}>{tr("Ro‘yxatdan")}</th>
               <th className={`${adminTh} text-right`} />
             </tr>
           </thead>
@@ -69,7 +71,7 @@ export default function AdminUsersPage() {
                 <td className={adminTd}>{u.fullName ?? "—"}</td>
                 <td className={`${adminTd} tabular-nums font-semibold text-zinc-900`}>
                   {u.balance.toLocaleString("uz-UZ")}{" "}
-                  <span className="text-xs font-normal text-zinc-500">so‘m</span>
+                  <span className="text-xs font-normal text-zinc-500">{tr("so‘m")}</span>
                 </td>
                 <td className={adminTd}>{u.vizitkaCount}</td>
                 <td className={`${adminTd} text-xs text-zinc-500`}>
@@ -80,7 +82,7 @@ export default function AdminUsersPage() {
                     href={`/gradeadmin/users/${u.id}`}
                     className="text-sm font-semibold text-brand-800 underline-offset-2 hover:text-brand-950 hover:underline"
                   >
-                    Batafsil
+                    {tr("Batafsil")}
                   </Link>
                 </td>
               </tr>
@@ -88,7 +90,7 @@ export default function AdminUsersPage() {
           </tbody>
         </table>
         {items.length === 0 && !err ? (
-          <AdminEmpty title="Foydalanuvchi yo‘q" hint="Ro‘yxat bo‘sh." />
+          <AdminEmpty title={tr("Foydalanuvchi yo‘q")} hint={tr("Ro‘yxat bo‘sh.")} />
         ) : null}
       </AdminTableWrap>
     </div>

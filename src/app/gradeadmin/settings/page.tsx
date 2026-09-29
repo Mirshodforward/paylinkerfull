@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { api, ApiError } from "@/lib/api";
 import { AdminAlert, AdminCard, AdminPageHeader } from "@/components/admin/admin-ui";
 import { Button } from "@/components/ui/button";
+import { useI18n } from "@/lib/i18n/provider";
 
 type SettingsRow = {
   freePublishDays: number;
@@ -15,6 +16,7 @@ type SettingsRow = {
 };
 
 export default function AdminSettingsPage() {
+  const { tr } = useI18n();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -40,11 +42,11 @@ export default function AdminSettingsPage() {
         landingPaket12Som: String(r.landingPaket12Som),
       });
     } catch (e) {
-      setErr(e instanceof ApiError ? e.message : "Yuklashda xato");
+      setErr(e instanceof ApiError ? e.message : tr("Yuklashda xato"));
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [tr]);
 
   useEffect(() => {
     void load();
@@ -64,15 +66,15 @@ export default function AdminSettingsPage() {
       landingPaket12Som,
     ];
     if (!nums.every((n) => Number.isFinite(n) && n >= 1)) {
-      setErr("Barcha maydonlar musbat butun son bo‘lishi kerak");
+      setErr(tr("Barcha maydonlar musbat butun son bo‘lishi kerak"));
       return;
     }
     if (freePublishDays > 365) {
-      setErr("Bepul kunlar 365 dan oshmasin");
+      setErr(tr("Bepul kunlar 365 dan oshmasin"));
       return;
     }
     if (Math.min(paket6Som, paket12Som, landingPaket6Som, landingPaket12Som) < 1000) {
-      setErr("Har bir paket narxi kamida 1000 so‘m");
+      setErr(tr("Har bir paket narxi kamida 1000 so‘m"));
       return;
     }
     setSaving(true);
@@ -97,7 +99,7 @@ export default function AdminSettingsPage() {
         landingPaket12Som: String(r.landingPaket12Som),
       });
     } catch (e) {
-      setErr(e instanceof ApiError ? e.message : "Saqlashda xato");
+      setErr(e instanceof ApiError ? e.message : tr("Saqlashda xato"));
     } finally {
       setSaving(false);
     }
@@ -109,7 +111,7 @@ export default function AdminSettingsPage() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <AdminPageHeader title="Sozlamalar" description="Yuklanmoqda…" />
+        <AdminPageHeader title={tr("Sozlamalar")} description={tr("Yuklanmoqda…")} />
         <div className="h-40 animate-pulse rounded-[var(--radius-card)] bg-zinc-100" />
       </div>
     );
@@ -122,8 +124,8 @@ export default function AdminSettingsPage() {
   return (
     <div className="space-y-8">
       <AdminPageHeader
-        title="Platforma sozlamalari"
-        description="Bepul sinov muddati, vizitka va landing obuna paketlari (6 va 12 oy, so‘m). Yangi yaratish va to‘lovlarda qo‘llanadi."
+        title={tr("Platforma sozlamalari")}
+        description={tr("Bepul sinov muddati, vizitka va landing obuna paketlari (6 va 12 oy, so‘m). Yangi yaratish va to‘lovlarda qo‘llanadi.")}
       />
 
       {err ? <AdminAlert>{err}</AdminAlert> : null}
@@ -131,7 +133,7 @@ export default function AdminSettingsPage() {
       <AdminCard>
         <div className="grid max-w-lg gap-5 sm:grid-cols-1">
           <label className="block text-sm">
-            <span className="font-medium text-zinc-800">Bepul sinov (kun)</span>
+            <span className="font-medium text-zinc-800">{tr("Bepul sinov (kun)")}</span>
             <input
               className={inp}
               type="number"
@@ -141,14 +143,14 @@ export default function AdminSettingsPage() {
               onChange={(e) => setForm((f) => ({ ...f, freePublishDays: e.target.value }))}
             />
             <p className="mt-1 text-xs text-zinc-500">
-              Yangi vizitka va landing sinov muddati shu kunlarda belgilanadi.
+              {tr("Yangi vizitka va landing sinov muddati shu kunlarda belgilanadi.")}
             </p>
           </label>
           <p className="text-xs font-semibold uppercase tracking-[0.12em] text-zinc-500">
-            Vizitka paketlari
+            {tr("Vizitka paketlari")}
           </p>
           <label className="block text-sm">
-            <span className="font-medium text-zinc-800">6 oylik paket (so‘m)</span>
+            <span className="font-medium text-zinc-800">{tr("6 oylik paket (so‘m)")}</span>
             <input
               className={inp}
               type="number"
@@ -158,7 +160,7 @@ export default function AdminSettingsPage() {
             />
           </label>
           <label className="block text-sm">
-            <span className="font-medium text-zinc-800">12 oylik paket (so‘m)</span>
+            <span className="font-medium text-zinc-800">{tr("12 oylik paket (so‘m)")}</span>
             <input
               className={inp}
               type="number"
@@ -169,10 +171,10 @@ export default function AdminSettingsPage() {
           </label>
 
           <p className="border-t border-zinc-100 pt-5 text-xs font-semibold uppercase tracking-[0.12em] text-zinc-500">
-            Landing paketlari
+            {tr("Landing paketlari")}
           </p>
           <label className="block text-sm">
-            <span className="font-medium text-zinc-800">6 oylik paket (so‘m)</span>
+            <span className="font-medium text-zinc-800">{tr("6 oylik paket (so‘m)")}</span>
             <input
               className={inp}
               type="number"
@@ -184,7 +186,7 @@ export default function AdminSettingsPage() {
             />
           </label>
           <label className="block text-sm">
-            <span className="font-medium text-zinc-800">12 oylik paket (so‘m)</span>
+            <span className="font-medium text-zinc-800">{tr("12 oylik paket (so‘m)")}</span>
             <input
               className={inp}
               type="number"
@@ -198,12 +200,12 @@ export default function AdminSettingsPage() {
         </div>
         {s ? (
           <p className="mt-4 text-xs text-zinc-500">
-            So‘nggi yangilanish: {new Date(s.updatedAt).toLocaleString("uz-UZ")}
+            {tr("So‘nggi yangilanish:")}{" "}{new Date(s.updatedAt).toLocaleString("uz-UZ")}
           </p>
         ) : null}
         <div className="mt-6 flex flex-wrap gap-3">
           <Button type="button" onClick={() => void save()} disabled={saving}>
-            {saving ? "Saqlanmoqda…" : "Saqlash"}
+            {saving ? "Saqlanmoqda…" : tr("Saqlash")}
           </Button>
         </div>
       </AdminCard>

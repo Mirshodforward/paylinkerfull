@@ -3,6 +3,7 @@
 import { PATTERNS, PatternId } from "@/lib/store/types";
 import { PatternLayer } from "@/components/sites/patterns";
 import { cn } from "@/lib/cn";
+import { useI18n } from "@/lib/i18n/provider";
 
 export function PatternPicker({
   value,
@@ -13,6 +14,7 @@ export function PatternPicker({
   onChange: (id: PatternId) => void;
   color?: string;
 }) {
+  const { tr } = useI18n();
   return (
     <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
       {PATTERNS.map((p) => {
@@ -34,7 +36,7 @@ export function PatternPicker({
               <PatternLayer pattern={p.id} color={color} />
               {p.id === "none" ? (
                 <span className="absolute inset-0 flex items-center justify-center text-[10px] uppercase tracking-[0.15em] text-neutral-400">
-                  Yo&apos;q
+                  {tr("Yo'q")}
                 </span>
               ) : null}
             </div>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { Field, Section, TextInput } from "@/components/editor/fields";
 import { cn } from "@/lib/cn";
+import { useI18n } from "@/lib/i18n/provider";
 
 type NetworkId =
   | "instagram"
@@ -126,6 +127,7 @@ function detectNetwork(input: string): NetworkId | null {
 }
 
 export default function CheckPage() {
+  const { tr } = useI18n();
   return (
     <main className="bg-neutral-50 pb-24">
       <header className="border-b border-[color:var(--border)] bg-white">
@@ -134,14 +136,13 @@ export default function CheckPage() {
             href="/"
             className="text-xs font-medium uppercase tracking-[0.14em] text-neutral-500 hover:text-brand-700"
           >
-            ← Bosh sahifa
+            {tr("← Bosh sahifa")}
           </Link>
           <h1 className="mt-4 text-3xl font-semibold tracking-tight text-[color:var(--foreground)] sm:text-4xl">
-            Ijtimoiy tarmoq qo&apos;shish — 5 variant
+            {tr("Ijtimoiy tarmoq qo'shish — 5 variant")}
           </h1>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-neutral-600">
-            Har bir variant ishlaydigan prototip sifatida ko&apos;rsatilgan.
-            Kerakli UX yondashuvini tanlash uchun sinab ko&apos;ring.
+            {tr("Har bir variant ishlaydigan prototip sifatida ko'rsatilgan. Kerakli UX yondashuvini tanlash uchun sinab ko'ring.")}
           </p>
         </Container>
       </header>
@@ -149,50 +150,50 @@ export default function CheckPage() {
       <Container className="mt-10 space-y-10">
         <VariantCard
           index={1}
-          title="Dinamik ro'yxat + tarmoq tanlash"
-          tagline="Tarmoq tanlanadi, keyin handle yoziladi. Cheksiz element."
-          pros={["Moslashuvchan", "Qo'shish tartibi saqlanadi", "Ko'p tarmoq qo'llab-quvvatlanadi"]}
-          cons={["Ikki bosish kerak", "Bo'sh holatda empty state dizayn qilish kerak"]}
+          title={tr("Dinamik ro'yxat + tarmoq tanlash")}
+          tagline={tr("Tarmoq tanlanadi, keyin handle yoziladi. Cheksiz element.")}
+          pros={[tr("Moslashuvchan"), tr("Qo'shish tartibi saqlanadi"), tr("Ko'p tarmoq qo'llab-quvvatlanadi")]}
+          cons={[tr("Ikki bosish kerak"), tr("Bo'sh holatda empty state dizayn qilish kerak")]}
         >
           <VariantOne />
         </VariantCard>
 
         <VariantCard
           index={2}
-          title="Ikonka grid + inline input"
-          tagline="Barcha tarmoqlar ikonka tarzida, bosilsa input ochiladi."
-          pros={["Vizual", "Bir bosishda tanlash", "Aralash holat ko'rinadi"]}
-          cons={["Ekranda joy oladi", "Cheklangan tarmoq ro'yxati"]}
+          title={tr("Ikonka grid + inline input")}
+          tagline={tr("Barcha tarmoqlar ikonka tarzida, bosilsa input ochiladi.")}
+          pros={[tr("Vizual"), tr("Bir bosishda tanlash"), tr("Aralash holat ko'rinadi")]}
+          cons={[tr("Ekranda joy oladi"), tr("Cheklangan tarmoq ro'yxati")]}
         >
           <VariantTwo />
         </VariantCard>
 
         <VariantCard
           index={3}
-          title="Smart URL input"
-          tagline="URL yopishtiriladi — tarmoq domen orqali avto-aniqlanadi."
-          pros={["Eng tezkor", "Yopishtirish-odatli foydalanuvchilar uchun ideal"]}
-          cons={["Faqat @username qiyin", "Noma'lum domen fallback'ga ketadi"]}
+          title={tr("Smart URL input")}
+          tagline={tr("URL yopishtiriladi — tarmoq domen orqali avto-aniqlanadi.")}
+          pros={[tr("Eng tezkor"), tr("Yopishtirish-odatli foydalanuvchilar uchun ideal")]}
+          cons={[tr("Faqat @username qiyin"), tr("Noma'lum domen fallback'ga ketadi")]}
         >
           <VariantThree />
         </VariantCard>
 
         <VariantCard
           index={4}
-          title="Top-4 prefix + Ko'proq"
-          tagline="Eng ko'p ishlatiladigan 4 tasi har doim ochiq. Qolganlari yashirin."
-          pros={["Tezkor yozish", "Hozirgi UX'ga yaqin", "Asta-sekin murakkablik"]}
-          cons={["Tartib qat'iy", "Top-4 ni tanlash muhokama qilinadi"]}
+          title={tr("Top-4 prefix + Ko'proq")}
+          tagline={tr("Eng ko'p ishlatiladigan 4 tasi har doim ochiq. Qolganlari yashirin.")}
+          pros={[tr("Tezkor yozish"), tr("Hozirgi UX'ga yaqin"), tr("Asta-sekin murakkablik")]}
+          cons={[tr("Tartib qat'iy"), tr("Top-4 ni tanlash muhokama qilinadi")]}
         >
           <VariantFour />
         </VariantCard>
 
         <VariantCard
           index={5}
-          title="Umumiy link list"
-          tagline="Ijtimoiy tarmoq ≠ alohida tushuncha. Har qanday havola — sarlavha + URL."
-          pros={["Linktree uslubi", "Menyu PDF, xarita, bron linki — bir joyda", "Tartibni almashtirish"]}
-          cons={["Struktura yo'qoladi", "Boshqa template'larga moslash qiyinroq"]}
+          title={tr("Umumiy link list")}
+          tagline={tr("Ijtimoiy tarmoq ≠ alohida tushuncha. Har qanday havola — sarlavha + URL.")}
+          pros={[tr("Linktree uslubi"), tr("Menyu PDF, xarita, bron linki — bir joyda"), tr("Tartibni almashtirish")]}
+          cons={[tr("Struktura yo'qoladi"), tr("Boshqa template'larga moslash qiyinroq")]}
         >
           <VariantFive />
         </VariantCard>
@@ -216,12 +217,13 @@ function VariantCard({
   cons: string[];
   children: React.ReactNode;
 }) {
+  const { tr } = useI18n();
   return (
     <article className="overflow-hidden rounded-[var(--radius-card)] border border-[color:var(--border)] bg-white shadow-[0_20px_50px_-30px_rgba(0,0,0,0.12)]">
       <header className="flex flex-col gap-2 border-b border-[color:var(--border)] p-6 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
         <div>
           <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-500">
-            Variant {index}
+            {tr("Variant")}{" "}{index}
           </span>
           <h2 className="mt-1 text-xl font-semibold text-[color:var(--foreground)]">{title}</h2>
           <p className="mt-1.5 max-w-xl text-sm text-neutral-600">{tagline}</p>
@@ -253,6 +255,7 @@ function VariantCard({
 }
 
 function VariantOne() {
+  const { tr } = useI18n();
   type Item = { id: string; network: NetworkId; value: string };
   const [items, setItems] = useState<Item[]>([
     { id: "a", network: "instagram", value: "katov_brand" },
@@ -263,7 +266,7 @@ function VariantOne() {
   const available = NETWORKS.filter((n) => !items.find((i) => i.network === n.id));
 
   return (
-    <Section title="Ijtimoiy tarmoqlar">
+    <Section title={tr("Ijtimoiy tarmoqlar")}>
       <div className="space-y-2">
         {items.map((item) => {
           const net = NETWORK_MAP[item.network];
@@ -286,7 +289,7 @@ function VariantOne() {
                       arr.map((i) => (i.id === item.id ? { ...i, value: e.target.value } : i)),
                     )
                   }
-                  placeholder={net.placeholder}
+                  placeholder={tr(net.placeholder)}
                   className="h-8 flex-1 bg-transparent px-2 text-sm text-[color:var(--foreground)] focus:outline-none"
                 />
               </div>
@@ -294,7 +297,7 @@ function VariantOne() {
                 type="button"
                 onClick={() => setItems((arr) => arr.filter((i) => i.id !== item.id))}
                 className="flex h-8 w-8 items-center justify-center rounded-md border border-[color:var(--border)] text-neutral-500 hover:border-red-700 hover:text-red-700"
-                aria-label="O'chirish"
+                aria-label={tr("O'chirish")}
               >
                 <Glyph id="close" />
               </button>
@@ -306,7 +309,7 @@ function VariantOne() {
       {picking ? (
         <div className="rounded-md border border-[color:var(--border)] bg-white p-2">
           <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-500">
-            Tarmoq tanlang
+            {tr("Tarmoq tanlang")}
           </div>
           <div className="grid grid-cols-3 gap-1.5">
             {available.map((n) => (
@@ -323,7 +326,7 @@ function VariantOne() {
                 className="flex items-center gap-2 rounded-md border border-[color:var(--border)] bg-white px-2 py-1.5 text-xs font-medium text-[color:var(--foreground)] transition-colors hover:border-brand-300"
               >
                 <Glyph id={n.id} />
-                {n.name}
+                {tr(n.name)}
               </button>
             ))}
           </div>
@@ -335,7 +338,7 @@ function VariantOne() {
           className="inline-flex h-10 w-full items-center justify-center gap-1.5 rounded-md border border-dashed border-[color:var(--border)] text-sm font-medium text-[color:var(--foreground)] hover:border-brand-300"
         >
           <Glyph id="plus" />
-          Ijtimoiy tarmoq qo&apos;shish
+          {tr("Ijtimoiy tarmoq qo'shish")}
         </button>
       ) : null}
     </Section>
@@ -343,13 +346,14 @@ function VariantOne() {
 }
 
 function VariantTwo() {
+  const { tr } = useI18n();
   const [values, setValues] = useState<Partial<Record<NetworkId, string>>>({
     instagram: "katov_brand",
   });
   const [active, setActive] = useState<NetworkId | null>("instagram");
 
   return (
-    <Section title="Ijtimoiy tarmoqlar">
+    <Section title={tr("Ijtimoiy tarmoqlar")}>
       <div className="grid grid-cols-5 gap-1.5">
         {NETWORKS.map((n) => {
           const selected = values[n.id] !== undefined;
@@ -371,7 +375,7 @@ function VariantTwo() {
                   : "border-[color:var(--border)] text-neutral-400 hover:border-brand-300 hover:text-brand-700",
               )}
               aria-pressed={isActive}
-              aria-label={n.name}
+              aria-label={tr(n.name)}
             >
               <Glyph id={n.id} />
             </button>
@@ -380,11 +384,11 @@ function VariantTwo() {
       </div>
 
       {active ? (
-        <Field label={NETWORK_MAP[active].name}>
+        <Field label={tr(NETWORK_MAP[active].name)}>
           <div className="flex items-center gap-2">
             <TextInput
               prefix={NETWORK_MAP[active].prefix}
-              placeholder={NETWORK_MAP[active].placeholder}
+              placeholder={tr(NETWORK_MAP[active].placeholder)}
               value={values[active] ?? ""}
               onChange={(v) => setValues((old) => ({ ...old, [active]: v }))}
             />
@@ -400,7 +404,7 @@ function VariantTwo() {
                   setActive(null);
                 }}
                 className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-[color:var(--border)] text-neutral-500 hover:border-red-700 hover:text-red-700"
-                aria-label="Olib tashlash"
+                aria-label={tr("Olib tashlash")}
               >
                 <Glyph id="close" />
               </button>
@@ -409,7 +413,7 @@ function VariantTwo() {
         </Field>
       ) : (
         <p className="rounded-md border border-dashed border-[color:var(--border)] p-4 text-center text-xs text-neutral-500">
-          Ikonka ustiga bosing
+          {tr("Ikonka ustiga bosing")}
         </p>
       )}
     </Section>
@@ -417,6 +421,7 @@ function VariantTwo() {
 }
 
 function VariantThree() {
+  const { tr } = useI18n();
   type Entry = { id: string; network: NetworkId | null; raw: string };
   const [entries, setEntries] = useState<Entry[]>([
     { id: "a", network: "instagram", raw: "instagram.com/katov_brand" },
@@ -434,19 +439,19 @@ function VariantThree() {
   };
 
   return (
-    <Section title="Havola qo'shish">
+    <Section title={tr("Havola qo'shish")}>
       <Field
-        label="URL yoki username"
+        label={tr("URL yoki username")}
         hint={
           draft
             ? detected
-              ? `${NETWORK_MAP[detected].name} aniqlandi`
-              : "Tarmoq aniqlanmadi — umumiy havola sifatida saqlanadi"
+              ? tr("{name} aniqlandi", { name: tr(NETWORK_MAP[detected].name) })
+              : tr("Tarmoq aniqlanmadi — umumiy havola sifatida saqlanadi")
             : "instagram.com/username · t.me/... · https://..."
         }
       >
         <div className="flex gap-2">
-          <TextInput value={draft} onChange={setDraft} placeholder="instagram.com/katov_brand" />
+          <TextInput value={draft} onChange={setDraft} placeholder={tr("instagram.com/katov_brand")} />
           <button
             type="button"
             onClick={add}
@@ -454,7 +459,7 @@ function VariantThree() {
             className="inline-flex h-10 shrink-0 items-center gap-1.5 pl-gradient rounded-md px-4 text-sm font-medium text-white disabled:opacity-40"
           >
             <Glyph id="plus" />
-            Qo&apos;shish
+            {tr("Qo'shish")}
           </button>
         </div>
       </Field>
@@ -462,8 +467,8 @@ function VariantThree() {
       {detected && draft ? (
         <div className="flex items-center gap-2 rounded-md border border-[color:var(--border)] bg-neutral-50 p-2 text-xs">
           <Glyph id={detected} />
-          <span className="font-medium">{NETWORK_MAP[detected].name}</span>
-          <span className="text-neutral-500">aniqlandi</span>
+          <span className="font-medium">{tr(NETWORK_MAP[detected].name)}</span>
+          <span className="text-neutral-500">{tr("aniqlandi")}</span>
         </div>
       ) : null}
 
@@ -479,7 +484,7 @@ function VariantThree() {
               </span>
               <div className="flex-1 overflow-hidden">
                 <p className="truncate text-xs font-semibold text-[color:var(--foreground)]">
-                  {e.network ? NETWORK_MAP[e.network].name : "Havola"}
+                  {e.network ? NETWORK_MAP[e.network].name : tr("Havola")}
                 </p>
                 <p className="truncate font-mono text-[11px] text-neutral-500">{e.raw}</p>
               </div>
@@ -487,7 +492,7 @@ function VariantThree() {
                 type="button"
                 onClick={() => setEntries((arr) => arr.filter((x) => x.id !== e.id))}
                 className="flex h-8 w-8 items-center justify-center rounded-md border border-[color:var(--border)] text-neutral-500 hover:border-red-700 hover:text-red-700"
-                aria-label="O'chirish"
+                aria-label={tr("O'chirish")}
               >
                 <Glyph id="close" />
               </button>
@@ -500,6 +505,7 @@ function VariantThree() {
 }
 
 function VariantFour() {
+  const { tr } = useI18n();
   const TOP: NetworkId[] = ["instagram", "telegram", "youtube", "whatsapp"];
   const REST: NetworkId[] = NETWORKS.map((n) => n.id).filter((id) => !TOP.includes(id));
   const [values, setValues] = useState<Partial<Record<NetworkId, string>>>({
@@ -511,10 +517,10 @@ function VariantFour() {
   const field = (id: NetworkId) => {
     const n = NETWORK_MAP[id];
     return (
-      <Field key={id} label={n.name}>
+      <Field key={id} label={tr(n.name)}>
         <TextInput
           prefix={n.prefix}
-          placeholder={n.placeholder}
+          placeholder={tr(n.placeholder)}
           value={values[id] ?? ""}
           onChange={(v) => setValues((old) => ({ ...old, [id]: v }))}
         />
@@ -523,7 +529,7 @@ function VariantFour() {
   };
 
   return (
-    <Section title="Ijtimoiy tarmoqlar">
+    <Section title={tr("Ijtimoiy tarmoqlar")}>
       {TOP.map(field)}
 
       <button
@@ -531,7 +537,7 @@ function VariantFour() {
         onClick={() => setExpanded((e) => !e)}
         className="flex w-full items-center justify-between rounded-md border border-[color:var(--border)] bg-neutral-50 px-3 py-2 text-xs font-medium text-[color:var(--foreground)] hover:border-brand-300"
       >
-        <span>{expanded ? "Kamroq" : `Boshqa tarmoqlar (${REST.length})`}</span>
+        <span>{expanded ? tr("Kamroq") : tr("Boshqa tarmoqlar ({length})", { length: REST.length })}</span>
         <span
           className={cn(
             "inline-block transition-transform",
@@ -550,11 +556,12 @@ function VariantFour() {
 }
 
 function VariantFive() {
+  const { tr } = useI18n();
   type LinkItem = { id: string; network: NetworkId | "link"; title: string; url: string };
   const [items, setItems] = useState<LinkItem[]>([
     { id: "1", network: "instagram", title: "Instagram", url: "instagram.com/katov_brand" },
-    { id: "2", network: "telegram", title: "Telegram kanal", url: "t.me/katov_brand" },
-    { id: "3", network: "link", title: "Menyu PDF", url: "katov.uz/menu.pdf" },
+    { id: "2", network: "telegram", title: tr("Telegram kanal"), url: "t.me/katov_brand" },
+    { id: "3", network: "link", title: tr("Menyu PDF"), url: "katov.uz/menu.pdf" },
   ]);
 
   const move = (id: string, dir: -1 | 1) => {
@@ -571,12 +578,12 @@ function VariantFive() {
   const add = () => {
     setItems((arr) => [
       ...arr,
-      { id: Math.random().toString(36).slice(2), network: "link", title: "Yangi havola", url: "" },
+      { id: Math.random().toString(36).slice(2), network: "link", title: tr("Yangi havola"), url: "" },
     ]);
   };
 
   return (
-    <Section title="Havolalar">
+    <Section title={tr("Havolalar")}>
       <div className="space-y-2">
         {items.map((item, idx) => (
           <div
@@ -590,7 +597,7 @@ function VariantFive() {
                   onClick={() => move(item.id, -1)}
                   disabled={idx === 0}
                   className="flex h-4 w-6 items-center justify-center text-neutral-400 hover:text-brand-700 disabled:opacity-30"
-                  aria-label="Yuqoriga"
+                  aria-label={tr("Yuqoriga")}
                 >
                   <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden>
                     <path d="M2 6L5 3L8 6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
@@ -601,7 +608,7 @@ function VariantFive() {
                   onClick={() => move(item.id, 1)}
                   disabled={idx === items.length - 1}
                   className="flex h-4 w-6 items-center justify-center text-neutral-400 hover:text-brand-700 disabled:opacity-30"
-                  aria-label="Pastga"
+                  aria-label={tr("Pastga")}
                 >
                   <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden>
                     <path d="M2 4L5 7L8 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
@@ -619,7 +626,7 @@ function VariantFive() {
                       arr.map((x) => (x.id === item.id ? { ...x, title: e.target.value } : x)),
                     )
                   }
-                  placeholder="Sarlavha"
+                  placeholder={tr("Sarlavha")}
                   className="rounded border border-[color:var(--border)] px-2 py-1 text-sm font-medium text-[color:var(--foreground)] placeholder:text-neutral-400 focus:border-brand-500 focus:outline-none"
                 />
                 <input
@@ -641,7 +648,7 @@ function VariantFive() {
                 type="button"
                 onClick={() => setItems((arr) => arr.filter((x) => x.id !== item.id))}
                 className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-[color:var(--border)] text-neutral-500 hover:border-red-700 hover:text-red-700"
-                aria-label="O'chirish"
+                aria-label={tr("O'chirish")}
               >
                 <Glyph id="close" />
               </button>
@@ -656,7 +663,7 @@ function VariantFive() {
         className="inline-flex h-10 w-full items-center justify-center gap-1.5 rounded-md border border-dashed border-[color:var(--border)] text-sm font-medium text-[color:var(--foreground)] hover:border-brand-300"
       >
         <Glyph id="plus" />
-        Havola qo&apos;shish
+        {tr("Havola qo'shish")}
       </button>
     </Section>
   );

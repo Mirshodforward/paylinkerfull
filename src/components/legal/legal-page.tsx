@@ -12,7 +12,7 @@ import type { Bilingual, Block, LegalDoc } from "@/lib/legal/types";
 /** Hujjat matni ikkala tilda ham lug'atdan emas, o'z faylidan keladi
  *  (src/lib/legal/*) — bu yerda faqat sahifa interfeysi tarjima qilinadi. */
 export function LegalPage({ doc, current }: { doc: Bilingual; current: string }) {
-  const { lang, setLang, t } = useI18n();
+  const { lang, setLang, t, tr } = useI18n();
   const d: LegalDoc = doc[lang];
 
   return (
@@ -48,7 +48,7 @@ export function LegalPage({ doc, current }: { doc: Bilingual; current: string })
                     : "text-[color:var(--muted-foreground)] hover:text-brand-700",
                 )}
               >
-                {l === "uz" ? "O'zbekcha" : "Русский"}
+                {l === "uz" ? tr("O'zbekcha") : tr("Русский")}
               </button>
             ))}
           </div>

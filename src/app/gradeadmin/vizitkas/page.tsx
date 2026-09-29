@@ -13,6 +13,8 @@ import {
   adminTr,
 } from "@/components/admin/admin-ui";
 import { cn } from "@/lib/cn";
+import type { Tr } from "@/lib/i18n/tr";
+import { useI18n } from "@/lib/i18n/provider";
 
 type Row = {
   id: string;
@@ -26,12 +28,12 @@ type Row = {
   ownerName?: string | null;
 };
 
-const STATUS_OPTS = [
-  { v: "DRAFT", label: "Qoralama" },
-  { v: "ACTIVE", label: "Faol" },
-  { v: "PAUSED", label: "Pauza" },
-  { v: "EXPIRED", label: "Tugagan" },
-] as const;
+const STATUS_OPTS = (tr: Tr) => ([
+  { v: "DRAFT", label: tr("Qoralama") },
+  { v: "ACTIVE", label: tr("Faol") },
+  { v: "PAUSED", label: tr("Pauza") },
+  { v: "EXPIRED", label: tr("Tugagan") },
+] as const);
 
 /** Kalendar bo‘yicha qolgan kunlar (00:00 oralig‘ida) */
 function calendarDaysUntilExpiry(iso: string): number | null {
@@ -47,7 +49,7 @@ function calendarDaysUntilExpiry(iso: string): number | null {
   }
 }
 
-function expiryParts(iso: string | null | undefined): {
+function expiryParts(iso: string | null | undefined, tr: Tr): {
   dateLine: string;
   daysLine: string;
   daysClass: string;
@@ -55,7 +57,7 @@ function expiryParts(iso: string | null | undefined): {
   if (!iso?.trim()) {
     return {
       dateLine: "—",
-      daysLine: "Tugash sanasi yo‘q",
+      daysLine: tr("Tugash sanasi yo‘q"),
       daysClass: "text-zinc-400",
     };
   }
@@ -63,7 +65,7 @@ function expiryParts(iso: string | null | undefined): {
   if (Number.isNaN(end.getTime())) {
     return {
       dateLine: "—",
-      daysLine: "Noto‘g‘ri sana",
+      daysLine: tr("Noto‘g‘ri sana"),
       daysClass: "text-amber-700",
     };
   }
@@ -82,20 +84,20 @@ function expiryParts(iso: string | null | undefined): {
   if (left > 0) {
     return {
       dateLine,
-      daysLine: `${left} kun qoldi`,
+      daysLine: tr("{left} kun qoldi", { left }),
       daysClass: left <= 7 ? "text-amber-700" : "text-brand-700",
     };
   }
   if (left === 0) {
     return {
       dateLine,
-      daysLine: "Bugun tugaydi",
+      daysLine: tr("Bugun tugaydi"),
       daysClass: "text-amber-800",
     };
   }
   return {
     dateLine,
-    daysLine: `Tugagan (${Math.abs(left)} kun oldin)`,
+    daysLine: tr("Tugagan ({n} kun oldin)", { n: Math.abs(left) }),
     daysClass: "text-red-700",
   };
 }
@@ -110,6 +112,7 @@ function formatTodayUz(): string {
 }
 
 export default function AdminVizitkasPage() {
+  const { tr } = useI18n();
   const [items, setItems] = useState<Row[]>([]);
   const [err, setErr] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
@@ -125,7 +128,7 @@ export default function AdminVizitkasPage() {
       try {
         await reload();
       } catch (e) {
-        setErr(e instanceof ApiError ? e.message : "Xato");
+        setErr(e instanceof ApiError ? e.message : tr("Xato"));
       }
     })();
   }, [reload]);
@@ -143,7 +146,7 @@ export default function AdminVizitkasPage() {
       }
       await reload();
     } catch (e) {
-      setErr(e instanceof ApiError ? e.message : "Xato");
+      setErr(e instanceof ApiError ? e.message : tr("Xato"));
     } finally {
       setBusyId(null);
     }
@@ -152,7 +155,7 @@ export default function AdminVizitkasPage() {
   async function removeRow(id: string, slug: string) {
     if (
       !window.confirm(
-        `“${slug}” vizitkasini o‘chirish? Bu amal qaytarilmaydi.`,
+        tr("“{slug}” vizitkasini o‘chirish? Bu amal qaytarilmaydi.", { slug }),
       )
     ) {
       return;
@@ -165,7 +168,7 @@ export default function AdminVizitkasPage() {
       });
       await reload();
     } catch (e) {
-      setErr(e instanceof ApiError ? e.message : "O‘chirishda xato");
+      setErr(e instanceof ApiError ? e.message : tr("O‘chirishda xato"));
     } finally {
       setBusyId(null);
     }
@@ -186,12 +189,12 @@ export default function AdminVizitkasPage() {
   return (
     <div className="space-y-8">
       <AdminPageHeader
-        title="Vizitkalar"
-        description="Barcha saytlar: holat, obuna tugashi, muddatni uzaytirish va o‘chirish."
+        title={tr("Vizitkalar")}
+        description={tr("Barcha saytlar: holat, obuna tugashi, muddatni uzaytirish va o‘chirish.")}
         actions={
           <div className="rounded-xl border border-zinc-200 bg-gradient-to-br from-zinc-50 to-white px-4 py-3 text-right shadow-sm">
             <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-zinc-500">
-              Bugungi sana
+              {tr("Bugungi sana")}
             </p>
             <p className="mt-1 max-w-[240px] text-sm font-semibold leading-snug text-zinc-900">
               {formatTodayUz()}
@@ -206,23 +209,23 @@ export default function AdminVizitkasPage() {
         <table className="w-full min-w-[880px] text-left">
           <thead>
             <tr className="border-b border-zinc-200 bg-zinc-50/90">
-              <th className={adminTh}>Manzil</th>
-              <th className={adminTh}>Nomi</th>
-              <th className={adminTh}>Holat</th>
+              <th className={adminTh}>{tr("Manzil")}</th>
+              <th className={adminTh}>{tr("Nomi")}</th>
+              <th className={adminTh}>{tr("Holat")}</th>
               <th className={adminTh}>
-                <span className="block font-semibold">Tugash</span>
+                <span className="block font-semibold">{tr("Tugash")}</span>
                 <span className="mt-0.5 block text-[10px] font-normal normal-case leading-snug text-zinc-500">
-                  Sana va qolgan kunlar
+                  {tr("Sana va qolgan kunlar")}
                 </span>
               </th>
               <th className={adminTh}>
-                <span className="block font-semibold">+ kun</span>
+                <span className="block font-semibold">{tr("+ kun")}</span>
                 <span className="mt-0.5 block text-[10px] font-normal normal-case leading-snug text-zinc-500">
-                  Raqam tugash sanasiga qo‘shiladi
+                  {tr("Raqam tugash sanasiga qo‘shiladi")}
                 </span>
               </th>
-              <th className={adminTh}>Yangilangan</th>
-              <th className={`${adminTh} text-right`}>Amallar</th>
+              <th className={adminTh}>{tr("Yangilangan")}</th>
+              <th className={`${adminTh} text-right`}>{tr("Amallar")}</th>
             </tr>
           </thead>
           <tbody>
@@ -233,7 +236,7 @@ export default function AdminVizitkasPage() {
               const daysNum = parseInt(daysVal, 10);
               const canAddDays =
                 Number.isFinite(daysNum) && daysNum >= 1 && daysNum <= 3650;
-              const exp = expiryParts(v.expiredAt ?? undefined);
+              const exp = expiryParts(v.expiredAt ?? undefined, tr);
               return (
                 <tr key={v.id} className={cn(adminTr, busy && "opacity-70")}>
                   <td className={`${adminTd} font-mono text-xs text-zinc-600`}>{v.slug}</td>
@@ -245,13 +248,13 @@ export default function AdminVizitkasPage() {
                       className={selCls}
                       disabled={busy}
                       value={
-                        STATUS_OPTS.some((o) => o.v === st) ? st : "DRAFT"
+                        STATUS_OPTS(tr).some((o) => o.v === st) ? st : "DRAFT"
                       }
                       onChange={(e) =>
                         void patchRow(v.id, { status: e.target.value })
                       }
                     >
-                      {STATUS_OPTS.map((o) => (
+                      {STATUS_OPTS(tr).map((o) => (
                         <option key={o.v} value={o.v}>
                           {o.label}
                         </option>
@@ -295,9 +298,9 @@ export default function AdminVizitkasPage() {
                         />
                         <span
                           className="text-[11px] font-medium text-zinc-500"
-                          title="Tugash sanasiga qo‘shiladigan kunlar"
+                          title={tr("Tugash sanasiga qo‘shiladigan kunlar")}
                         >
-                          kun
+                          {tr("kun")}
                         </span>
                         <button
                           type="button"
@@ -308,7 +311,7 @@ export default function AdminVizitkasPage() {
                           }}
                           className={btnMini}
                         >
-                          Qo‘shish
+                          {tr("Qo‘shish")}
                         </button>
                       </div>
                     </div>
@@ -321,7 +324,7 @@ export default function AdminVizitkasPage() {
                       href={`/gradeadmin/vizitkas/${encodeURIComponent(v.id)}`}
                       className={linkPrimary}
                     >
-                      Tahrir
+                      {tr("Tahrir")}
                     </Link>
                     <span className="mx-1.5 text-zinc-300">·</span>
                     <a
@@ -330,7 +333,7 @@ export default function AdminVizitkasPage() {
                       rel="noreferrer"
                       className="font-medium text-zinc-600 underline-offset-2 hover:text-zinc-900 hover:underline"
                     >
-                      Sayt
+                      {tr("Sayt")}
                     </a>
                     <span className="mx-1.5 text-zinc-300">·</span>
                     <button
@@ -339,7 +342,7 @@ export default function AdminVizitkasPage() {
                       onClick={() => void removeRow(v.id, v.slug)}
                       className="font-semibold text-red-600 hover:text-red-700 hover:underline disabled:opacity-50"
                     >
-                      O‘chirish
+                      {tr("O‘chirish")}
                     </button>
                   </td>
                 </tr>
@@ -349,8 +352,8 @@ export default function AdminVizitkasPage() {
         </table>
         {items.length === 0 ? (
           <AdminEmpty
-            title="Hozircha vizitka yo‘q"
-            hint="Mijozlar yangi sayt yaratganda bu yerda ko‘rinadi."
+            title={tr("Hozircha vizitka yo‘q")}
+            hint={tr("Mijozlar yangi sayt yaratganda bu yerda ko‘rinadi.")}
           />
         ) : null}
       </AdminTableWrap>

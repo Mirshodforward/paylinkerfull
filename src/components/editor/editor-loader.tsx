@@ -8,8 +8,10 @@ import { getSiteById, saveSite } from "@/lib/store/store";
 import { normalizeSite } from "@/lib/store/normalize";
 import type { UnknownSite } from "@/lib/store/types";
 import { Editor } from "./editor";
+import { useI18n } from "@/lib/i18n/provider";
 
 export function EditorLoader({ id }: { id: string }) {
+  const { tr } = useI18n();
   const searchParams = useSearchParams();
   const [site, setSite] = useState<UnknownSite | undefined>(undefined);
   const [ready, setReady] = useState(false);
@@ -66,7 +68,7 @@ export function EditorLoader({ id }: { id: string }) {
   if (!ready) {
     return (
       <div className="flex h-[calc(100vh-64px)] items-center justify-center text-sm text-neutral-500">
-        Yuklanmoqda...
+        {tr("Yuklanmoqda...")}
       </div>
     );
   }
@@ -75,17 +77,16 @@ export function EditorLoader({ id }: { id: string }) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center px-5">
         <div className="mx-auto max-w-md rounded-[var(--radius-card)] border border-[color:var(--border)] bg-white p-8 text-center">
-          <h2 className="text-lg font-semibold text-[color:var(--foreground)]">Sayt topilmadi</h2>
+          <h2 className="text-lg font-semibold text-[color:var(--foreground)]">{tr("Sayt topilmadi")}</h2>
           <p className="mt-2 text-sm text-neutral-600">
-            Bunday sayt mavjud emas yoki o&apos;chirilgan. Ro&apos;yxatga qaytib,
-            saytni qayta toping.
+            {tr("Bunday sayt mavjud emas yoki o'chirilgan. Ro'yxatga qaytib, saytni qayta toping.")}
           </p>
           <div className="mt-5">
             <Link
               href="/dashboard/sites"
               className="inline-flex h-10 items-center justify-center pl-gradient rounded-md px-5 text-sm font-medium text-white"
             >
-              Saytlar ro&apos;yxati
+              {tr("Saytlar ro'yxati")}
             </Link>
           </div>
         </div>

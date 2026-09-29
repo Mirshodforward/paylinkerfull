@@ -10,6 +10,7 @@ import {
   AdminPageHeader,
 } from "@/components/admin/admin-ui";
 import { cn } from "@/lib/cn";
+import { useI18n } from "@/lib/i18n/provider";
 
 type Stats = {
   users: number;
@@ -86,6 +87,7 @@ function IconSom({ className }: { className?: string }) {
 }
 
 export default function AdminHomePage() {
+  const { tr } = useI18n();
   const [stats, setStats] = useState<Stats | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
@@ -95,7 +97,7 @@ export default function AdminHomePage() {
         const s = await api<Stats>("/api/admin/stats");
         setStats(s);
       } catch (e) {
-        setErr(e instanceof ApiError ? e.message : "Xato");
+        setErr(e instanceof ApiError ? e.message : tr("Xato"));
       }
     })();
   }, []);
@@ -103,7 +105,7 @@ export default function AdminHomePage() {
   if (err) {
     return (
       <div className="space-y-6">
-        <AdminPageHeader title="Admin panel" description="Statistika va boshqaruv." />
+        <AdminPageHeader title={tr("Admin panel")} description={tr("Statistika va boshqaruv.")} />
         <AdminAlert>{err}</AdminAlert>
       </div>
     );
@@ -112,7 +114,7 @@ export default function AdminHomePage() {
   if (!stats) {
     return (
       <div className="space-y-6">
-        <AdminPageHeader title="Admin panel" description="Statistika yuklanmoqda…" />
+        <AdminPageHeader title={tr("Admin panel")} description={tr("Statistika yuklanmoqda…")} />
         <AdminCard>
           <AdminLoadingLine />
         </AdminCard>
@@ -122,77 +124,99 @@ export default function AdminHomePage() {
 
   const cards = [
     {
-      label: "Foydalanuvchilar",
+      label: tr("Foydalanuvchilar"),
+      group: "other" as const,
+      short: undefined,
       value: stats.users,
       href: "/gradeadmin/users",
       icon: IconUsers,
       accent: "bg-brand-500/15 text-brand-700 ring-brand-500/20",
     },
     {
-      label: "Vizitkalar",
+      label: tr("Vizitkalar"),
+      group: "other" as const,
+      short: undefined,
       value: stats.vizitkas,
       href: "/gradeadmin/vizitkas",
       icon: IconSites,
       accent: "bg-violet-500/15 text-violet-700 ring-violet-500/20",
     },
     {
-      label: "Landinglar (jami)",
+      label: tr("Landinglar (jami)"),
+      group: "landing" as const,
+      short: tr("Jami"),
       value: stats.landings,
       href: "/gradeadmin/landings",
       icon: IconLanding,
       accent: "bg-orange-500/15 text-orange-900 ring-orange-500/20",
     },
     {
-      label: "Landing — faol",
+      label: tr("Landing — faol"),
+      group: "landing" as const,
+      short: tr("faol"),
       value: stats.landingsActive,
       href: "/gradeadmin/landings",
       icon: IconCheck,
       accent: "bg-emerald-500/12 text-emerald-800 ring-emerald-500/20",
     },
     {
-      label: "Landing — tugagan",
+      label: tr("Landing — tugagan"),
+      group: "landing" as const,
+      short: tr("tugagan"),
       value: stats.landingsExpired,
       href: "/gradeadmin/landings",
       icon: IconReceipt,
       accent: "bg-red-500/10 text-red-800 ring-red-500/15",
     },
     {
-      label: "Landing — sinov",
+      label: tr("Landing — sinov"),
+      group: "landing" as const,
+      short: tr("sinov"),
       value: stats.landingsTrial,
       href: "/gradeadmin/landings",
       icon: IconLanding,
       accent: "bg-brand-500/12 text-brand-800 ring-brand-500/20",
     },
     {
-      label: "Landing — 6 oy",
+      label: tr("Landing — 6 oy"),
+      group: "landing" as const,
+      short: tr("6 oy"),
       value: stats.landingsPaid6,
       href: "/gradeadmin/landings",
       icon: IconLanding,
       accent: "bg-amber-500/12 text-amber-900 ring-amber-500/20",
     },
     {
-      label: "Landing — 12 oy",
+      label: tr("Landing — 12 oy"),
+      group: "landing" as const,
+      short: tr("12 oy"),
       value: stats.landingsPaid12,
       href: "/gradeadmin/landings",
       icon: IconLanding,
       accent: "bg-amber-500/15 text-amber-950 ring-amber-500/25",
     },
     {
-      label: "To‘lovlar (jami)",
+      label: tr("To‘lovlar (jami)"),
+      group: "other" as const,
+      short: undefined,
       value: stats.paymentsTotal,
       href: "/gradeadmin/payments",
       icon: IconReceipt,
       accent: "bg-sky-500/15 text-sky-800 ring-sky-500/20",
     },
     {
-      label: "Muvaffaqiyatli to‘lovlar",
+      label: tr("Muvaffaqiyatli to‘lovlar"),
+      group: "other" as const,
+      short: undefined,
       value: stats.paymentsPaid,
       href: "/gradeadmin/payments",
       icon: IconCheck,
       accent: "bg-emerald-500/15 text-emerald-800 ring-emerald-500/20",
     },
     {
-      label: "Tushum (so‘m, PAID)",
+      label: tr("Tushum (so‘m, PAID)"),
+      group: "other" as const,
+      short: undefined,
       value: stats.paidAmountSom.toLocaleString("uz-UZ"),
       href: "/gradeadmin/payments",
       icon: IconSom,
@@ -203,16 +227,16 @@ export default function AdminHomePage() {
   return (
     <div className="space-y-10">
       <AdminPageHeader
-        title="Umumiy ko‘rinish"
-        description="Foydalanuvchilar, vizitka va landing obunalari, CLICK to‘lovlari."
+        title={tr("Umumiy ko‘rinish")}
+        description={tr("Foydalanuvchilar, vizitka va landing obunalari, CLICK to‘lovlari.")}
       />
 
       <p className="text-xs font-semibold uppercase tracking-[0.14em] text-zinc-500">
-        Landing statistikasi
+        {tr("Landing statistikasi")}
       </p>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {cards
-          .filter((c) => c.label.startsWith("Landing"))
+          .filter((c) => c.group === "landing")
           .map((c, i) => {
             const Icon = c.icon;
             return (
@@ -224,7 +248,7 @@ export default function AdminHomePage() {
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-zinc-500">
-                      {c.label.replace("Landing — ", "").replace("Landinglar (jami)", "Jami")}
+                      {c.short ?? c.label}
                     </p>
                     <p className="mt-3 text-3xl font-semibold tabular-nums tracking-tight text-zinc-900">
                       {c.value}
@@ -245,11 +269,11 @@ export default function AdminHomePage() {
       </div>
 
       <p className="text-xs font-semibold uppercase tracking-[0.14em] text-zinc-500">
-        Umumiy
+        {tr("Umumiy")}
       </p>
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {cards
-          .filter((c) => !c.label.startsWith("Landing"))
+          .filter((c) => c.group !== "landing")
           .map((c, i, arr) => {
           const Icon = c.icon;
           return (
@@ -280,7 +304,7 @@ export default function AdminHomePage() {
                 </span>
               </div>
               <p className="mt-4 text-xs font-medium text-brand-700 opacity-0 transition-opacity group-hover:opacity-100">
-                Batafsil →
+                {tr("Batafsil →")}
               </p>
             </Link>
           );

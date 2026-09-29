@@ -13,6 +13,7 @@ import {
   SocialGlyph,
 } from "@/components/sites/social-icons";
 import { IconButton, TextInput } from "./fields";
+import { useI18n } from "@/lib/i18n/provider";
 
 export function SocialEditor({
   value,
@@ -21,6 +22,7 @@ export function SocialEditor({
   value: SocialLinks;
   onChange: (next: SocialLinks) => void;
 }) {
+  const { tr } = useI18n();
   const [picking, setPicking] = useState(false);
   const used = new Set(value.map((v) => v.network));
   const available = SOCIAL_ORDER.filter((id) => !used.has(id));
@@ -61,7 +63,7 @@ export function SocialEditor({
                     onChange={(v) => updateItem(item.id, { value: v })}
                   />
                 </div>
-                <IconButton onClick={() => removeItem(item.id)} label="O'chirish" destructive>
+                <IconButton onClick={() => removeItem(item.id)} label={tr("O'chirish")} destructive>
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
                     <path d="M3 3l8 8M11 3l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                   </svg>
@@ -76,14 +78,14 @@ export function SocialEditor({
         <div className="rounded-md border border-[color:var(--border)] bg-neutral-50 p-3">
           <div className="mb-2 flex items-center justify-between">
             <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-600">
-              Tarmoq tanlang
+              {tr("Tarmoq tanlang")}
             </span>
             <button
               type="button"
               onClick={() => setPicking(false)}
               className="text-xs text-neutral-500 hover:text-brand-700"
             >
-              Bekor qilish
+              {tr("Bekor qilish")}
             </button>
           </div>
           <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-3">
@@ -109,11 +111,11 @@ export function SocialEditor({
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
             <path d="M7 3V11M3 7H11" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
           </svg>
-          Ijtimoiy tarmoq qo&apos;shish
+          {tr("Ijtimoiy tarmoq qo'shish")}
         </button>
       ) : (
         <p className="rounded-md border border-dashed border-[color:var(--border)] p-3 text-center text-xs text-neutral-500">
-          Barcha tarmoqlar qo&apos;shilgan
+          {tr("Barcha tarmoqlar qo'shilgan")}
         </p>
       )}
     </div>

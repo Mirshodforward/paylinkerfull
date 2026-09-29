@@ -26,7 +26,7 @@ function formatNine(nine: string) {
 
 export function LoginForm() {
   const router = useRouter();
-  const { t } = useI18n();
+  const { t, tr } = useI18n();
   const L = t.login;
   const [step, setStep] = useState<1 | 2>(1);
   const [e164, setE164] = useState("");
@@ -111,7 +111,7 @@ export function LoginForm() {
         </p>
         <div className="rounded-[var(--radius-card)] border border-brand-200 bg-brand-50 p-3.5 text-sm text-brand-900">
           <p className="leading-relaxed">
-            {L.openBot} <span className="font-mono">/start</span>
+            {L.openBot} <span className="font-mono">{tr("/start")}</span>
           </p>
           <a
             href={tme}
@@ -128,7 +128,7 @@ export function LoginForm() {
             className="mt-1.5 flex justify-center gap-1.5 sm:gap-2"
             onPaste={onPasteOtp}
             role="group"
-            aria-label="6 xonali kod"
+            aria-label={tr("6 xonali kod")}
           >
             {cells.map((c, i) => (
               <input

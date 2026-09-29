@@ -80,6 +80,8 @@ import { PhoneFrame } from "@/components/editor/phone-frame";
 import { ColorPicker } from "@/components/editor/color-picker";
 import { PatternPicker } from "@/components/editor/pattern-picker";
 import { SocialEditor } from "@/components/editor/social-editor";
+import type { Tr } from "@/lib/i18n/tr";
+import { useI18n } from "@/lib/i18n/provider";
 
 type Step = 1 | 2 | 3;
 
@@ -112,11 +114,11 @@ const RESERVED_SLUGS = new Set([
   "billing",
 ]);
 
-const steps = [
-  { n: 1, label: "Nom" },
-  { n: 2, label: "Shablon" },
-  { n: 3, label: "Ma'lumotlar" },
-];
+const steps = (tr: Tr) => ([
+  { n: 1, label: tr("Nom") },
+  { n: 2, label: tr("Shablon") },
+  { n: 3, label: tr("Ma'lumotlar") },
+]);
 
 const noopSubscribe = () => () => {};
 
@@ -132,27 +134,28 @@ const SESSION_LANDING_SUB_MONTHS = "paylinker.newSite.landingSubscriptionMonths"
 /** CLICK dan qaytgan — landing AI paketi uchun balans to‘ldirish */
 const SESSION_LANDING_AI_PENDING = "paylinker.newSite.landingAiPending";
 
-const COMMON_CATEGORIES = [
-  "Chayxana",
-  "Restoran",
-  "Kafe",
-  "Beauty salon",
-  "Fitnes markaz",
-  "Atelye",
-  "Ta'mirlash xizmati",
-  "Avtomobil xizmati",
-  "Kiyim do'koni",
-  "Gul do'koni",
-  "Ta'lim markazi",
-  "Tibbiy xizmatlar",
-  "Yuridik xizmatlar",
-  "IT xizmatlari",
-  "Yetkazib berish",
-  "Qurilish",
-  "Fotograf / Videograf",
-];
+const COMMON_CATEGORIES = (tr: Tr) => ([
+  tr("Chayxana"),
+  tr("Restoran"),
+  tr("Kafe"),
+  tr("Beauty salon"),
+  tr("Fitnes markaz"),
+  tr("Atelye"),
+  tr("Ta'mirlash xizmati"),
+  tr("Avtomobil xizmati"),
+  tr("Kiyim do'koni"),
+  tr("Gul do'koni"),
+  tr("Ta'lim markazi"),
+  tr("Tibbiy xizmatlar"),
+  tr("Yuridik xizmatlar"),
+  tr("IT xizmatlari"),
+  tr("Yetkazib berish"),
+  tr("Qurilish"),
+  tr("Fotograf / Videograf"),
+]);
 
 export function CreateSiteForm() {
+  const { tr } = useI18n();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [siteType, setSiteType] = useState<SiteType | null>(null);
@@ -172,7 +175,7 @@ export function CreateSiteForm() {
 
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-  const [hoursLine, setHoursLine] = useState("Du–Sh: 09:00 – 20:00");
+  const [hoursLine, setHoursLine] = useState(tr("Du–Sh: 09:00 – 20:00"));
   const [tagline, setTagline] = useState("");
   const [description, setDescription] = useState("");
   const [social, setSocial] = useState<SocialLinks>([]);
@@ -239,7 +242,7 @@ export function CreateSiteForm() {
               ? e.message
               : e instanceof Error
                 ? e.message
-                : "Balansdan yechilmadi";
+                : tr("Balansdan yechilmadi");
           setFinishError(msg);
         });
       return;
@@ -258,9 +261,9 @@ export function CreateSiteForm() {
   }, [businessName, slugTouched, ready]);
 
   const normalizedSlug = useMemo(() => normalizeSlug(slug), [slug]);
-  const slugError = useMemo(() => validateSlug(normalizedSlug, ready), [
+  const slugError = useMemo(() => validateSlug(normalizedSlug, ready, tr), [
     normalizedSlug,
-    ready,
+    ready, tr,
   ]);
 
   const canNextFromStep1 =
@@ -279,7 +282,7 @@ export function CreateSiteForm() {
     setPattern("none");
     setPhone("");
     setAddress("");
-    setHoursLine("Du–Sh: 09:00 – 20:00");
+    setHoursLine(tr("Du–Sh: 09:00 – 20:00"));
     setTagline("");
     setDescription("");
     setSocial([]);
@@ -290,7 +293,7 @@ export function CreateSiteForm() {
     setVizitkaTier(null);
     setLandingTier(null);
     setLandingComingSoon(false);
-  }, []);
+  }, [tr]);
 
   const handleVizitkaTierSelect = useCallback(
     async (tier: "free" | 6 | 12) => {
@@ -329,13 +332,13 @@ export function CreateSiteForm() {
             ? e.message
             : e instanceof Error
               ? e.message
-              : "To‘lov boshlanmadi";
+              : tr("To‘lov boshlanmadi");
         setFinishError(msg);
       } finally {
         setTierPayLoading(null);
       }
     },
-    [priceByMonths],
+    [priceByMonths, tr],
   );
 
   const handleLandingTierSelect = useCallback(
@@ -380,7 +383,7 @@ export function CreateSiteForm() {
               ? e.message
               : e instanceof Error
                 ? e.message
-                : "To‘lov boshlanmadi";
+                : tr("To‘lov boshlanmadi");
           setFinishError(msg);
         } finally {
           setTierPayLoading(null);
@@ -388,7 +391,7 @@ export function CreateSiteForm() {
         return;
       }
     },
-    [],
+    [tr],
   );
 
   const payLandingPackage = useCallback(
@@ -423,13 +426,13 @@ export function CreateSiteForm() {
             ? e.message
             : e instanceof Error
               ? e.message
-              : "To‘lov boshlanmadi";
+              : tr("To‘lov boshlanmadi");
         setFinishError(msg);
       } finally {
         setTierPayLoading(null);
       }
     },
-    [landingPriceByMonths],
+    [landingPriceByMonths, tr],
   );
 
   const startLandingTrial = useCallback(() => {
@@ -453,7 +456,7 @@ export function CreateSiteForm() {
             ? e.message
             : e instanceof Error
               ? e.message
-              : "Balansdan yechilmadi",
+              : tr("Balansdan yechilmadi"),
         );
         return;
       } finally {
@@ -483,7 +486,7 @@ export function CreateSiteForm() {
     normalizedSlug,
     businessName,
     category,
-    router,
+    router, tr,
   ]);
 
   const handleFinish = async () => {
@@ -497,7 +500,7 @@ export function CreateSiteForm() {
         const payload = buildVizitkaCreatePayload({
           name: normalizedSlug,
           headline: businessName.trim(),
-          category: category.trim() || "Xizmat / Biznes turi",
+          category: category.trim() || tr("Xizmat / Biznes turi"),
           tagline: tagline.trim(),
           description: description.trim(),
           phone: phone.trim(),
@@ -537,7 +540,7 @@ export function CreateSiteForm() {
               }
             } catch (uploadErr) {
               const warn =
-                uploadErr instanceof Error ? uploadErr.message : "Rasm yuklashda xato";
+                uploadErr instanceof Error ? uploadErr.message : tr("Rasm yuklashda xato");
               saveSite(normalized);
               setSiteCreated({
                 siteId: sid,
@@ -555,15 +558,15 @@ export function CreateSiteForm() {
             });
             return;
           }
-          setFinishError("Server javob bermadi. Qayta urinib ko‘ring.");
+          setFinishError(tr("Server javob bermadi. Qayta urinib ko‘ring."));
         } catch (e) {
-          setFinishError(e instanceof Error ? e.message : "Saqlashda xato");
+          setFinishError(e instanceof Error ? e.message : tr("Saqlashda xato"));
           return;
         }
         return;
       }
       if (landingTier === null) {
-        setFinishError("Avval obuna muddatini tanlang.");
+        setFinishError(tr("Avval obuna muddatini tanlang."));
         return;
       }
       if (landingTier === 6 || landingTier === 12) {
@@ -575,7 +578,7 @@ export function CreateSiteForm() {
               ? e.message
               : e instanceof Error
                 ? e.message
-                : "Balansdan yechilmadi",
+                : tr("Balansdan yechilmadi"),
           );
           return;
         }
@@ -586,7 +589,7 @@ export function CreateSiteForm() {
         slug: normalizedSlug,
         templateId,
         partial: {
-          category: category.trim() || "Xizmat / Biznes turi",
+          category: category.trim() || tr("Xizmat / Biznes turi"),
           tagline: tagline.trim() || "",
           description: description.trim() || "",
           phone: phone.trim() || "",
@@ -630,12 +633,12 @@ export function CreateSiteForm() {
 
   const previewContent = useMemo(() => {
     return {
-      businessName: businessName || "Chayxana Alisher",
-      category: category || "Milliy taomlar",
-      tagline: tagline || "Toshkent · 2015 dan",
-      description: description || "Tandir non va choyxona muhiti.",
+      businessName: businessName || tr("Chayxana Alisher"),
+      category: category || tr("Milliy taomlar"),
+      tagline: tagline || tr("Toshkent · 2015 dan"),
+      description: description || tr("Tandir non va choyxona muhiti."),
       phone: phone || "+998 90 123 45 67",
-      address: address || "Chilonzor, Toshkent",
+      address: address || tr("Chilonzor, Toshkent"),
       hoursLine: hoursLine || "09:00 – 22:00",
       mapsUrl,
       social: social.length
@@ -663,7 +666,7 @@ export function CreateSiteForm() {
     logoImage,
     heroImage,
     colorTheme,
-    pattern,
+    pattern, tr,
   ]);
 
   if (!siteType) {
@@ -737,19 +740,19 @@ export function CreateSiteForm() {
         <div className="mb-3 flex items-center justify-between">
           <div>
             <p className="text-xs text-neutral-500">
-              Tarif: <span className="font-semibold text-[color:var(--foreground)]">Landing</span>
+              {tr("Tarif:")}{" "}<span className="font-semibold text-[color:var(--foreground)]">{tr("Landing")}</span>
             </p>
             {landingTier === "free" ? (
               <p className="mt-0.5 text-[11px] text-neutral-600">
-                Bepul — shablon asosida · {pricing.freePublishDays} kunlik sinov
+                {tr("Bepul — shablon asosida ·")}{" "}{pricing.freePublishDays} {tr("kunlik sinov")}
               </p>
             ) : landingTier === "ai" ? (
               <p className="mt-0.5 text-[11px] text-neutral-600">
-                AI bilan landing — {formatSom(LANDING_AI_STARTER_PRICE_SOM)}
+                {tr("AI bilan landing —")}{" "}{formatSom(LANDING_AI_STARTER_PRICE_SOM)}
               </p>
             ) : (
               <p className="mt-0.5 text-[11px] text-neutral-600">
-                {landingTier} oy — {formatSom(landingPriceByMonths[landingTier])}
+                {landingTier} {tr("oy —")}{" "}{formatSom(landingPriceByMonths[landingTier])}
               </p>
             )}
           </div>
@@ -762,7 +765,7 @@ export function CreateSiteForm() {
             }}
             className="text-xs font-medium text-[color:var(--foreground)] underline underline-offset-4"
           >
-            Tarifni o&apos;zgartirish
+            {tr("Tarifni o'zgartirish")}
           </button>
         </div>
 
@@ -786,19 +789,19 @@ export function CreateSiteForm() {
         <div className="mb-3 flex items-center justify-between">
           <div>
             <p className="text-xs text-neutral-500">
-              Tarif: <span className="font-semibold text-[color:var(--foreground)]">Landing</span>
+              {tr("Tarif:")}{" "}<span className="font-semibold text-[color:var(--foreground)]">{tr("Landing")}</span>
             </p>
             {landingTier === "free" ? (
               <p className="mt-0.5 text-[11px] text-neutral-600">
-                Bepul — shablon asosida · {pricing.freePublishDays} kunlik sinov
+                {tr("Bepul — shablon asosida ·")}{" "}{pricing.freePublishDays} {tr("kunlik sinov")}
               </p>
             ) : landingTier === "ai" ? (
               <p className="mt-0.5 text-[11px] text-neutral-600">
-                AI bilan landing — {formatSom(LANDING_AI_STARTER_PRICE_SOM)}
+                {tr("AI bilan landing —")}{" "}{formatSom(LANDING_AI_STARTER_PRICE_SOM)}
               </p>
             ) : (
               <p className="mt-0.5 text-[11px] text-neutral-600">
-                {landingTier} oy — {formatSom(landingPriceByMonths[landingTier])}
+                {landingTier} {tr("oy —")}{" "}{formatSom(landingPriceByMonths[landingTier])}
               </p>
             )}
           </div>
@@ -811,7 +814,7 @@ export function CreateSiteForm() {
             }}
             className="text-xs font-medium text-[color:var(--foreground)] underline underline-offset-4"
           >
-            Tarifni o&apos;zgartirish
+            {tr("Tarifni o'zgartirish")}
           </button>
         </div>
 
@@ -828,7 +831,7 @@ export function CreateSiteForm() {
           slugError={slugError}
           canNext={canNextFromStep1}
           onNext={() => void goToTahrirAfterLandingDomain()}
-          nextLabel="Tahrirda davom etish →"
+          nextLabel={tr("Tahrirda davom etish →")}
           submitting={submitting}
         />
       </div>
@@ -840,19 +843,19 @@ export function CreateSiteForm() {
       <div className="mb-3 flex items-center justify-between">
         <div>
           <p className="text-xs text-neutral-500">
-            Tarif:{" "}
+            {tr("Tarif:")}{" "}
             <span className="font-semibold text-[color:var(--foreground)]">
-              {siteType === "vizitka" ? "Vizitka" : "Landing"}
+              {siteType === "vizitka" ? tr("Vizitka") : tr("Landing")}
             </span>
           </p>
           {siteType === "vizitka" && vizitkaTier != null ? (
             vizitkaTier === "free" ? (
               <p className="mt-0.5 text-[11px] text-neutral-600">
-                Bepul — {pricing.freePublishDays} kunlik sinov
+                {tr("Bepul —")}{" "}{pricing.freePublishDays} {tr("kunlik sinov")}
               </p>
             ) : (
               <p className="mt-0.5 text-[11px] text-neutral-600">
-                {vizitkaTier} oy —{" "}
+                {vizitkaTier} {tr("oy —")}{" "}
                 {formatSom(priceByMonths[vizitkaTier])}
               </p>
             )
@@ -860,15 +863,15 @@ export function CreateSiteForm() {
           {siteType === "landing" && landingTier != null ? (
             landingTier === "free" ? (
               <p className="mt-0.5 text-[11px] text-neutral-600">
-                Bepul — shablon asosida · {pricing.freePublishDays} kunlik sinov
+                {tr("Bepul — shablon asosida ·")}{" "}{pricing.freePublishDays} {tr("kunlik sinov")}
               </p>
             ) : landingTier === "ai" ? (
               <p className="mt-0.5 text-[11px] text-neutral-600">
-                AI bilan landing — {formatSom(LANDING_AI_STARTER_PRICE_SOM)}
+                {tr("AI bilan landing —")}{" "}{formatSom(LANDING_AI_STARTER_PRICE_SOM)}
               </p>
             ) : (
               <p className="mt-0.5 text-[11px] text-neutral-600">
-                {landingTier} oy —{" "}
+                {landingTier} {tr("oy —")}{" "}
                 {formatSom(landingPriceByMonths[landingTier])}
               </p>
             )
@@ -891,7 +894,7 @@ export function CreateSiteForm() {
           }}
           className="text-xs font-medium text-[color:var(--foreground)] underline underline-offset-4"
         >
-          Tarifni o&apos;zgartirish
+          {tr("Tarifni o'zgartirish")}
         </button>
       </div>
 
@@ -992,6 +995,7 @@ function VizitkaPackagePicker({
   pricing: PublicPricing;
   payingTier: 6 | 12 | null;
 }) {
+  const { tr } = useI18n();
   const freePackage = useMemo(
     () => buildVizitkaFreePackage(pricing.freePublishDays),
     [pricing.freePublishDays],
@@ -1002,17 +1006,15 @@ function VizitkaPackagePicker({
     <div>
       <div className="mb-8 text-center">
         <h2 className="text-2xl font-semibold tracking-tight text-[color:var(--foreground)] sm:text-3xl">
-          Obuna muddatini tanlang
+          {tr("Obuna muddatini tanlang")}
         </h2>
         <p className="mt-2 text-sm text-neutral-600">
-          Avvalo bepul{" "}
+          {tr("Avvalo bepul")}{" "}
           <strong className="font-medium text-neutral-800">
-            {pricing.freePublishDays} kun
+            {pricing.freePublishDays} {tr("kun")}
           </strong>{" "}
-          sinov yoki to&apos;lovli paket. Paket tanlansa yetishmaydigan summa{" "}
-          <strong className="font-medium text-neutral-800">CLICK</strong> orqali balansga
-          o&apos;tadi; keyin &quot;Saytni yaratish&quot; bosilganda balansdan paket narxi
-          yechiladi va muddat qo&apos;shiladi.
+          {tr("sinov yoki to'lovli paket. Paket tanlansa yetishmaydigan summa")}{" "}
+          <strong className="font-medium text-neutral-800">CLICK</strong> {tr("orqali balansga o'tadi; keyin \"Saytni yaratish\" bosilganda balansdan paket narxi yechiladi va muddat qo'shiladi.")}
         </p>
       </div>
 
@@ -1024,7 +1026,7 @@ function VizitkaPackagePicker({
           className="group relative flex flex-col gap-3 rounded-[var(--radius-card)] border-2 border-dashed border-brand-400/80 bg-gradient-to-b from-brand-50/80 to-white p-6 text-left transition-all hover:border-brand-600 hover:shadow-md disabled:pointer-events-none disabled:opacity-50"
         >
           <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand-600 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
-            Bepul
+            {tr("Bepul")}
           </span>
           <div className="mt-1">
             <p className="text-lg font-semibold text-[color:var(--foreground)]">
@@ -1035,11 +1037,11 @@ function VizitkaPackagePicker({
             </p>
             <p className="mt-1 text-xs text-neutral-600">{freePackage.subtitle}</p>
             <p className="mt-2 text-[11px] font-medium text-brand-700">
-              {pricing.freePublishDays} kun sinov
+              {pricing.freePublishDays} {tr("kun sinov")}
             </p>
           </div>
           <span className="mt-auto pt-2 text-sm font-semibold text-brand-900">
-            Tanlash →
+            {tr("Tanlash →")}
           </span>
         </button>
 
@@ -1058,7 +1060,7 @@ function VizitkaPackagePicker({
           >
             {p.recommended ? (
               <span className="absolute -top-3 left-1/2 -translate-x-1/2 pl-gradient rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
-                Tavsiya
+                {tr("Tavsiya")}
               </span>
             ) : null}
             <div className="mt-1">
@@ -1072,7 +1074,7 @@ function VizitkaPackagePicker({
               ) : null}
             </div>
             <span className="mt-auto pt-2 text-sm font-semibold text-[color:var(--foreground)]">
-              {payingTier === p.months ? "CLICK ga yo‘naltirilmoqda…" : "Tanlash →"}
+              {payingTier === p.months ? tr("CLICK ga yo‘naltirilmoqda…") : tr("Tanlash →")}
             </span>
           </button>
         ))}
@@ -1084,7 +1086,7 @@ function VizitkaPackagePicker({
           onClick={onBack}
           className="text-sm font-medium text-neutral-600 underline underline-offset-4 hover:text-brand-700"
         >
-          ← Sayt turini qayta tanlash
+          {tr("← Sayt turini qayta tanlash")}
         </button>
       </div>
     </div>
@@ -1106,6 +1108,7 @@ function LandingPackagePicker({
   pricing: PublicPricing;
   payingTier: 6 | 12 | "ai" | null;
 }) {
+  const { tr } = useI18n();
   const [selectedMonths, setSelectedMonths] = useState<6 | 12 | null>(null);
   const freePackage = useMemo(
     () => buildLandingFreePackage(pricing.freePublishDays),
@@ -1126,15 +1129,12 @@ function LandingPackagePicker({
     <div>
       <div className="mb-8 text-center">
         <h2 className="text-2xl font-semibold tracking-tight text-[color:var(--foreground)] sm:text-3xl">
-          Landing paketini tanlang
+          {tr("Landing paketini tanlang")}
         </h2>
         <p className="mt-2 text-sm text-neutral-600">
-          <strong className="font-medium text-neutral-800">Bepul</strong> — tayyor shablon asosida;
-          yoki <strong className="font-medium text-neutral-800">AI</strong> bilan qisqa savollar orqali
-          landing · <strong className="font-medium text-neutral-800">6 oy</strong> yoki{" "}
-          <strong className="font-medium text-neutral-800">1 yillik</strong> obuna. Yetishmaydigan summa{" "}
-          <strong className="font-medium text-neutral-800">CLICK</strong> orqali balansga
-          o&apos;tadi. Obuna paketida avval sinov yoki to‘lovni tanlang.
+          <strong className="font-medium text-neutral-800">{tr("Bepul")}</strong> {tr("— tayyor shablon asosida; yoki")}{" "}<strong className="font-medium text-neutral-800">AI</strong> {tr("bilan qisqa savollar orqali landing ·")}{" "}<strong className="font-medium text-neutral-800">{tr("6 oy")}</strong> {tr("yoki")}{" "}
+          <strong className="font-medium text-neutral-800">{tr("1 yillik")}</strong> {tr("obuna. Yetishmaydigan summa")}{" "}
+          <strong className="font-medium text-neutral-800">CLICK</strong> {tr("orqali balansga o'tadi. Obuna paketida avval sinov yoki to‘lovni tanlang.")}
         </p>
       </div>
 
@@ -1146,28 +1146,28 @@ function LandingPackagePicker({
           className="group relative flex flex-col gap-3 rounded-[var(--radius-card)] border-2 border-dashed border-brand-400/80 bg-gradient-to-b from-brand-50/80 to-white p-6 text-left transition-all hover:border-brand-600 hover:shadow-md disabled:pointer-events-none disabled:opacity-50"
         >
           <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand-600 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
-            Shablon
+            {tr("Shablon")}
           </span>
           <div className="mt-1">
-            <p className="text-lg font-semibold text-[color:var(--foreground)]">Bepul</p>
+            <p className="text-lg font-semibold text-[color:var(--foreground)]">{tr("Bepul")}</p>
             <p className="mt-2 text-2xl font-bold tabular-nums tracking-tight text-brand-800">
               {freePackage.priceLabel}
             </p>
             <p className="mt-1 text-xs text-neutral-600">
-              Tayyor shablon asosida landing — bloklar va forma.
+              {tr("Tayyor shablon asosida landing — bloklar va forma.")}
             </p>
             <p className="mt-2 text-[11px] font-medium text-brand-700">
-              {pricing.freePublishDays} kun sinov
+              {pricing.freePublishDays} {tr("kun sinov")}
             </p>
           </div>
           <span className="mt-auto pt-2 text-sm font-semibold text-brand-900">
-            Tanlash →
+            {tr("Tanlash →")}
           </span>
         </button>
 
         <div
           role="note"
-          aria-label="AI bilan landing — tez orada"
+          aria-label={tr("AI bilan landing — tez orada")}
           className={cn(
             "group relative flex cursor-not-allowed flex-col gap-3 rounded-[var(--radius-card)] border-2 border-violet-200 bg-gradient-to-b from-violet-50/60 to-neutral-50/90 p-6 text-left",
             busy && "opacity-50",
@@ -1177,17 +1177,16 @@ function LandingPackagePicker({
             AI
           </span>
           <div className="mt-1">
-            <p className="text-lg font-semibold text-[color:var(--foreground)]">AI bilan landing</p>
+            <p className="text-lg font-semibold text-[color:var(--foreground)]">{tr("AI bilan landing")}</p>
             <p className="mt-2 text-2xl font-bold tabular-nums tracking-tight text-violet-900/80">
               {formatSom(LANDING_AI_STARTER_PRICE_SOM)}
             </p>
             <p className="mt-1 text-xs text-neutral-600">
-              Sun&apos;iy intellekt yordamida matn va tuzilmani tezda yig&apos;ish — bir martalik
-              boshlang&apos;ich paket.
+              {tr("Sun'iy intellekt yordamida matn va tuzilmani tezda yig'ish — bir martalik boshlang'ich paket.")}
             </p>
           </div>
           <p className="mt-auto border-t border-neutral-200/90 pt-4 text-center text-2xl font-extrabold tracking-tight text-neutral-500 sm:text-3xl">
-            Tez orada
+            {tr("Tez orada")}
           </p>
         </div>
 
@@ -1203,7 +1202,7 @@ function LandingPackagePicker({
           )}
         >
           <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-neutral-800 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
-            Obuna · 6 oy
+            {tr("Obuna · 6 oy")}
           </span>
           <div className="mt-1">
             <p className="text-lg font-semibold text-[color:var(--foreground)]">{pkg6.title}</p>
@@ -1227,7 +1226,7 @@ function LandingPackagePicker({
             )}
           </div>
           <span className="mt-auto pt-2 text-sm font-semibold text-[color:var(--foreground)]">
-            {selectedMonths === 6 ? "Tanlangan" : "Tanlash →"}
+            {selectedMonths === 6 ? tr("Tanlangan") : tr("Tanlash →")}
           </span>
         </button>
 
@@ -1243,7 +1242,7 @@ function LandingPackagePicker({
           )}
         >
           <span className="absolute -top-3 left-1/2 -translate-x-1/2 pl-gradient rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
-            Obuna · 1 yil
+            {tr("Obuna · 1 yil")}
           </span>
           <div className="mt-1">
             <p className="text-lg font-semibold text-[color:var(--foreground)]">{pkg12.title}</p>
@@ -1267,7 +1266,7 @@ function LandingPackagePicker({
             )}
           </div>
           <span className="mt-auto pt-2 text-sm font-semibold text-[color:var(--foreground)]">
-            {selectedMonths === 12 ? "Tanlangan" : "Tanlash →"}
+            {selectedMonths === 12 ? tr("Tanlangan") : tr("Tanlash →")}
           </span>
         </button>
       </div>
@@ -1278,7 +1277,7 @@ function LandingPackagePicker({
             {selectedPkg.title} — {formatSom(selectedPkg.priceSom)}
           </p>
           <p className="mt-1 text-xs text-neutral-600">
-            Bepul {pricing.freePublishDays} kun sinov bilan boshlang yoki paketni hozir to‘lang.
+            {tr("Bepul")}{" "}{pricing.freePublishDays} {tr("kun sinov bilan boshlang yoki paketni hozir to‘lang.")}
           </p>
           <div className="mt-4 flex flex-col gap-2 sm:flex-row">
             <button
@@ -1287,7 +1286,7 @@ function LandingPackagePicker({
               onClick={onStartTrial}
               className="inline-flex h-11 flex-1 items-center justify-center rounded-xl border border-brand-600 bg-brand-50 px-4 text-sm font-semibold text-brand-900 transition hover:bg-brand-100 disabled:opacity-50"
             >
-              {pricing.freePublishDays} kun sinov muddati
+              {pricing.freePublishDays} {tr("kun sinov muddati")}
             </button>
             <button
               type="button"
@@ -1296,8 +1295,8 @@ function LandingPackagePicker({
               className="inline-flex h-11 flex-1 items-center justify-center pl-gradient rounded-xl px-4 text-sm font-semibold text-white transition hover:brightness-[1.06] disabled:opacity-50"
             >
               {payingTier === selectedMonths
-                ? "To‘lov tekshirilmoqda…"
-                : "To‘lash"}
+                ? tr("To‘lov tekshirilmoqda…")
+                : tr("To‘lash")}
             </button>
           </div>
         </div>
@@ -1309,7 +1308,7 @@ function LandingPackagePicker({
           onClick={onBack}
           className="text-sm font-medium text-neutral-600 underline underline-offset-4 hover:text-brand-700"
         >
-          ← Sayt turini qayta tanlash
+          {tr("← Sayt turini qayta tanlash")}
         </button>
       </div>
     </div>
@@ -1323,41 +1322,42 @@ function TypePicker({
   onPick: (type: SiteType) => void;
   pricing: PublicPricing;
 }) {
+  const { tr } = useI18n();
   const startPrice = formatSom(pricing.pricesSom["6"]);
-  const landingLine = `Bepul shablon · AI ${formatSom(LANDING_AI_STARTER_PRICE_SOM)} · 6 oy ${formatSom(pricing.landingPricesSom["6"])}`;
+  const landingLine = tr("Bepul shablon · AI {LANDING_AI_STARTER_PRICE_SOM} · 6 oy {formatSom}", { LANDING_AI_STARTER_PRICE_SOM: formatSom(LANDING_AI_STARTER_PRICE_SOM), formatSom: formatSom(pricing.landingPricesSom["6"]) });
   return (
     <div>
       <div className="mb-8 text-center">
         <h2 className="text-2xl font-semibold tracking-tight text-[color:var(--foreground)] sm:text-3xl">
-          Qaysi tarifda sayt yaratasiz?
+          {tr("Qaysi tarifda sayt yaratasiz?")}
         </h2>
         <p className="mt-2 text-sm text-neutral-600">
-          Tarifni keyin ham o&apos;zgartirish mumkin.
+          {tr("Tarifni keyin ham o'zgartirish mumkin.")}
         </p>
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <TypeCard
-          title="Vizitka"
-          price={`Bepul ${pricing.freePublishDays} kun yoki ${startPrice} dan · paketlar`}
-          description="Bir ekranli biznes kartasi — kontaktlar, ijtimoiy tarmoq linklari, manzil. Obuna muddatini tanlaysiz."
+          title={tr("Vizitka")}
+          price={tr("Bepul {freePublishDays} kun yoki {startPrice} dan · paketlar", { freePublishDays: pricing.freePublishDays, startPrice })}
+          description={tr("Bir ekranli biznes kartasi — kontaktlar, ijtimoiy tarmoq linklari, manzil. Obuna muddatini tanlaysiz.")}
           features={[
-            "1 ekranli sayt",
-            "4 ta joylashuv · 8 ta rang",
-            "Logo va hero rasm",
-            "Mobile birinchi dizayn",
+            tr("1 ekranli sayt"),
+            tr("4 ta joylashuv · 8 ta rang"),
+            tr("Logo va hero rasm"),
+            tr("Mobile birinchi dizayn"),
           ]}
           onClick={() => onPick("vizitka")}
         />
         <TypeCard
-          title="Landing"
+          title={tr("Landing")}
           price={landingLine}
-          description="Shablon asosida sahifa: tartibli bloklar va pastda ariza formasi — egaga Telegram orqali keladi."
+          description={tr("Shablon asosida sahifa: tartibli bloklar va pastda ariza formasi — egaga Telegram orqali keladi.")}
           features={[
-            "Header va matn bloklari tahrirlash",
-            "Pastki forma: ism, telefon, Telegram, izoh",
-            "Oddiy yoki to‘liq shablon",
-            "Nashr — URL da jonli",
+            tr("Header va matn bloklari tahrirlash"),
+            tr("Pastki forma: ism, telefon, Telegram, izoh"),
+            tr("Oddiy yoki to‘liq shablon"),
+            tr("Nashr — URL da jonli"),
           ]}
           recommended
           onClick={() => onPick("landing")}
@@ -1384,6 +1384,7 @@ function TypeCard({
   disabled?: boolean;
   onClick?: () => void;
 }) {
+  const { tr } = useI18n();
   const cardClass = cn(
     "group relative flex flex-col gap-5 rounded-[var(--radius-card)] p-6 text-left transition-all",
     disabled
@@ -1397,11 +1398,11 @@ function TypeCard({
     <>
       {disabled ? (
         <span className="absolute -top-3 left-1/2 inline-flex -translate-x-1/2 items-center rounded-full bg-neutral-500 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-white">
-          Tez orada
+          {tr("Tez orada")}
         </span>
       ) : recommended ? (
         <span className="absolute -top-3 left-1/2 inline-flex -translate-x-1/2 items-center pl-gradient rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-white">
-          Tavsiya
+          {tr("Tavsiya")}
         </span>
       ) : null}
 
@@ -1454,11 +1455,11 @@ function TypeCard({
 
       {disabled ? (
         <span className="mt-auto pt-2 text-sm font-medium text-neutral-500">
-          Tez orada
+          {tr("Tez orada")}
         </span>
       ) : (
         <span className="mt-auto inline-flex items-center gap-1.5 pt-2 text-sm font-semibold text-[color:var(--foreground)]">
-          Tanlash
+          {tr("Tanlash")}
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
             <path
               d="M3 7H11M11 7L7 3M11 7L7 11"
@@ -1478,7 +1479,7 @@ function TypeCard({
       <div
         className={cardClass}
         aria-disabled="true"
-        aria-label={`${title} — tez orada`}
+        aria-label={tr("{title} — tez orada", { title })}
       >
         {body}
       </div>
@@ -1493,9 +1494,10 @@ function TypeCard({
 }
 
 function StepIndicator({ current }: { current: Step }) {
+  const { tr } = useI18n();
   return (
     <ol className="flex items-center gap-3 text-xs">
-      {steps.map((s, idx) => (
+      {steps(tr).map((s, idx) => (
         <li key={s.n} className="flex flex-1 items-center gap-3">
           <div className="flex flex-1 items-center gap-2">
             <span
@@ -1517,7 +1519,7 @@ function StepIndicator({ current }: { current: Step }) {
               {s.label}
             </span>
           </div>
-          {idx < steps.length - 1 ? (
+          {idx < steps(tr).length - 1 ? (
             <span
               aria-hidden
               className={cn(
@@ -1557,36 +1559,37 @@ function StepOne({
   nextLabel?: string;
   submitting?: boolean;
 }) {
+  const { tr } = useI18n();
   return (
     <div className="mx-auto max-w-2xl rounded-[var(--radius-card)] border border-[color:var(--border)] bg-white p-6 sm:p-8">
       <h2 className="text-xl font-semibold tracking-tight text-[color:var(--foreground)]">
-        Biznes nomi
+        {tr("Biznes nomi")}
       </h2>
       <p className="mt-1 text-sm text-neutral-500">
-        Saytda sarlavha sifatida ko&apos;rinadi va manzil avtomatik yaratiladi.
+        {tr("Saytda sarlavha sifatida ko'rinadi va manzil avtomatik yaratiladi.")}
       </p>
 
       <div className="mt-6 space-y-4">
-        <Field label="Biznes nomi">
+        <Field label={tr("Biznes nomi")}>
           <TextInput
             value={businessName}
             onChange={setBusinessName}
-            placeholder="Masalan: Chayxana Alisher"
+            placeholder={tr("Masalan: Chayxana Alisher")}
           />
         </Field>
-        <Field label="Kategoriya">
+        <Field label={tr("Kategoriya")}>
           <CategorySelect value={category} onChange={setCategory} />
         </Field>
         <Field
-          label="Veb-manzil"
+          label={tr("Veb-manzil")}
           error={slugError}
-          hint={`Sayt havolasi: ${SITE_DOMAIN}/… (bu jismoniy manzil emas)`}
+          hint={tr("Sayt havolasi: {SITE_DOMAIN}/… (bu jismoniy manzil emas)", { SITE_DOMAIN })}
         >
           <TextInput
             prefix={`${SITE_DOMAIN}/`}
             value={slug}
             onChange={setSlug}
-            placeholder="chayxana-alisher"
+            placeholder={tr("chayxana-alisher")}
           />
         </Field>
       </div>
@@ -1597,7 +1600,7 @@ function StepOne({
           onClick={onNext}
           disabled={!canNext || Boolean(submitting)}
         >
-          {submitting ? "Kutilmoqda…" : nextLabel ?? "Davom etish →"}
+          {submitting ? "Kutilmoqda…" : nextLabel ?? tr("Davom etish →")}
         </Button>
       </div>
     </div>
@@ -1611,6 +1614,7 @@ function CategorySelect({
   value: string;
   onChange: (v: string) => void;
 }) {
+  const { tr } = useI18n();
   const [open, setOpen] = useState(false);
   const [customMode, setCustomMode] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -1638,7 +1642,7 @@ function CategorySelect({
               !value && "text-neutral-400",
             )}
           >
-            {value || "Kategoriya tanlash"}
+            {value || tr("Kategoriya tanlash")}
           </span>
           <svg
             width="14"
@@ -1663,7 +1667,7 @@ function CategorySelect({
 
         {open ? (
           <div className="absolute left-0 right-0 top-full z-20 mt-1 max-h-72 overflow-y-auto rounded-md border border-[color:var(--border)] bg-white py-1 shadow-[0_14px_40px_-18px_rgba(0,0,0,0.3)]">
-            {COMMON_CATEGORIES.map((cat) => (
+            {COMMON_CATEGORIES(tr).map((cat) => (
               <button
                 key={cat}
                 type="button"
@@ -1708,7 +1712,7 @@ function CategorySelect({
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
                 <path d="M7 3V11M3 7H11" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
               </svg>
-              Boshqa...
+              {tr("Boshqa...")}
             </button>
           </div>
         ) : null}
@@ -1718,7 +1722,7 @@ function CategorySelect({
         <TextInput
           value={value}
           onChange={onChange}
-          placeholder="O'z kategoriyangizni yozing"
+          placeholder={tr("O'z kategoriyangizni yozing")}
         />
       ) : null}
     </div>
@@ -1746,14 +1750,15 @@ function StepTwoVizitka({
   onBack: () => void;
   onNext: () => void;
 }) {
+  const { tr } = useI18n();
   return (
     <div>
       <div className="mb-5">
         <h2 className="text-xl font-semibold tracking-tight text-[color:var(--foreground)]">
-          Joylashuv va rang
+          {tr("Joylashuv va rang")}
         </h2>
         <p className="mt-1 text-sm text-neutral-500">
-          4 ta joylashuv va 8 ta rang — barcha kombinatsiyalar.
+          {tr("4 ta joylashuv va 8 ta rang — barcha kombinatsiyalar.")}
         </p>
       </div>
 
@@ -1761,7 +1766,7 @@ function StepTwoVizitka({
         <div className="rounded-xl border border-[color:var(--border)] bg-white p-3">
           <div className="mb-2 flex items-baseline justify-between">
             <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-600">
-              Rang · 16 ta (8 to&apos;q, 8 och)
+              {tr("Rang · 16 ta (8 to'q, 8 och)")}
             </p>
             <p className="text-[11px] font-medium text-[color:var(--foreground)]">
               {getColorTheme(colorTheme).name}
@@ -1772,7 +1777,7 @@ function StepTwoVizitka({
 
         <div className="rounded-xl border border-[color:var(--border)] bg-white p-3">
           <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-600">
-            Naqsh · shablon ichidagi bezak
+            {tr("Naqsh · shablon ichidagi bezak")}
           </p>
           <PatternPicker
             value={pattern}
@@ -1783,7 +1788,7 @@ function StepTwoVizitka({
 
         <div>
           <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-600">
-            Joylashuv
+            {tr("Joylashuv")}
           </p>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             {VIZITKA_TEMPLATES.map((tpl) => {
@@ -1824,10 +1829,10 @@ function StepTwoVizitka({
 
       <div className="mt-8 flex justify-between">
         <Button size="lg" variant="secondary" onClick={onBack}>
-          ← Orqaga
+          {tr("← Orqaga")}
         </Button>
         <Button size="lg" onClick={onNext}>
-          Davom etish →
+          {tr("Davom etish →")}
         </Button>
       </div>
     </div>
@@ -1839,10 +1844,11 @@ function LandingInfoComingSoonPlaceholder({
 }: {
   variant: "template" | "ai";
 }) {
+  const { tr } = useI18n();
   const blurLayers =
     variant === "ai"
-      ? "from-violet-100/70 via-white/50 to-violet-50/40"
-      : "from-neutral-100/85 via-white/45 to-neutral-200/55";
+      ? tr("from-violet-100/70 via-white/50 to-violet-50/40")
+      : tr("from-neutral-100/85 via-white/45 to-neutral-200/55");
 
   return (
     <div className="mt-8">
@@ -1865,11 +1871,11 @@ function LandingInfoComingSoonPlaceholder({
         <div className="relative backdrop-blur-[10px]">
           <div className="flex min-h-[min(52vh,480px)] flex-col items-center justify-center px-6 py-14 text-center sm:py-20">
             <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-500">
-              Ma&apos;lumotlar
+              {tr("Ma'lumotlar")}
             </p>
             <div className="mt-4 flex flex-wrap items-end justify-center gap-2">
               <h2 className="text-2xl font-semibold tracking-tight text-neutral-900 motion-safe:animate-[pulse_2.2s_ease-in-out_infinite] sm:text-4xl">
-                Tez kunda
+                {tr("Tez kunda")}
               </h2>
               <span className="mb-1 inline-flex gap-1 pb-1 sm:mb-2" aria-hidden>
                 {[0, 1, 2].map((i) => (
@@ -1886,12 +1892,12 @@ function LandingInfoComingSoonPlaceholder({
             </div>
             <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-neutral-600">
               {variant === "ai"
-                ? "AI yordamida landing tuzish bosqichi tez orada ochiladi. To‘langan paketingiz hisobingizda qoladi."
-                : "Shablon asosidagi landingni yakunlash va ma’lumotlarni to‘ldirish tez orada mavjud bo‘ladi."}
+                ? tr("AI yordamida landing tuzish bosqichi tez orada ochiladi. To‘langan paketingiz hisobingizda qoladi.")
+                : tr("Shablon asosidagi landingni yakunlash va ma’lumotlarni to‘ldirish tez orada mavjud bo‘ladi.")}
             </p>
             <div className="mt-10 flex justify-center">
               <Button size="lg" href="/">
-                Bosh sahifaga qaytish
+                {tr("Bosh sahifaga qaytish")}
               </Button>
             </div>
           </div>
@@ -1908,14 +1914,15 @@ function StepTwoLanding({
   onBack: () => void;
   onNext: () => void;
 }) {
+  const { tr } = useI18n();
   return (
     <div>
       <div className="mb-5">
         <h2 className="text-xl font-semibold tracking-tight text-[color:var(--foreground)]">
-          Shablon
+          {tr("Shablon")}
         </h2>
         <p className="mt-1 text-sm text-neutral-500">
-          Landing uchun hozircha 1 ta shablon mavjud — boshqa variantlar tez orada.
+          {tr("Landing uchun hozircha 1 ta shablon mavjud — boshqa variantlar tez orada.")}
         </p>
       </div>
 
@@ -1926,11 +1933,10 @@ function StepTwoLanding({
               Default
             </p>
             <h3 className="mt-1 text-lg font-semibold text-[color:var(--foreground)]">
-              Landing — Classic
+              {tr("Landing — Classic")}
             </h3>
             <p className="mt-2 text-sm text-neutral-600">
-              Hero, statistika, afzalliklar, xizmatlar, galereya, mijozlar fikri,
-              aloqa bloki va Telegram forma.
+              {tr("Hero, statistika, afzalliklar, xizmatlar, galereya, mijozlar fikri, aloqa bloki va Telegram forma.")}
             </p>
           </div>
           <Radio checked />
@@ -1939,10 +1945,10 @@ function StepTwoLanding({
 
       <div className="mt-8 flex justify-between">
         <Button size="lg" variant="secondary" onClick={onBack}>
-          ← Orqaga
+          {tr("← Orqaga")}
         </Button>
         <Button size="lg" onClick={onNext}>
-          Davom etish →
+          {tr("Davom etish →")}
         </Button>
       </div>
     </div>
@@ -2026,6 +2032,7 @@ function StepThree({
   onBack: () => void;
   onFinish: () => void;
 }) {
+  const { tr } = useI18n();
   const supportsHero =
     siteType === "landing" ||
     (VIZITKA_TEMPLATES.find((t) => t.id === templateId)?.supportsHero ?? false);
@@ -2034,17 +2041,17 @@ function StepThree({
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_380px]">
       <div className="rounded-[var(--radius-card)] border border-[color:var(--border)] bg-white p-6 sm:p-8">
         <h2 className="text-xl font-semibold tracking-tight text-[color:var(--foreground)]">
-          Asosiy ma&apos;lumotlar
+          {tr("Asosiy ma'lumotlar")}
         </h2>
         <p className="mt-1 text-sm text-neutral-500">
-          O&apos;ng tomonda jonli ko&apos;rinadi. Keyin tahrirlash mumkin.
+          {tr("O'ng tomonda jonli ko'rinadi. Keyin tahrirlash mumkin.")}
         </p>
 
         <div className="mt-6 space-y-5">
           {supportsHero ? (
             <ImageUpload
-              label="Hero rasm"
-              hint="Tepadagi katta rasm. 16:9 nisbatda yaxshi ko'rinadi."
+              label={tr("Hero rasm")}
+              hint={tr("Tepadagi katta rasm. 16:9 nisbatda yaxshi ko'rinadi.")}
               value={heroImage}
               onChange={setHeroImage}
               aspect="wide"
@@ -2052,14 +2059,14 @@ function StepThree({
           ) : null}
 
           <ImageUpload
-            label="Logo rasm (ixtiyoriy)"
-            hint="Rasm yuklamagan taqdirda bosh harflar ishlatiladi."
+            label={tr("Logo rasm (ixtiyoriy)")}
+            hint={tr("Rasm yuklamagan taqdirda bosh harflar ishlatiladi.")}
             value={logoImage}
             onChange={setLogoImage}
             aspect="square"
           />
 
-          <Field label="Telefon">
+          <Field label={tr("Telefon")}>
             <TextInput
               type="tel"
               value={phone}
@@ -2069,52 +2076,52 @@ function StepThree({
           </Field>
 
           <Field
-            label="Manzil"
-            hint="Ko‘cha, shahar — xarita kartochkasi shu matn bo‘yicha ko‘rinadi"
+            label={tr("Manzil")}
+            hint={tr("Ko‘cha, shahar — xarita kartochkasi shu matn bo‘yicha ko‘rinadi")}
           >
             <TextInput
               value={address}
               onChange={setAddress}
-              placeholder="Toshkent, Chilonzor"
+              placeholder={tr("Toshkent, Chilonzor")}
             />
           </Field>
 
-          <Field label="Ish vaqti" hint="Presetlardan tanlang yoki moslang">
+          <Field label={tr("Ish vaqti")} hint={tr("Presetlardan tanlang yoki moslang")}>
             <HoursEditor value={hoursLine} onChange={setHoursLine} />
           </Field>
 
-          <Field label="Qisqa taqdimot" hint="Biznes nomi ostida chiqadi">
+          <Field label={tr("Qisqa taqdimot")} hint={tr("Biznes nomi ostida chiqadi")}>
             <TextInput
               value={tagline}
               onChange={setTagline}
-              placeholder="Toshkentdagi eng yaxshi ..."
+              placeholder={tr("Toshkentdagi eng yaxshi ...")}
             />
           </Field>
 
-          <Field label="Tavsif">
+          <Field label={tr("Tavsif")}>
             <TextAreaInput
               value={description}
               onChange={setDescription}
               rows={3}
-              placeholder="Biznesingiz haqida 1-2 jumlada..."
+              placeholder={tr("Biznesingiz haqida 1-2 jumlada...")}
             />
           </Field>
 
           <Field
-            label="Xarita havolasi (ixtiyoriy)"
-            hint="To‘liq Google/Yandex sahifa havolasi — kartochka ustiga bosganda shu yerga ochiladi (yuqoridagi manzil faqat ko‘rinish uchun)"
+            label={tr("Xarita havolasi (ixtiyoriy)")}
+            hint={tr("To‘liq Google/Yandex sahifa havolasi — kartochka ustiga bosganda shu yerga ochiladi (yuqoridagi manzil faqat ko‘rinish uchun)")}
           >
             <TextInput
               value={mapsUrl}
               onChange={setMapsUrl}
-              placeholder="https://maps.google.com/..."
+              placeholder={tr("https://maps.google.com/...")}
             />
           </Field>
 
           {(address.trim() || mapsUrl.trim()) && siteType === "vizitka" ? (
             <div className="space-y-2 rounded-xl border border-[color:var(--border)] bg-neutral-50/80 p-4">
               <p className="text-[11px] font-medium text-neutral-600">
-                Oldindan ko‘rinish — manzil bo‘yicha; bosilsa pastdagi havola ochiladi (bo‘lsa)
+                {tr("Oldindan ko‘rinish — manzil bo‘yicha; bosilsa pastdagi havola ochiladi (bo‘lsa)")}
               </p>
               <MapEmbed
                 address={address}
@@ -2127,8 +2134,8 @@ function StepThree({
           ) : null}
 
           <Field
-            label="Ijtimoiy tarmoqlar"
-            hint="Kerakli tarmoqni tanlab, username yoki havolani kiriting"
+            label={tr("Ijtimoiy tarmoqlar")}
+            hint={tr("Kerakli tarmoqni tanlab, username yoki havolani kiriting")}
           >
             <SocialEditor value={social} onChange={setSocial} />
           </Field>
@@ -2142,10 +2149,10 @@ function StepThree({
           ) : null}
           <div className="flex justify-between gap-3">
             <Button size="lg" variant="secondary" onClick={onBack}>
-              ← Orqaga
+              {tr("← Orqaga")}
             </Button>
             <Button size="lg" onClick={onFinish} disabled={submitting}>
-              {submitting ? "Yaratilmoqda..." : "Saytni yaratish"}
+              {submitting ? "Yaratilmoqda..." : tr("Saytni yaratish")}
             </Button>
           </div>
         </div>
@@ -2154,7 +2161,7 @@ function StepThree({
       <aside className="hidden lg:block">
         <div className="sticky top-6">
           <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-500">
-            Jonli ko&apos;rinish
+            {tr("Jonli ko'rinish")}
           </p>
           {siteType === "vizitka" ? (
             <ScaledPhone scale={0.85}>
@@ -2165,7 +2172,7 @@ function StepThree({
             </ScaledPhone>
           ) : (
             <div className="overflow-hidden rounded-xl border border-[color:var(--border)] bg-white p-4 text-center text-xs text-neutral-500">
-              Landing preview tez orada
+              {tr("Landing preview tez orada")}
             </div>
           )}
         </div>
@@ -2181,6 +2188,7 @@ function SiteCreatedSuccess({
   state: SiteCreatedSuccessState;
   onCreateAnother: () => void;
 }) {
+  const { tr } = useI18n();
   const origin =
     typeof window !== "undefined" ? window.location.origin : "";
   const publicPath = `/${state.slug}`;
@@ -2201,7 +2209,7 @@ function SiteCreatedSuccess({
           </svg>
         </div>
         <h2 className="mt-5 text-xl font-semibold tracking-tight text-[color:var(--foreground)]">
-          Sayt muvaffaqiyatli yaratildi
+          {tr("Sayt muvaffaqiyatli yaratildi")}
         </h2>
         <p className="mt-1.5 text-sm text-neutral-600">{state.businessName}</p>
         {state.uploadWarning ? (
@@ -2213,7 +2221,7 @@ function SiteCreatedSuccess({
 
       <div className="mt-8 rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-left">
         <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-neutral-500">
-          Jamoat havolasi
+          {tr("Jamoat havolasi")}
         </p>
         <a
           href={publicHref}
@@ -2233,7 +2241,7 @@ function SiteCreatedSuccess({
           size="lg"
           className="min-w-[160px]"
         >
-          Saytni ko&apos;rish
+          {tr("Saytni ko'rish")}
         </Button>
         <Button
           href={`/dashboard/sites/${state.siteId}`}
@@ -2241,7 +2249,7 @@ function SiteCreatedSuccess({
           size="lg"
           className="min-w-[160px]"
         >
-          Tahrirlash
+          {tr("Tahrirlash")}
         </Button>
       </div>
 
@@ -2252,7 +2260,7 @@ function SiteCreatedSuccess({
         className="mt-4 w-full border border-dashed border-neutral-300"
         onClick={onCreateAnother}
       >
-        Yana sayt yaratish
+        {tr("Yana sayt yaratish")}
       </Button>
     </div>
   );
@@ -2303,12 +2311,12 @@ function Radio({ checked }: { checked: boolean }) {
   );
 }
 
-function validateSlug(slug: string, ready: boolean): string | null {
-  if (!slug) return "Manzilni kiriting";
-  if (slug.length < 3) return "Kamida 3 ta belgi bo'lishi kerak";
-  if (slug.length > 40) return "40 tadan ko'p belgi yo'q";
-  if (RESERVED_SLUGS.has(slug)) return "Bu manzil band qilingan";
-  if (ready && slugExists(slug)) return "Bu manzil allaqachon ishlatilgan";
+function validateSlug(slug: string, ready: boolean, tr: Tr): string | null {
+  if (!slug) return tr("Manzilni kiriting");
+  if (slug.length < 3) return tr("Kamida 3 ta belgi bo'lishi kerak");
+  if (slug.length > 40) return tr("40 tadan ko'p belgi yo'q");
+  if (RESERVED_SLUGS.has(slug)) return tr("Bu manzil band qilingan");
+  if (ready && slugExists(slug)) return tr("Bu manzil allaqachon ishlatilgan");
   return null;
 }
 

@@ -37,6 +37,8 @@ import {
 import { getAccessToken } from "@/lib/auth-storage";
 import { cn } from "@/lib/cn";
 import { landingToDemoContent } from "@/lib/landings/to-content";
+import type { Tr } from "@/lib/i18n/tr";
+import { useI18n } from "@/lib/i18n/provider";
 
 type Props = {
   titleFontClassName: string;
@@ -68,19 +70,19 @@ type SectionId =
   | "contact"
   | "footer";
 
-const SECTIONS: Array<{
+const SECTIONS = (tr: Tr): Array<{
   id: SectionId;
   title: string;
   hint: string;
   toggleKey?: keyof LandingRecord;
-}> = [
-  { id: "brand", title: "Header", hint: "Brend nomi va menyu" },
-  { id: "hero", title: "Bosh sahifa (Hero)", hint: "Sarlavha va asosiy rasm" },
-  { id: "about", title: "Biz haqimizda", hint: "Tavsif va afzalliklar", toggleKey: "blockAbout" },
-  { id: "faq", title: "Savol-javob (FAQ)", hint: "4 ta savol va javob", toggleKey: "blockFaq" },
-  { id: "contact", title: "Aloqa", hint: "Manzil, telefon, Telegram, ish vaqti", toggleKey: "blockContact" },
-  { id: "footer", title: "Footer", hint: "Pastki qator" },
-];
+}> => ([
+  { id: "brand", title: tr("Header"), hint: tr("Brend nomi va menyu") },
+  { id: "hero", title: tr("Bosh sahifa (Hero)"), hint: tr("Sarlavha va asosiy rasm") },
+  { id: "about", title: tr("Biz haqimizda"), hint: tr("Tavsif va afzalliklar"), toggleKey: "blockAbout" },
+  { id: "faq", title: tr("Savol-javob (FAQ)"), hint: tr("4 ta savol va javob"), toggleKey: "blockFaq" },
+  { id: "contact", title: tr("Aloqa"), hint: tr("Manzil, telefon, Telegram, ish vaqti"), toggleKey: "blockContact" },
+  { id: "footer", title: tr("Footer"), hint: tr("Pastki qator") },
+]);
 
 /** Forma maydonlari `id` */
 function tid(field: string): string {
@@ -162,6 +164,7 @@ export function TahrirPlayground({
   titleFontClassName,
   bodyFontClassName,
 }: Props) {
+  const { tr } = useI18n();
   const router = useRouter();
   const searchParams = useSearchParams();
   const landingIdFromUrl = searchParams.get("id");
@@ -327,7 +330,7 @@ export function TahrirPlayground({
         if (landingIdFromUrl) {
           showToast({
             kind: "err",
-            text: "Bu landing topilmadi yoki sizga tegishli emas.",
+            text: tr("Bu landing topilmadi yoki sizga tegishli emas."),
           });
           router.replace("/tahrir");
         }
@@ -379,12 +382,12 @@ export function TahrirPlayground({
     } catch {
       showToast({
         kind: "err",
-        text: "Ko‘rish uchun ma’lumot saqlanmadi (xotira to‘lgan yoki juda katta).",
+        text: tr("Ko‘rish uchun ma’lumot saqlanmadi (xotira to‘lgan yoki juda katta)."),
       });
       return;
     }
     router.push("/tahrir/preview");
-  }, [landing, router, showToast]);
+  }, [landing, router, showToast, tr]);
 
   const handleNameChange = useCallback(
     (raw: string) => {
@@ -398,21 +401,21 @@ export function TahrirPlayground({
     if (!authed) {
       showToast({
         kind: "err",
-        text: "Saqlash uchun avval tizimga kiring",
+        text: tr("Saqlash uchun avval tizimga kiring"),
       });
       return;
     }
     if (landing.id === "local") {
       showToast({
         kind: "err",
-        text: "Avval «Yaratish» tugmasini bosib saytni saqlang",
+        text: tr("Avval «Yaratish» tugmasini bosib saytni saqlang"),
       });
       return;
     }
     if (!isValidName(landing.name)) {
       showToast({
         kind: "err",
-        text: "Manzil noto‘g‘ri: 3–64 ta belgi, kichik harf/raqam, `-`",
+        text: tr("Manzil noto‘g‘ri: 3–64 ta belgi, kichik harf/raqam, `-`"),
       });
       return;
     }
@@ -422,30 +425,30 @@ export function TahrirPlayground({
       setLanding(merged);
       setSavedAt(new Date().toISOString());
       setDirty(false);
-      showToast({ kind: "ok", text: "Saqlandi" });
+      showToast({ kind: "ok", text: tr("Saqlandi") });
     } catch (e) {
       showToast({
         kind: "err",
-        text: e instanceof Error ? e.message : "Saqlashda xato",
+        text: e instanceof Error ? e.message : tr("Saqlashda xato"),
       });
     } finally {
       setSaving(false);
     }
-  }, [authed, landing, showToast]);
+  }, [authed, landing, showToast, tr]);
 
   /** «Yaratish» — DBga yangi landing yozish va `/{name}` ga olib o‘tish */
   const onCreate = useCallback(async () => {
     if (!authed) {
       showToast({
         kind: "err",
-        text: "Yaratish uchun avval tizimga kiring",
+        text: tr("Yaratish uchun avval tizimga kiring"),
       });
       return;
     }
     if (!isValidName(landing.name)) {
       showToast({
         kind: "err",
-        text: "Manzil noto‘g‘ri: 3–64 ta belgi, kichik harf/raqam, `-`",
+        text: tr("Manzil noto‘g‘ri: 3–64 ta belgi, kichik harf/raqam, `-`"),
       });
       return;
     }
@@ -467,17 +470,17 @@ export function TahrirPlayground({
       } catch {
         /* ignore */
       }
-      showToast({ kind: "ok", text: "Sayt yaratildi" });
+      showToast({ kind: "ok", text: tr("Sayt yaratildi") });
       router.push(`/${created.name}`);
     } catch (e) {
       showToast({
         kind: "err",
-        text: e instanceof Error ? e.message : "Yaratishda xato",
+        text: e instanceof Error ? e.message : tr("Yaratishda xato"),
       });
     } finally {
       setCreating(false);
     }
-  }, [authed, landing, router, showToast]);
+  }, [authed, landing, router, showToast, tr]);
 
   const onUpload = useCallback(
     async (kind: "hero" | "about" | "logo", file: File): Promise<void> => {
@@ -502,15 +505,15 @@ export function TahrirPlayground({
         const updated = await uploadLandingImage(landing.id, kind, file);
         setLanding(updated);
         setSavedAt(updated.updatedAt);
-        showToast({ kind: "ok", text: "Rasm yuklandi" });
+        showToast({ kind: "ok", text: tr("Rasm yuklandi") });
       } catch (e) {
         showToast({
           kind: "err",
-          text: e instanceof Error ? e.message : "Rasm yuklanmadi",
+          text: e instanceof Error ? e.message : tr("Rasm yuklanmadi"),
         });
       }
     },
-    [authed, landing.id, patch, showToast],
+    [authed, landing.id, patch, showToast, tr],
   );
 
   return (
@@ -530,7 +533,7 @@ export function TahrirPlayground({
       <div
         className="grid grid-cols-2 gap-1 border-b border-neutral-200 bg-white px-2 py-1 lg:hidden"
         role="tablist"
-        aria-label="Joydagi ko‘rinish"
+        aria-label={tr("Joydagi ko‘rinish")}
       >
         <button
           type="button"
@@ -544,7 +547,7 @@ export function TahrirPlayground({
               : "text-neutral-600 hover:bg-neutral-50",
           ].join(" ")}
         >
-          Tahrir
+          {tr("Tahrir")}
         </button>
         <button
           type="button"
@@ -558,7 +561,7 @@ export function TahrirPlayground({
               : "text-neutral-600 hover:bg-neutral-50",
           ].join(" ")}
         >
-          Jonli
+          {tr("Jonli")}
         </button>
       </div>
 
@@ -571,7 +574,7 @@ export function TahrirPlayground({
         >
           <div className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain px-[calc(5px+0.75rem)] py-3 sm:px-[calc(5px+1rem)]">
             <div className="space-y-3">
-              {SECTIONS.map((sec) => (
+              {SECTIONS(tr).map((sec) => (
                 <SectionCard
                   key={sec.id}
                   open={open[sec.id]}
@@ -686,6 +689,7 @@ function Toolbar(props: {
   onCreate: () => void;
   onOpenPreview: () => void;
 }) {
+  const { tr } = useI18n();
   const {
     landing,
     dirty,
@@ -712,7 +716,7 @@ function Toolbar(props: {
             value={landing.name}
             onChange={(e) => onNameChange(e.target.value)}
             className="min-w-0 flex-1 rounded-r-md bg-white px-2 py-1.5 text-sm font-mono text-neutral-900 outline-none focus:ring-2 focus:ring-brand-200 sm:w-44 sm:flex-none"
-            placeholder="manzil"
+            placeholder={tr("manzil")}
             autoCapitalize="none"
             autoCorrect="off"
             spellCheck={false}
@@ -722,10 +726,10 @@ function Toolbar(props: {
         <button
           type="button"
           onClick={onOpenPreview}
-          title="To‘liq ekranda alohida sahifada ochish"
+          title={tr("To‘liq ekranda alohida sahifada ochish")}
           className="ml-auto shrink-0 rounded-md border border-neutral-200 bg-white px-3 py-2 text-xs font-bold text-neutral-900 shadow-sm transition-colors hover:bg-neutral-50 active:bg-neutral-100"
         >
-          Ko‘rish
+          {tr("Ko‘rish")}
         </button>
 
         {authed && (
@@ -738,7 +742,7 @@ function Toolbar(props: {
                 className="inline-flex h-9 min-h-[44px] min-w-[44px] shrink-0 items-center justify-center gap-1.5 rounded-md bg-emerald-600 px-4 text-xs font-bold text-white shadow-sm transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50 sm:min-h-0 sm:min-w-0"
                 title={`${SITE_DOMAIN}/${landing.name} manzilida saqlash`}
               >
-                {creating ? "Yaratilmoqda…" : "Yaratish"}
+                {creating ? "Yaratilmoqda…" : tr("Yaratish")}
               </button>
             ) : (
               <div className="flex shrink-0 items-center gap-2">
@@ -748,7 +752,7 @@ function Toolbar(props: {
                   disabled={saving || !dirty}
                   className="inline-flex h-9 min-h-[44px] min-w-[44px] items-center justify-center gap-1.5 pl-gradient rounded-md px-4 text-xs font-bold text-white transition-colors hover:brightness-[1.06] disabled:cursor-not-allowed disabled:opacity-50 sm:min-h-0 sm:min-w-0"
                 >
-                  {saving ? "Saqlanmoqda…" : "Saqlash"}
+                  {saving ? "Saqlanmoqda…" : tr("Saqlash")}
                 </button>
               </div>
             )}
@@ -931,6 +935,7 @@ function ImageField(props: {
   /** Logo kabi kichik kvadrat maydon */
   compact?: boolean;
 }) {
+  const { tr } = useI18n();
   const fileRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -941,18 +946,18 @@ function ImageField(props: {
     if (!file) return;
     setErr(null);
     if (!file.type.startsWith("image/")) {
-      setErr("Faqat rasm fayli");
+      setErr(tr("Faqat rasm fayli"));
       return;
     }
     if (file.size > 2 * 1024 * 1024) {
-      setErr("Rasm 2 MB dan oshmasin");
+      setErr(tr("Rasm 2 MB dan oshmasin"));
       return;
     }
     setBusy(true);
     try {
       await props.onUpload(file);
     } catch (e) {
-      setErr(e instanceof Error ? e.message : "Xato");
+      setErr(e instanceof Error ? e.message : tr("Xato"));
     } finally {
       setBusy(false);
       if (fileRef.current) fileRef.current.value = "";
@@ -991,7 +996,7 @@ function ImageField(props: {
           >
             <span className="truncate text-[11px] text-neutral-500">
               {props.value.startsWith("data:")
-                ? "Yuklangan rasm"
+                ? tr("Yuklangan rasm")
                 : props.value}
             </span>
             <button
@@ -1000,7 +1005,7 @@ function ImageField(props: {
               onClick={() => fileRef.current?.click()}
               className="h-8 shrink-0 rounded-md border border-neutral-200 px-3 text-xs font-semibold text-neutral-800 transition-colors hover:border-brand-300 disabled:opacity-50"
             >
-              {busy ? "Yuklanmoqda…" : "Almashtirish"}
+              {busy ? "Yuklanmoqda…" : tr("Almashtirish")}
             </button>
           </div>
         </div>
@@ -1023,12 +1028,12 @@ function ImageField(props: {
         >
           <span className={compact ? "text-lg" : "text-2xl"}>⬆</span>
           <span className={compact ? "text-[11px] leading-tight" : ""}>
-            {busy ? "Yuklanmoqda…" : "Rasmni tashlang yoki tanlang"}
+            {busy ? "Yuklanmoqda…" : tr("Rasmni tashlang yoki tanlang")}
           </span>
           {!compact ? (
-            <span className="text-[11px] text-neutral-500">JPG/PNG, 2 MB</span>
+            <span className="text-[11px] text-neutral-500">{tr("JPG/PNG, 2 MB")}</span>
           ) : (
-            <span className="text-[10px] text-neutral-500">JPG/PNG</span>
+            <span className="text-[10px] text-neutral-500">{tr("JPG/PNG")}</span>
           )}
         </button>
       )}
@@ -1059,55 +1064,56 @@ function BrandSection(props: {
   onChange: (p: LandingPatch) => void;
   onUploadLogo: (file: File) => Promise<void> | void;
 }) {
+  const { tr } = useI18n();
   const { landing, onChange, onUploadLogo } = props;
   return (
     <div className="space-y-3">
-      <Field label="Brend nomi">
+      <Field label={tr("Brend nomi")}>
         <TextInput
           id={tid("brandName")}
           value={landing.brandName}
           onChange={(v) => onChange({ brandName: v })}
         />
       </Field>
-      <Field label="Kategoriya" hint="Masalan: Chayxona, Restoran — dashboard va tahlilda ko‘rinadi">
+      <Field label={tr("Kategoriya")} hint={tr("Masalan: Chayxona, Restoran — dashboard va tahlilda ko‘rinadi")}>
         <TextInput
           id={tid("category")}
           value={landing.category}
           onChange={(v) => onChange({ category: v })}
-          placeholder="Chayxona"
+          placeholder={tr("Chayxona")}
         />
       </Field>
       <ImageField
         id={tid("logourl")}
-        label="Logo (rasm)"
+        label={tr("Logo (rasm)")}
         value={landing.logourl}
         onUpload={onUploadLogo}
         compact
-        hint="PNG/JPG, 2 MB. Headerda brend nomi yonida chiqadi."
+        hint={tr("PNG/JPG, 2 MB. Headerda brend nomi yonida chiqadi.")}
       />
       <div className="grid gap-3 sm:grid-cols-2">
-        <Field label="Menyu: Biz haqimizda">
+        <Field label={tr("Menyu: Biz haqimizda")}>
           <TextInput
             id={tid("navAbout")}
             value={landing.navAbout}
             onChange={(v) => onChange({ navAbout: v })}
           />
         </Field>
-        <Field label="Menyu: FAQ">
+        <Field label={tr("Menyu: FAQ")}>
           <TextInput
             id={tid("navFaq")}
             value={landing.navFaq}
             onChange={(v) => onChange({ navFaq: v })}
           />
         </Field>
-        <Field label="Menyu: Aloqa">
+        <Field label={tr("Menyu: Aloqa")}>
           <TextInput
             id={tid("navContact")}
             value={landing.navContact}
             onChange={(v) => onChange({ navContact: v })}
           />
         </Field>
-        <Field label="Menyu: tugma">
+        <Field label={tr("Menyu: tugma")}>
           <TextInput
             id={tid("navCta")}
             value={landing.navCta}
@@ -1124,10 +1130,11 @@ function HeroSection(props: {
   onChange: (p: LandingPatch) => void;
   onUpload: (file: File) => Promise<void> | void;
 }) {
+  const { tr } = useI18n();
   const { landing, onChange, onUpload } = props;
   return (
     <div className="space-y-3">
-      <Field label="Asosiy sarlavha">
+      <Field label={tr("Asosiy sarlavha")}>
         <TextArea
           id={tid("heroTitle")}
           rows={3}
@@ -1136,8 +1143,8 @@ function HeroSection(props: {
         />
       </Field>
       <Field
-        label="Hero qisqa tavsif"
-        hint="Sarlavha ostidagi kichik matn (masalan, 1–2 jumla)"
+        label={tr("Hero qisqa tavsif")}
+        hint={tr("Sarlavha ostidagi kichik matn (masalan, 1–2 jumla)")}
       >
         <TextArea
           id={tid("description")}
@@ -1147,7 +1154,7 @@ function HeroSection(props: {
           placeholder={DEFAULT_LANDING_HERO_DESCRIPTION}
         />
       </Field>
-      <Field label="Asosiy tugma matni">
+      <Field label={tr("Asosiy tugma matni")}>
         <TextInput
           id={tid("heroCta")}
           value={landing.heroCta}
@@ -1156,10 +1163,10 @@ function HeroSection(props: {
       </Field>
       <ImageField
         id={tid("heroImageUrl")}
-        label="Hero rasmi"
+        label={tr("Hero rasmi")}
         value={landing.heroImageUrl}
         onUpload={onUpload}
-        hint="Aspect 4:3 ko'rinishda chiqadi"
+        hint={tr("Aspect 4:3 ko'rinishda chiqadi")}
       />
     </div>
   );
@@ -1170,23 +1177,24 @@ function AboutSection(props: {
   onChange: (p: LandingPatch) => void;
   onUpload: (file: File) => Promise<void> | void;
 }) {
+  const { tr } = useI18n();
   const { landing, onChange, onUpload } = props;
   return (
     <div className="space-y-3">
       <ImageField
         id={tid("aboutImageUrl")}
-        label="Biz haqimizda rasmi"
+        label={tr("Biz haqimizda rasmi")}
         value={landing.aboutImageUrl}
         onUpload={onUpload}
       />
-      <Field label="Sarlavha">
+      <Field label={tr("Sarlavha")}>
         <TextInput
           id={tid("aboutTitle")}
           value={landing.aboutTitle}
           onChange={(v) => onChange({ aboutTitle: v })}
         />
       </Field>
-      <Field label="Tavsif">
+      <Field label={tr("Tavsif")}>
         <TextArea
           id={tid("aboutLead")}
           rows={3}
@@ -1196,7 +1204,7 @@ function AboutSection(props: {
       </Field>
       <div className="grid gap-2">
         <p className="text-[11px] font-bold uppercase tracking-wide text-neutral-500">
-          Afzalliklar (4 ta)
+          {tr("Afzalliklar (4 ta)")}
         </p>
         {([
           ["aboutBullet1", landing.aboutBullet1],
@@ -1209,7 +1217,7 @@ function AboutSection(props: {
             id={tid(key)}
             className={inp}
             value={val}
-            placeholder={`Nuqta ${i + 1}`}
+            placeholder={tr("Nuqta {v}", { v: i + 1 })}
             onChange={(e) =>
               onChange({ [key]: e.target.value } as LandingPatch)
             }
@@ -1224,6 +1232,7 @@ function FaqSection(props: {
   landing: LandingRecord;
   onChange: (p: LandingPatch) => void;
 }) {
+  const { tr } = useI18n();
   const { landing, onChange } = props;
   const rows = [
     ["faq1Q", "faq1A", landing.faq1Q, landing.faq1A],
@@ -1238,12 +1247,12 @@ function FaqSection(props: {
           key={qKey}
           className="space-y-2 rounded-lg border border-neutral-100 bg-neutral-50/80 p-3"
         >
-          <p className="text-xs font-semibold text-neutral-600">Savol {i + 1}</p>
+          <p className="text-xs font-semibold text-neutral-600">{tr("Savol")}{" "}{i + 1}</p>
           <input
             id={tid(qKey)}
             className={inp}
             value={qVal}
-            placeholder="Savol"
+            placeholder={tr("Savol")}
             onChange={(e) =>
               onChange({ [qKey]: e.target.value } as LandingPatch)
             }
@@ -1252,7 +1261,7 @@ function FaqSection(props: {
             id={tid(aKey)}
             className={`${inp} min-h-[56px] resize-y`}
             value={aVal}
-            placeholder="Javob"
+            placeholder={tr("Javob")}
             onChange={(e) =>
               onChange({ [aKey]: e.target.value } as LandingPatch)
             }
@@ -1277,36 +1286,37 @@ function ContactSection(props: {
   landing: LandingRecord;
   onChange: (p: LandingPatch) => void;
 }) {
+  const { tr } = useI18n();
   const { landing, onChange } = props;
   return (
     <div className="space-y-3">
       <Field
-        label="Qisqa matn (sarlavha osti)"
-        hint="Masalan: savol yoki stol band qilish haqida"
+        label={tr("Qisqa matn (sarlavha osti)")}
+        hint={tr("Masalan: savol yoki stol band qilish haqida")}
       >
         <TextArea
           id={tid("contactSubtitle")}
           rows={3}
           value={landing.contactSubtitle}
           onChange={(v) => onChange({ contactSubtitle: v })}
-          placeholder="Savolingiz bormi yoki stol band qilmoqchimisiz? Ma'lumotlaringizni qoldiring."
+          placeholder={tr("Savolingiz bormi yoki stol band qilmoqchimisiz? Ma'lumotlaringizni qoldiring.")}
         />
       </Field>
       <Field
-        label="Manzil"
-        hint="Masalan: Toshkent shahri, Markaziy ko‘cha 12-uy"
+        label={tr("Manzil")}
+        hint={tr("Masalan: Toshkent shahri, Markaziy ko‘cha 12-uy")}
       >
         <TextArea
           id={tid("address")}
           rows={2}
           value={landing.address}
           onChange={(v) => onChange({ address: v })}
-          placeholder="Toshkent shahri, Markaziy ko‘cha 12-uy"
+          placeholder={tr("Toshkent shahri, Markaziy ko‘cha 12-uy")}
         />
       </Field>
       <Field
-        label="Telefon"
-        hint="Faqat raqamlar kiriting; havola uchun avtomatik `+998…`ga aylantiriladi"
+        label={tr("Telefon")}
+        hint={tr("Faqat raqamlar kiriting; havola uchun avtomatik `+998…`ga aylantiriladi")}
       >
         <TextInput
           id={tid("phoneTel")}
@@ -1315,20 +1325,20 @@ function ContactSection(props: {
           placeholder="+998 90 123 45 67"
         />
       </Field>
-      <Field label="Telegram" hint="Masalan: @nomdor_choyxonasi">
+      <Field label="Telegram" hint={tr("Masalan: @nomdor_choyxonasi")}>
         <TextInput
           id={tid("telegram")}
           value={landing.telegram}
           onChange={(v) => onChange({ telegram: v })}
-          placeholder="@nomdor_choyxonasi"
+          placeholder={tr("@nomdor_choyxonasi")}
         />
       </Field>
-      <Field label="Ish vaqti" hint="Masalan: Har kuni 09:00 — 23:00">
+      <Field label={tr("Ish vaqti")} hint={tr("Masalan: Har kuni 09:00 — 23:00")}>
         <TextInput
           id={tid("hours")}
           value={landing.hours}
           onChange={(v) => onChange({ hours: v })}
-          placeholder="Har kuni 09:00 — 23:00"
+          placeholder={tr("Har kuni 09:00 — 23:00")}
         />
       </Field>
     </div>
@@ -1339,10 +1349,11 @@ function FooterSection(props: {
   landing: LandingRecord;
   onChange: (p: LandingPatch) => void;
 }) {
+  const { tr } = useI18n();
   const { landing, onChange } = props;
   return (
     <div className="space-y-3">
-      <Field label="Copyright (yildan keyin)">
+      <Field label={tr("Copyright (yildan keyin)")}>
         <TextInput
           id={tid("footerCopyrightSuffix")}
           value={landing.footerCopyrightSuffix}
@@ -1361,14 +1372,15 @@ function ThemePicker(props: {
   selected: LandingThemeId;
   onSelect: (id: LandingThemeId) => void;
 }) {
+  const { tr } = useI18n();
   const { selected, onSelect } = props;
   return (
     <section className="rounded-xl border border-neutral-200 bg-white p-4 shadow-sm">
       <div className="mb-3 flex items-center justify-between gap-2">
         <div className="min-w-0">
-          <h3 className="text-sm font-bold text-neutral-900">Dizayn shabloni</h3>
+          <h3 className="text-sm font-bold text-neutral-900">{tr("Dizayn shabloni")}</h3>
           <p className="mt-0.5 text-[11px] leading-snug text-neutral-500">
-            Background va tugma ranglari uchun 4 ta tayyor shablon
+            {tr("Background va tugma ranglari uchun 4 ta tayyor shablon")}
           </p>
         </div>
       </div>

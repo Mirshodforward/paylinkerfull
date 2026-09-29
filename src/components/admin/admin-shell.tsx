@@ -5,20 +5,22 @@ import Image from "next/image";
 import { BRAND_NAME, LOGO_SRC } from "@/lib/brand";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/cn";
+import type { Tr } from "@/lib/i18n/tr";
+import { useI18n } from "@/lib/i18n/provider";
 
-const NAV = [
+const NAV = (tr: Tr) => ([
   {
     href: "/gradeadmin",
-    label: "Umumiy",
+    label: tr("Umumiy"),
     icon: IconOverview,
     exact: true as boolean,
   },
-  { href: "/gradeadmin/vizitkas", label: "Vizitkalar", icon: IconSites, exact: false },
-  { href: "/gradeadmin/landings", label: "Landinglar", icon: IconLanding, exact: false },
-  { href: "/gradeadmin/users", label: "Foydalanuvchilar", icon: IconUsers, exact: false },
-  { href: "/gradeadmin/payments", label: "To‘lovlar", icon: IconPayments, exact: false },
-  { href: "/gradeadmin/settings", label: "Sozlamalar", icon: IconSettings, exact: false },
-] as const;
+  { href: "/gradeadmin/vizitkas", label: tr("Vizitkalar"), icon: IconSites, exact: false },
+  { href: "/gradeadmin/landings", label: tr("Landinglar"), icon: IconLanding, exact: false },
+  { href: "/gradeadmin/users", label: tr("Foydalanuvchilar"), icon: IconUsers, exact: false },
+  { href: "/gradeadmin/payments", label: tr("To‘lovlar"), icon: IconPayments, exact: false },
+  { href: "/gradeadmin/settings", label: tr("Sozlamalar"), icon: IconSettings, exact: false },
+] as const);
 
 function IconOverview({ className }: { className?: string }) {
   return (
@@ -106,9 +108,10 @@ function IconSettings({ className }: { className?: string }) {
 }
 
 export function AdminShell({ children }: { children: React.ReactNode }) {
+  const { tr } = useI18n();
   const path = usePathname() ?? "";
 
-  function navLink(item: (typeof NAV)[number]) {
+  function navLink(item: ReturnType<typeof NAV>[number]) {
     const active = item.exact ? path === item.href : path.startsWith(item.href);
     const Icon = item.icon;
     return (
@@ -153,14 +156,14 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               <div>
                 <p className="text-[13px] font-semibold tracking-tight text-white">{BRAND_NAME}</p>
                 <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-brand-300/80">
-                  Admin
+                  {tr("Admin")}
                 </p>
               </div>
             </div>
           </div>
 
-          <nav className="mt-10 flex flex-col gap-1" aria-label="Admin navigatsiya">
-            {NAV.map((item) => navLink(item))}
+          <nav className="mt-10 flex flex-col gap-1" aria-label={tr("Admin navigatsiya")}>
+            {NAV(tr).map((item) => navLink(item))}
           </nav>
 
           <div className="mt-auto border-t border-white/10 pt-6">
@@ -177,7 +180,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
                   strokeLinejoin="round"
                 />
               </svg>
-              Dashboard ga qaytish
+              {tr("Dashboard ga qaytish")}
             </Link>
           </div>
         </div>
@@ -194,15 +197,15 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               className="h-8 w-8 shrink-0 rounded-lg object-contain"
             />
             <div className="min-w-0">
-              <p className="truncate text-sm font-semibold text-[color:var(--foreground)]">Admin</p>
-              <p className="truncate text-[11px] text-[color:var(--muted-foreground)]">{BRAND_NAME} boshqaruvi</p>
+              <p className="truncate text-sm font-semibold text-[color:var(--foreground)]">{tr("Admin")}</p>
+              <p className="truncate text-[11px] text-[color:var(--muted-foreground)]">{BRAND_NAME} {tr("boshqaruvi")}</p>
             </div>
           </div>
           <nav
             className="flex gap-1.5 overflow-x-auto px-3 pb-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-            aria-label="Admin mobil menyu"
+            aria-label={tr("Admin mobil menyu")}
           >
-            {NAV.map((item) => {
+            {NAV(tr).map((item) => {
               const active = item.exact ? path === item.href : path.startsWith(item.href);
               return (
                 <Link
@@ -223,7 +226,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               href="/dashboard"
               className="ml-auto shrink-0 rounded-full border border-brand-200 bg-white px-3.5 py-2 text-xs font-semibold text-brand-700 transition-colors hover:bg-brand-50"
             >
-              Dashboard
+              {tr("Dashboard")}
             </Link>
           </nav>
         </header>

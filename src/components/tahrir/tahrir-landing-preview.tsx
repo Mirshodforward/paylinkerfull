@@ -7,6 +7,7 @@ import { TAHRIR_PREVIEW_LANDING_SESSION_KEY } from "@/lib/landings/preview-stora
 import { DEFAULT_LANDING_THEME, type LandingThemeId } from "@/lib/landings/themes";
 import { landingToDemoContent } from "@/lib/landings/to-content";
 import type { LandingRecord } from "@/lib/landings/types";
+import { useI18n } from "@/lib/i18n/provider";
 
 type Props = {
   titleFontClassName: string;
@@ -25,6 +26,7 @@ function readLandingFromSession(): LandingRecord | null | undefined {
 }
 
 export function TahrirLandingPreview({ titleFontClassName, bodyFontClassName }: Props) {
+  const { tr } = useI18n();
   const [landing] = useState<LandingRecord | null | undefined>(() =>
     readLandingFromSession(),
   );
@@ -37,7 +39,7 @@ export function TahrirLandingPreview({ titleFontClassName, bodyFontClassName }: 
   if (landing === undefined) {
     return (
       <div className="flex min-h-[100dvh] items-center justify-center bg-neutral-100 px-4 text-sm text-neutral-600">
-        Yuklanmoqda…
+        {tr("Yuklanmoqda…")}
       </div>
     );
   }
@@ -45,12 +47,12 @@ export function TahrirLandingPreview({ titleFontClassName, bodyFontClassName }: 
   if (landing === null || !content) {
     return (
       <div className="flex min-h-[100dvh] flex-col items-center justify-center gap-4 bg-neutral-100 px-4 text-center">
-        <p className="text-sm text-neutral-600">Ko‘rish ma’lumoti topilmadi.</p>
+        <p className="text-sm text-neutral-600">{tr("Ko‘rish ma’lumoti topilmadi.")}</p>
         <Link
           href="/tahrir"
           className="rounded-lg bg-neutral-900 px-4 py-2 text-sm font-bold text-white hover:brightness-[1.06]"
         >
-          Tahrirga qaytish
+          {tr("Tahrirga qaytish")}
         </Link>
       </div>
     );

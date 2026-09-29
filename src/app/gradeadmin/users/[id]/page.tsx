@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { api, ApiError } from "@/lib/api";
 import { AdminAlert, AdminCard, AdminPageHeader } from "@/components/admin/admin-ui";
 import { Button } from "@/components/ui/button";
+import { useI18n } from "@/lib/i18n/provider";
 
 type UserRow = {
   id: number;
@@ -21,6 +22,7 @@ type UserRow = {
 };
 
 export default function AdminUserDetailPage() {
+  const { tr } = useI18n();
   const params = useParams();
   const id = typeof params.id === "string" ? parseInt(params.id, 10) : NaN;
   const router = useRouter();
@@ -41,7 +43,7 @@ export default function AdminUserDetailPage() {
           setBalanceInput(String(r.user.balance));
         }
       } catch (e) {
-        if (c) setErr(e instanceof ApiError ? e.message : "Xato");
+        if (c) setErr(e instanceof ApiError ? e.message : tr("Xato"));
       } finally {
         if (c) setLoading(false);
       }
@@ -54,7 +56,7 @@ export default function AdminUserDetailPage() {
   async function saveBalance() {
     const n = Number(balanceInput);
     if (!Number.isFinite(n) || n < 0) {
-      setErr("Balans 0 yoki undan katta bo‘lishi kerak");
+      setErr(tr("Balans 0 yoki undan katta bo‘lishi kerak"));
       return;
     }
     setSaving(true);
@@ -71,7 +73,7 @@ export default function AdminUserDetailPage() {
       setBalanceInput(String(r.user.balance));
       router.refresh();
     } catch (e) {
-      setErr(e instanceof ApiError ? e.message : "Saqlashda xato");
+      setErr(e instanceof ApiError ? e.message : tr("Saqlashda xato"));
     } finally {
       setSaving(false);
     }
@@ -83,14 +85,14 @@ export default function AdminUserDetailPage() {
   if (!Number.isFinite(id)) {
     return (
       <AdminAlert>
-        Noto‘g‘ri foydalanuvchi ID.
+        {tr("Noto‘g‘ri foydalanuvchi ID.")}
       </AdminAlert>
     );
   }
   if (loading) {
     return (
       <div className="space-y-6">
-        <AdminPageHeader title="Foydalanuvchi" description="Ma’lumotlar yuklanmoqda…" />
+        <AdminPageHeader title={tr("Foydalanuvchi")} description={tr("Ma’lumotlar yuklanmoqda…")} />
         <div className="h-32 animate-pulse rounded-[var(--radius-card)] bg-zinc-100" />
       </div>
     );
@@ -105,7 +107,7 @@ export default function AdminUserDetailPage() {
           href="/gradeadmin/users"
           className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-800 hover:text-brand-950"
         >
-          <span aria-hidden>←</span> Foydalanuvchilar ro‘yxati
+          <span aria-hidden>←</span> {tr("Foydalanuvchilar ro‘yxati")}
         </Link>
         <AdminPageHeader
           title={user.fullName ?? user.number}
@@ -117,29 +119,29 @@ export default function AdminUserDetailPage() {
 
       <AdminCard>
         <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-zinc-500">
-          Profil
+          {tr("Profil")}
         </h2>
         <dl className="mt-5 grid gap-5 text-sm sm:grid-cols-2">
           <div>
-            <dt className="text-xs font-medium text-zinc-500">publicId</dt>
+            <dt className="text-xs font-medium text-zinc-500">{tr("publicId")}</dt>
             <dd className="mt-1 break-all font-mono text-xs text-zinc-900">{user.publicId}</dd>
           </div>
           <div>
-            <dt className="text-xs font-medium text-zinc-500">Username</dt>
+            <dt className="text-xs font-medium text-zinc-500">{tr("Username")}</dt>
             <dd className="mt-1 text-zinc-900">{user.username ?? "—"}</dd>
           </div>
           <div>
-            <dt className="text-xs font-medium text-zinc-500">Telegram ID</dt>
+            <dt className="text-xs font-medium text-zinc-500">{tr("Telegram ID")}</dt>
             <dd className="mt-1 font-mono text-zinc-900">{user.telegramId ?? "—"}</dd>
           </div>
           <div>
-            <dt className="text-xs font-medium text-zinc-500">Ro‘yxatdan</dt>
+            <dt className="text-xs font-medium text-zinc-500">{tr("Ro‘yxatdan")}</dt>
             <dd className="mt-1 text-zinc-800">
               {new Date(user.createdAt).toLocaleString("uz-UZ")}
             </dd>
           </div>
           <div className="sm:col-span-2">
-            <dt className="text-xs font-medium text-zinc-500">Vizitkalar / to‘lovlar</dt>
+            <dt className="text-xs font-medium text-zinc-500">{tr("Vizitkalar / to‘lovlar")}</dt>
             <dd className="mt-1 font-semibold tabular-nums text-zinc-900">
               {user.vizitkaCount} / {user.paymentCount}
             </dd>
@@ -148,10 +150,10 @@ export default function AdminUserDetailPage() {
       </AdminCard>
 
       <AdminCard>
-        <h2 className="text-sm font-semibold text-zinc-900">Balansni o‘zgartirish</h2>
-        <p className="mt-1 text-xs text-zinc-500">Qiymat so‘mda, butun son.</p>
+        <h2 className="text-sm font-semibold text-zinc-900">{tr("Balansni o‘zgartirish")}</h2>
+        <p className="mt-1 text-xs text-zinc-500">{tr("Qiymat so‘mda, butun son.")}</p>
         <label className="mt-5 block text-sm">
-          <span className="font-medium text-zinc-700">Balans (so‘m)</span>
+          <span className="font-medium text-zinc-700">{tr("Balans (so‘m)")}</span>
           <input
             type="number"
             min={0}
@@ -163,7 +165,7 @@ export default function AdminUserDetailPage() {
         </label>
         <div className="mt-5">
           <Button type="button" onClick={() => void saveBalance()} disabled={saving}>
-            {saving ? "Saqlanmoqda…" : "Balansni saqlash"}
+            {saving ? "Saqlanmoqda…" : tr("Balansni saqlash")}
           </Button>
         </div>
       </AdminCard>

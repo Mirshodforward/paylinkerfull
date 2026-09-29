@@ -13,6 +13,7 @@ import {
   adminTh,
   adminTr,
 } from "@/components/admin/admin-ui";
+import { useI18n } from "@/lib/i18n/provider";
 
 type PayRow = {
   id: number;
@@ -33,6 +34,7 @@ type PayRow = {
 const PAGE = 50;
 
 export default function AdminPaymentsPage() {
+  const { tr } = useI18n();
   const [items, setItems] = useState<PayRow[]>([]);
   const [total, setTotal] = useState(0);
   const [skip, setSkip] = useState(0);
@@ -47,7 +49,7 @@ export default function AdminPaymentsPage() {
         setItems(r.items ?? []);
         setTotal(r.total ?? 0);
       } catch (e) {
-        setErr(e instanceof ApiError ? e.message : "Xato");
+        setErr(e instanceof ApiError ? e.message : tr("Xato"));
       }
     })();
   }, [skip]);
@@ -58,8 +60,8 @@ export default function AdminPaymentsPage() {
   return (
     <div className="space-y-8">
       <AdminPageHeader
-        title="To‘lovlar"
-        description={`CLICK tranzaksiyalari. Jami yozuvlar: ${total}.`}
+        title={tr("To‘lovlar")}
+        description={tr("CLICK tranzaksiyalari. Jami yozuvlar: {total}.", { total })}
       />
 
       {err ? <AdminAlert>{err}</AdminAlert> : null}
@@ -68,12 +70,12 @@ export default function AdminPaymentsPage() {
         <table className="w-full min-w-[800px] text-left">
           <thead>
             <tr className="border-b border-zinc-200 bg-zinc-50/90">
-              <th className={adminTh}>Vaqt</th>
-              <th className={adminTh}>So‘m</th>
-              <th className={adminTh}>Holat</th>
-              <th className={adminTh}>Foydalanuvchi</th>
-              <th className={adminTh}>merchant_trans_id</th>
-              <th className={adminTh}>click_trans_id</th>
+              <th className={adminTh}>{tr("Vaqt")}</th>
+              <th className={adminTh}>{tr("So‘m")}</th>
+              <th className={adminTh}>{tr("Holat")}</th>
+              <th className={adminTh}>{tr("Foydalanuvchi")}</th>
+              <th className={adminTh}>{tr("merchant_trans_id")}</th>
+              <th className={adminTh}>{tr("click_trans_id")}</th>
             </tr>
           </thead>
           <tbody>
@@ -83,7 +85,7 @@ export default function AdminPaymentsPage() {
                   {new Date(p.createdAt).toLocaleString("uz-UZ")}
                   {p.paidAt ? (
                     <span className="mt-1 block text-[11px] text-zinc-500">
-                      To‘langan: {new Date(p.paidAt).toLocaleString("uz-UZ")}
+                      {tr("To‘langan:")}{" "}{new Date(p.paidAt).toLocaleString("uz-UZ")}
                     </span>
                   ) : null}
                 </td>
@@ -103,7 +105,7 @@ export default function AdminPaymentsPage() {
                       href={`/gradeadmin/users/${p.user.id}`}
                       className="text-xs font-semibold text-brand-800 underline-offset-2 hover:underline"
                     >
-                      Profil
+                      {tr("Profil")}
                     </Link>
                   </div>
                 </td>
@@ -118,7 +120,7 @@ export default function AdminPaymentsPage() {
           </tbody>
         </table>
         {items.length === 0 && !err ? (
-          <AdminEmpty title="To‘lovlar yo‘q" hint="CLICK orqali to‘lov kelganda bu yerda ko‘rinadi." />
+          <AdminEmpty title={tr("To‘lovlar yo‘q")} hint={tr("CLICK orqali to‘lov kelganda bu yerda ko‘rinadi.")} />
         ) : null}
       </AdminTableWrap>
 
@@ -126,11 +128,11 @@ export default function AdminPaymentsPage() {
         <p className="text-sm text-zinc-600">
           {total > 0 ? (
             <>
-              Ko‘rsatilmoqda <span className="font-semibold tabular-nums text-zinc-900">{start}–{end}</span> /{" "}
+              {tr("Ko‘rsatilmoqda")}{" "}<span className="font-semibold tabular-nums text-zinc-900">{start}–{end}</span> /{" "}
               <span className="font-semibold tabular-nums text-zinc-900">{total}</span>
             </>
           ) : (
-            "0 ta yozuv"
+            tr("0 ta yozuv")
           )}
         </p>
         <div className="flex gap-2">
@@ -140,7 +142,7 @@ export default function AdminPaymentsPage() {
             onClick={() => setSkip((s) => Math.max(0, s - PAGE))}
             className="rounded-xl border border-zinc-200 bg-white px-4 py-2 text-sm font-semibold text-zinc-800 shadow-sm transition-colors hover:bg-zinc-50 disabled:pointer-events-none disabled:opacity-40"
           >
-            Oldingi
+            {tr("Oldingi")}
           </button>
           <button
             type="button"
@@ -148,7 +150,7 @@ export default function AdminPaymentsPage() {
             onClick={() => setSkip((s) => s + PAGE)}
             className="rounded-xl border border-zinc-200 bg-white px-4 py-2 text-sm font-semibold text-zinc-800 shadow-sm transition-colors hover:bg-zinc-50 disabled:pointer-events-none disabled:opacity-40"
           >
-            Keyingi
+            {tr("Keyingi")}
           </button>
         </div>
       </div>

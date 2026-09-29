@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { api, ApiError } from "@/lib/api";
 import { AdminAlert, AdminCard, AdminPageHeader } from "@/components/admin/admin-ui";
 import { Button } from "@/components/ui/button";
+import { useI18n } from "@/lib/i18n/provider";
 
 type VizRow = {
   id: string;
@@ -41,6 +42,7 @@ function toDatetimeLocalValue(iso: string | null | undefined): string {
 }
 
 export default function AdminVizitkaEditPage() {
+  const { tr } = useI18n();
   const params = useParams();
   const id = typeof params.id === "string" ? params.id : "";
   const router = useRouter();
@@ -61,7 +63,7 @@ export default function AdminVizitkaEditPage() {
           setDtLocal(toDatetimeLocalValue(r.vizitka.expiredAt));
         }
       } catch (e) {
-        if (c) setErr(e instanceof ApiError ? e.message : "Xato");
+        if (c) setErr(e instanceof ApiError ? e.message : tr("Xato"));
       } finally {
         if (c) setLoading(false);
       }
@@ -93,7 +95,7 @@ export default function AdminVizitkaEditPage() {
       setDtLocal(toDatetimeLocalValue(r.vizitka.expiredAt));
       router.refresh();
     } catch (e) {
-      setErr(e instanceof ApiError ? e.message : "Saqlashda xato");
+      setErr(e instanceof ApiError ? e.message : tr("Saqlashda xato"));
     } finally {
       setSaving(false);
     }
@@ -114,7 +116,7 @@ export default function AdminVizitkaEditPage() {
       setDtLocal(toDatetimeLocalValue(r.vizitka.expiredAt));
       router.refresh();
     } catch (e) {
-      setErr(e instanceof ApiError ? e.message : "Xato");
+      setErr(e instanceof ApiError ? e.message : tr("Xato"));
     } finally {
       setSaving(false);
     }
@@ -135,7 +137,7 @@ export default function AdminVizitkaEditPage() {
       setForm(r.vizitka);
       router.refresh();
     } catch (e) {
-      setErr(e instanceof ApiError ? e.message : "Xato");
+      setErr(e instanceof ApiError ? e.message : tr("Xato"));
     } finally {
       setSaving(false);
     }
@@ -144,7 +146,7 @@ export default function AdminVizitkaEditPage() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <AdminPageHeader title="Vizitka" description="Yuklanmoqda…" />
+        <AdminPageHeader title={tr("Vizitka")} description={tr("Yuklanmoqda…")} />
         <div className="h-40 animate-pulse rounded-[var(--radius-card)] bg-zinc-100" />
       </div>
     );
@@ -161,10 +163,10 @@ export default function AdminVizitkaEditPage() {
           href="/gradeadmin/vizitkas"
           className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-800 hover:text-brand-950"
         >
-          <span aria-hidden>←</span> Vizitkalar
+          <span aria-hidden>←</span> {tr("Vizitkalar")}
         </Link>
         <AdminPageHeader
-          title="Vizitka tahriri"
+          title={tr("Vizitka tahriri")}
           description={form.name ? `/${form.name}` : undefined}
         />
       </div>
@@ -174,7 +176,7 @@ export default function AdminVizitkaEditPage() {
       <AdminCard>
       <div className="space-y-4">
         <label className="block text-sm">
-          <span className="font-medium text-neutral-700">Slug (manzil)</span>
+          <span className="font-medium text-neutral-700">{tr("Slug (manzil)")}</span>
           <input
             className={inp}
             value={form.name ?? ""}
@@ -182,7 +184,7 @@ export default function AdminVizitkaEditPage() {
           />
         </label>
         <label className="block text-sm">
-          <span className="font-medium text-neutral-700">Sarlavha (headline)</span>
+          <span className="font-medium text-neutral-700">{tr("Sarlavha (headline)")}</span>
           <input
             className={inp}
             value={form.headline ?? ""}
@@ -190,7 +192,7 @@ export default function AdminVizitkaEditPage() {
           />
         </label>
         <label className="block text-sm">
-          <span className="font-medium text-neutral-700">Holat</span>
+          <span className="font-medium text-neutral-700">{tr("Holat")}</span>
           <select
             className={inp}
             value={form.status ?? "DRAFT"}
@@ -204,12 +206,12 @@ export default function AdminVizitkaEditPage() {
           </select>
         </label>
         <div className="rounded-xl border border-zinc-200 bg-zinc-50/90 p-4">
-          <p className="text-sm font-semibold text-zinc-900">Obuna muddati</p>
+          <p className="text-sm font-semibold text-zinc-900">{tr("Obuna muddati")}</p>
           <p className="mt-1 text-xs text-zinc-500">
-            Aniq sana yoki tezkun: joriy tugashdan (yoki hozirdan) kun qo‘shiladi.
+            {tr("Aniq sana yoki tezkun: joriy tugashdan (yoki hozirdan) kun qo‘shiladi.")}
           </p>
           <label className="mt-3 block text-sm">
-            <span className="font-medium text-neutral-700">Tugash vaqti</span>
+            <span className="font-medium text-neutral-700">{tr("Tugash vaqti")}</span>
             <input
               type="datetime-local"
               className={inp}
@@ -224,7 +226,7 @@ export default function AdminVizitkaEditPage() {
               onClick={() => void extendDays(7)}
               className="rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-xs font-medium hover:bg-neutral-100 disabled:opacity-50"
             >
-              +7 kun
+              {tr("+7 kun")}
             </button>
             <button
               type="button"
@@ -232,7 +234,7 @@ export default function AdminVizitkaEditPage() {
               onClick={() => void extendDays(30)}
               className="rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-xs font-medium hover:bg-neutral-100 disabled:opacity-50"
             >
-              +30 kun
+              {tr("+30 kun")}
             </button>
             <button
               type="button"
@@ -240,7 +242,7 @@ export default function AdminVizitkaEditPage() {
               onClick={() => void extendDays(90)}
               className="rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-xs font-medium hover:bg-neutral-100 disabled:opacity-50"
             >
-              +90 kun
+              {tr("+90 kun")}
             </button>
             <button
               type="button"
@@ -248,12 +250,12 @@ export default function AdminVizitkaEditPage() {
               onClick={() => void clearExpiry()}
               className="rounded-lg border border-neutral-200 bg-white px-3 py-1.5 text-xs font-medium text-neutral-600 hover:bg-neutral-100 disabled:opacity-50"
             >
-              Cheksiz (sana yo‘q)
+              {tr("Cheksiz (sana yo‘q)")}
             </button>
           </div>
         </div>
         <label className="block text-sm">
-          <span className="font-medium text-neutral-700">Kategoriya</span>
+          <span className="font-medium text-neutral-700">{tr("Kategoriya")}</span>
           <input
             className={inp}
             value={form.category ?? ""}
@@ -261,7 +263,7 @@ export default function AdminVizitkaEditPage() {
           />
         </label>
         <label className="block text-sm">
-          <span className="font-medium text-neutral-700">Plan</span>
+          <span className="font-medium text-neutral-700">{tr("Plan")}</span>
           <input
             className={inp}
             value={form.plan ?? ""}
@@ -269,7 +271,7 @@ export default function AdminVizitkaEditPage() {
           />
         </label>
         <label className="block text-sm">
-          <span className="font-medium text-neutral-700">Telefon</span>
+          <span className="font-medium text-neutral-700">{tr("Telefon")}</span>
           <input
             className={inp}
             value={form.contactNumber ?? ""}
@@ -277,7 +279,7 @@ export default function AdminVizitkaEditPage() {
           />
         </label>
         <label className="block text-sm">
-          <span className="font-medium text-neutral-700">Manzil</span>
+          <span className="font-medium text-neutral-700">{tr("Manzil")}</span>
           <input
             className={inp}
             value={form.address ?? ""}
@@ -285,7 +287,7 @@ export default function AdminVizitkaEditPage() {
           />
         </label>
         <label className="block text-sm">
-          <span className="font-medium text-neutral-700">Ish vaqti</span>
+          <span className="font-medium text-neutral-700">{tr("Ish vaqti")}</span>
           <input
             className={inp}
             value={form.workHour ?? ""}
@@ -293,7 +295,7 @@ export default function AdminVizitkaEditPage() {
           />
         </label>
         <label className="block text-sm">
-          <span className="font-medium text-neutral-700">Qisqa tavsif</span>
+          <span className="font-medium text-neutral-700">{tr("Qisqa tavsif")}</span>
           <textarea
             className={`${inp} min-h-[72px] py-2`}
             value={form.shortDescription ?? ""}
@@ -301,7 +303,7 @@ export default function AdminVizitkaEditPage() {
           />
         </label>
         <label className="block text-sm">
-          <span className="font-medium text-neutral-700">Tavsif</span>
+          <span className="font-medium text-neutral-700">{tr("Tavsif")}</span>
           <textarea
             className={`${inp} min-h-[120px] py-2`}
             value={form.description ?? ""}
@@ -309,7 +311,7 @@ export default function AdminVizitkaEditPage() {
           />
         </label>
         <label className="block text-sm">
-          <span className="font-medium text-neutral-700">photoUrl (hero)</span>
+          <span className="font-medium text-neutral-700">{tr("photoUrl (hero)")}</span>
           <input
             className={inp}
             value={form.photoUrl ?? ""}
@@ -317,7 +319,7 @@ export default function AdminVizitkaEditPage() {
           />
         </label>
         <label className="block text-sm">
-          <span className="font-medium text-neutral-700">logoUrl</span>
+          <span className="font-medium text-neutral-700">{tr("logoUrl")}</span>
           <input
             className={inp}
             value={form.logoUrl ?? ""}
@@ -325,7 +327,7 @@ export default function AdminVizitkaEditPage() {
           />
         </label>
         <label className="block text-sm">
-          <span className="font-medium text-neutral-700">templateId</span>
+          <span className="font-medium text-neutral-700">{tr("templateId")}</span>
           <input
             className={inp}
             value={form.templateId ?? ""}
@@ -333,7 +335,7 @@ export default function AdminVizitkaEditPage() {
           />
         </label>
         <label className="block text-sm">
-          <span className="font-medium text-neutral-700">colorThemeId</span>
+          <span className="font-medium text-neutral-700">{tr("colorThemeId")}</span>
           <input
             className={inp}
             value={form.colorThemeId ?? ""}
@@ -341,7 +343,7 @@ export default function AdminVizitkaEditPage() {
           />
         </label>
         <label className="block text-sm">
-          <span className="font-medium text-neutral-700">patternId</span>
+          <span className="font-medium text-neutral-700">{tr("patternId")}</span>
           <input
             className={inp}
             value={form.patternId ?? ""}
@@ -349,7 +351,7 @@ export default function AdminVizitkaEditPage() {
           />
         </label>
         <label className="block text-sm">
-          <span className="font-medium text-neutral-700">Xarita (mapLink)</span>
+          <span className="font-medium text-neutral-700">{tr("Xarita (mapLink)")}</span>
           <input
             className={inp}
             value={form.mapLink ?? ""}
@@ -376,7 +378,7 @@ export default function AdminVizitkaEditPage() {
 
       <div className="mt-8 flex gap-3 border-t border-zinc-100 pt-8">
         <Button type="button" onClick={() => void save()} disabled={saving}>
-          {saving ? "Saqlanmoqda…" : "Saqlash"}
+          {saving ? "Saqlanmoqda…" : tr("Saqlash")}
         </Button>
       </div>
       </AdminCard>

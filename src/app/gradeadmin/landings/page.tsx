@@ -18,6 +18,7 @@ import {
   adminTr,
 } from "@/components/admin/admin-ui";
 import { cn } from "@/lib/cn";
+import { useI18n } from "@/lib/i18n/provider";
 
 type Row = {
   id: string;
@@ -32,6 +33,7 @@ type Row = {
 };
 
 export default function AdminLandingsPage() {
+  const { tr } = useI18n();
   const [items, setItems] = useState<Row[]>([]);
   const [err, setErr] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
@@ -47,7 +49,7 @@ export default function AdminLandingsPage() {
       try {
         await reload();
       } catch (e) {
-        setErr(e instanceof ApiError ? e.message : "Xato");
+        setErr(e instanceof ApiError ? e.message : tr("Xato"));
       }
     })();
   }, [reload]);
@@ -81,7 +83,7 @@ export default function AdminLandingsPage() {
       }
       await reload();
     } catch (e) {
-      setErr(e instanceof ApiError ? e.message : "Xato");
+      setErr(e instanceof ApiError ? e.message : tr("Xato"));
     } finally {
       setBusyId(null);
     }
@@ -90,7 +92,7 @@ export default function AdminLandingsPage() {
   async function removeRow(id: string, name: string) {
     if (
       !window.confirm(
-        `“${name}” landingini o‘chirish? Bu amal qaytarilmaydi.`,
+        tr("“{name}” landingini o‘chirish? Bu amal qaytarilmaydi.", { name }),
       )
     ) {
       return;
@@ -103,7 +105,7 @@ export default function AdminLandingsPage() {
       });
       await reload();
     } catch (e) {
-      setErr(e instanceof ApiError ? e.message : "O‘chirishda xato");
+      setErr(e instanceof ApiError ? e.message : tr("O‘chirishda xato"));
     } finally {
       setBusyId(null);
     }
@@ -121,12 +123,12 @@ export default function AdminLandingsPage() {
   return (
     <div className="space-y-8">
       <AdminPageHeader
-        title="Landinglar"
-        description="Barcha landing sahifalar: obuna, tugash sanasi va muddatni uzaytirish."
+        title={tr("Landinglar")}
+        description={tr("Barcha landing sahifalar: obuna, tugash sanasi va muddatni uzaytirish.")}
         actions={
           <div className="rounded-xl border border-zinc-200 bg-gradient-to-br from-zinc-50 to-white px-4 py-3 text-right shadow-sm">
             <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-zinc-500">
-              Bugungi sana
+              {tr("Bugungi sana")}
             </p>
             <p className="mt-1 max-w-[240px] text-sm font-semibold leading-snug text-zinc-900">
               {formatTodayUz()}
@@ -139,11 +141,11 @@ export default function AdminLandingsPage() {
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         {[
-          { label: "Jami", value: summary.total },
-          { label: "Faol obuna", value: summary.active },
-          { label: "Muddati tugagan", value: summary.expired },
-          { label: "Sinov (10 kun)", value: summary.trial },
-          { label: "To‘langan paket", value: summary.paid },
+          { label: tr("Jami"), value: summary.total },
+          { label: tr("Faol obuna"), value: summary.active },
+          { label: tr("Muddati tugagan"), value: summary.expired },
+          { label: tr("Sinov (10 kun)"), value: summary.trial },
+          { label: tr("To‘langan paket"), value: summary.paid },
         ].map((s) => (
           <div
             key={s.label}
@@ -160,19 +162,19 @@ export default function AdminLandingsPage() {
       </div>
 
       {items.length === 0 && !err ? (
-        <AdminEmpty title="Landing yo‘q" hint="Foydalanuvchilar landing yaratganda bu yerda ko‘rinadi." />
+        <AdminEmpty title={tr("Landing yo‘q")} hint={tr("Foydalanuvchilar landing yaratganda bu yerda ko‘rinadi.")} />
       ) : (
         <AdminTableWrap>
           <table className="w-full min-w-[820px] text-left">
             <thead>
               <tr className="border-b border-zinc-200 bg-zinc-50/90">
-                <th className={adminTh}>Manzil</th>
-                <th className={adminTh}>Brend</th>
-                <th className={adminTh}>Paket</th>
-                <th className={adminTh}>Tugash</th>
-                <th className={adminTh}>+ kun</th>
-                <th className={adminTh}>Ega</th>
-                <th className={`${adminTh} text-right`}>Amallar</th>
+                <th className={adminTh}>{tr("Manzil")}</th>
+                <th className={adminTh}>{tr("Brend")}</th>
+                <th className={adminTh}>{tr("Paket")}</th>
+                <th className={adminTh}>{tr("Tugash")}</th>
+                <th className={adminTh}>{tr("+ kun")}</th>
+                <th className={adminTh}>{tr("Ega")}</th>
+                <th className={`${adminTh} text-right`}>{tr("Amallar")}</th>
               </tr>
             </thead>
             <tbody>
@@ -228,7 +230,7 @@ export default function AdminLandingsPage() {
                             void patchRow(l.id, { extendByDays: daysNum })
                           }
                         >
-                          Qo‘shish
+                          {tr("Qo‘shish")}
                         </button>
                       </div>
                     </td>
@@ -246,7 +248,7 @@ export default function AdminLandingsPage() {
                           rel="noopener noreferrer"
                           className={linkPrimary}
                         >
-                          Ko‘rish
+                          {tr("Ko‘rish")}
                         </Link>
                         <button
                           type="button"
@@ -254,7 +256,7 @@ export default function AdminLandingsPage() {
                           disabled={busy}
                           onClick={() => void removeRow(l.id, l.name)}
                         >
-                          O‘chirish
+                          {tr("O‘chirish")}
                         </button>
                       </div>
                     </td>
