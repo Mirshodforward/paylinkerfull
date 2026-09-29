@@ -1,5 +1,6 @@
 import type { DemoChoyxonaContent } from "@/lib/demo-choyxona/types";
 import type { LandingRecord } from "./types";
+import { contentTr } from "@/lib/i18n/detect";
 
 /** `+998901234567` → `+998 90 123 45 67` (display uchun) */
 function formatPhoneDisplay(tel: string): string {
@@ -26,6 +27,8 @@ const FOOTER_CITY_DEFAULT = "Toshkent";
 
 /** `Landing` qatorini hozirgi ko'rinish komponentiga (DemoChoyxonaSite) moslash */
 export function landingToDemoContent(l: LandingRecord): DemoChoyxonaContent {
+  // Yorliqlar tili — kontentdan (egasi ruscha yozgan bo'lsa ruscha yorliq)
+  const tr = contentTr(l.brandName, l.heroTitle, l.aboutTitle, l.aboutLead, l.contactSubtitle);
   const phoneDisplay = formatPhoneDisplay(l.phoneTel);
   const telegramDisplay = formatTelegramDisplay(l.telegram);
 
@@ -53,7 +56,7 @@ export function landingToDemoContent(l: LandingRecord): DemoChoyxonaContent {
     heroCardText: "",
 
     aboutImageUrl: l.aboutImageUrl,
-    aboutBadge: "Biz haqimizda",
+    aboutBadge: tr("Biz haqimizda"),
     aboutTitle: l.aboutTitle,
     aboutLead: l.aboutLead,
     aboutBullets: [
@@ -63,8 +66,8 @@ export function landingToDemoContent(l: LandingRecord): DemoChoyxonaContent {
       l.aboutBullet4,
     ],
 
-    faqBadge: "Savol-javob",
-    faqTitle: "Ko'p so'raladigan savollar",
+    faqBadge: tr("Savol-javob"),
+    faqTitle: tr("Ko'p so'raladigan savollar"),
     faqItems: [
       { q: l.faq1Q, a: l.faq1A },
       { q: l.faq2Q, a: l.faq2A },
@@ -72,36 +75,36 @@ export function landingToDemoContent(l: LandingRecord): DemoChoyxonaContent {
       { q: l.faq4Q, a: l.faq4A },
     ],
 
-    contactBadge: "Aloqa",
-    contactTitle: "Biz bilan bog'laning",
+    contactBadge: tr("Aloqa"),
+    contactTitle: tr("Biz bilan bog'laning"),
     contactSubtitle: l.contactSubtitle,
-    contactInfoTitle: "Aloqa ma'lumotlari",
-    addressLabel: "Manzil",
+    contactInfoTitle: tr("Aloqa ma'lumotlari"),
+    addressLabel: tr("Manzil"),
     address: l.address,
-    phoneLabel: "Telefon",
+    phoneLabel: tr("Telefon"),
     phoneDisplay,
     phoneTel: l.phoneTel,
-    telegramLabel: "Telegram",
+    telegramLabel: tr("Telegram"),
     telegramDisplay,
-    hoursLabel: "Ish vaqti",
+    hoursLabel: tr("Ish vaqti"),
     hours: l.hours,
 
     footerBrandName: l.brandName,
     footerTagline:
-      "Milliy ta'm va shinam muhitda oilaviy uchrashuvlar uchun maskan.",
-    footerCol2Title: "Tezkor havolalar",
-    footerCol3Title: "Xizmatlar",
-    footerCol4Title: "Kontakt",
+      tr("Milliy ta'm va shinam muhitda oilaviy uchrashuvlar uchun maskan."),
+    footerCol2Title: tr("Tezkor havolalar"),
+    footerCol3Title: tr("Xizmatlar"),
+    footerCol4Title: tr("Kontakt"),
     footerLinkAbout: l.navAbout,
     footerLinkFaq: l.navFaq,
     footerLinkContact: l.navContact,
-    footerSvc1: "Oilaviy zal",
-    footerSvc2: "Tadbirlar",
-    footerSvc3: "Biznes tushlik",
-    footerSvcBron: "Bron qilish",
+    footerSvc1: tr("Oilaviy zal"),
+    footerSvc2: tr("Tadbirlar"),
+    footerSvc3: tr("Biznes tushlik"),
+    footerSvcBron: tr("Bron qilish"),
     footerPhone: phoneDisplay,
     footerTelegram: telegramDisplay,
-    footerCity: FOOTER_CITY_DEFAULT,
+    footerCity: tr(FOOTER_CITY_DEFAULT),
     footerCopyrightSuffix: l.footerCopyrightSuffix,
   };
 }

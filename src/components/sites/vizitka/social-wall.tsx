@@ -3,6 +3,7 @@ import { Avatar, mapsHref, telHref, PaylinkerBrandLink } from "./shared";
 import { buildSocialHref, SOCIAL_NETWORKS, SocialGlyph } from "../social-icons";
 import { PatternLayer } from "../patterns";
 import { MapEmbed } from "../map-embed";
+import { contentTr } from "@/lib/i18n/detect";
 
 type Props = { content: VizitkaContent; theme: ColorTheme };
 
@@ -14,11 +15,13 @@ type Tile = {
 };
 
 export function VizitkaSocialWall({ content, theme }: Props) {
+  // Yorliq tili — sayt kontentidan (ko'ruvchi cookie'siga bog'lanmaydi)
+  const tr = contentTr(content.businessName, content.tagline, content.description, content.address);
   const tiles: Tile[] = [];
 
   if (content.phone) {
     tiles.push({
-      label: "Telefon",
+      label: tr("Telefon"),
       value: content.phone,
       href: telHref(content.phone),
       icon: <PhoneIcon />,
@@ -26,14 +29,14 @@ export function VizitkaSocialWall({ content, theme }: Props) {
   }
   if (content.address) {
     tiles.push({
-      label: "Manzil",
+      label: tr("Manzil"),
       value: content.address.split(",")[0] || content.address,
       href: mapsHref(content),
       icon: <PinIcon />,
     });
   } else if (content.mapsUrl?.trim()) {
     tiles.push({
-      label: "Manzil",
+      label: tr("Manzil"),
       value: "Xarita",
       href: mapsHref(content),
       icon: <PinIcon />,

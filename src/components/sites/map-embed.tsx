@@ -1,3 +1,4 @@
+import { contentTr } from "@/lib/i18n/detect";
 import { cn } from "@/lib/cn";
 
 type Props = {
@@ -102,6 +103,7 @@ export function MapEmbed({
   rounded = "rounded-xl",
   label,
 }: Props) {
+  const tr = contentTr(address);
   const src = buildMapsEmbedSrc(mapsUrl, address);
   const href = externalMapLink(mapsUrl, address);
   if (!src) return null;
@@ -109,10 +111,10 @@ export function MapEmbed({
   const title =
     label ??
     (address.trim()
-      ? `${address.trim()} — xarita`
+      ? tr("{address} — xarita", { address: address.trim() })
       : mapsUrl?.trim()
-        ? "Xarita"
-        : "Xarita");
+        ? tr("Xarita")
+        : tr("Xarita"));
 
   return (
     <div
@@ -140,13 +142,13 @@ export function MapEmbed({
           className="absolute inset-0 z-10 outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-black/25"
           aria-label={
             mapsUrl?.trim()
-              ? "Pastdagi xarita havolasini ochish"
-              : "Manzil bo‘yicha xaritani ochish"
+              ? tr("Pastdagi xarita havolasini ochish")
+              : tr("Manzil bo‘yicha xaritani ochish")
           }
           title={
             mapsUrl?.trim()
-              ? "To‘liq xarita (pastdagi havola)"
-              : "Google xarita — manzil bo‘yicha"
+              ? tr("To‘liq xarita (pastdagi havola)")
+              : tr("Google xarita — manzil bo‘yicha")
           }
         />
       ) : null}

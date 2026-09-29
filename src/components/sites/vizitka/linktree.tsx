@@ -3,10 +3,12 @@ import { Avatar, mapsHref, telHref, PaylinkerBrandLink } from "./shared";
 import { buildSocialHref, SOCIAL_NETWORKS } from "../social-icons";
 import { PatternLayer } from "../patterns";
 import { MapEmbed } from "../map-embed";
+import { contentTr } from "@/lib/i18n/detect";
 
 type Props = { content: VizitkaContent; theme: ColorTheme };
 
 export function VizitkaLinktree({ content, theme }: Props) {
+  const tr = contentTr(content.businessName, content.tagline, content.description, content.address);
   const socialLinks = content.social
     .filter((s) => s.value.trim())
     .map((item) => ({
@@ -22,12 +24,12 @@ export function VizitkaLinktree({ content, theme }: Props) {
     },
     ...socialLinks,
     content.address && {
-      label: "Yo'l ko'rsatish",
+      label: tr("Yo'l ko'rsatish"),
       href: mapsHref(content),
     },
     !content.address &&
       content.mapsUrl?.trim() && {
-        label: "Xarita",
+        label: tr("Xarita"),
         href: mapsHref(content),
       },
   ].filter(Boolean) as Array<{ label: string; href: string; primary?: boolean }>;
