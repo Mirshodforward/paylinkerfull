@@ -111,7 +111,7 @@ export function LoginForm() {
         </p>
         <div className="rounded-[var(--radius-card)] border border-brand-200 bg-brand-50 p-3.5 text-sm text-brand-900">
           <p className="leading-relaxed">
-            {L.openBot} <span className="font-mono">{tr("/start")}</span>
+            {L.openBot} <span className="font-mono">/start</span>
           </p>
           <a
             href={tme}

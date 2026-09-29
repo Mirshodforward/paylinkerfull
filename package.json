@@ -14,7 +14,10 @@
     "pm2:restart": "pm2 restart paylinker.config.cjs --update-env",
     "pm2:stop": "pm2 stop paylinker-web paylinker-api",
     "start": "cross-env TZ=Asia/Tashkent PORT=8000 next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "i18n:check": "node scripts/i18n/check.mjs",
+    "i18n:codemod": "node scripts/i18n/codemod.mjs",
+    "prebuild": "node scripts/i18n/check.mjs"
   },
   "dependencies": {
     "dotenv": "^16.4.5",

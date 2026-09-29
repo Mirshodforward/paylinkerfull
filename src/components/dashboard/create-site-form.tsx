@@ -744,15 +744,15 @@ export function CreateSiteForm() {
             </p>
             {landingTier === "free" ? (
               <p className="mt-0.5 text-[11px] text-neutral-600">
-                {tr("Bepul — shablon asosida ·")}{" "}{pricing.freePublishDays} {tr("kunlik sinov")}
+                {tr("Bepul — shablon asosida · {days} kunlik sinov", { days: pricing.freePublishDays })}
               </p>
             ) : landingTier === "ai" ? (
               <p className="mt-0.5 text-[11px] text-neutral-600">
-                {tr("AI bilan landing —")}{" "}{formatSom(LANDING_AI_STARTER_PRICE_SOM, tr)}
+                {tr("AI bilan landing — {price}", { price: formatSom(LANDING_AI_STARTER_PRICE_SOM, tr) })}
               </p>
             ) : (
               <p className="mt-0.5 text-[11px] text-neutral-600">
-                {landingTier} {tr("oy —")}{" "}{formatSom(landingPriceByMonths[landingTier], tr)}
+                {tr("{months} oy — {price}", { months: landingTier, price: formatSom(landingPriceByMonths[landingTier], tr) })}
               </p>
             )}
           </div>
@@ -793,15 +793,15 @@ export function CreateSiteForm() {
             </p>
             {landingTier === "free" ? (
               <p className="mt-0.5 text-[11px] text-neutral-600">
-                {tr("Bepul — shablon asosida ·")}{" "}{pricing.freePublishDays} {tr("kunlik sinov")}
+                {tr("Bepul — shablon asosida · {days} kunlik sinov", { days: pricing.freePublishDays })}
               </p>
             ) : landingTier === "ai" ? (
               <p className="mt-0.5 text-[11px] text-neutral-600">
-                {tr("AI bilan landing —")}{" "}{formatSom(LANDING_AI_STARTER_PRICE_SOM, tr)}
+                {tr("AI bilan landing — {price}", { price: formatSom(LANDING_AI_STARTER_PRICE_SOM, tr) })}
               </p>
             ) : (
               <p className="mt-0.5 text-[11px] text-neutral-600">
-                {landingTier} {tr("oy —")}{" "}{formatSom(landingPriceByMonths[landingTier], tr)}
+                {tr("{months} oy — {price}", { months: landingTier, price: formatSom(landingPriceByMonths[landingTier], tr) })}
               </p>
             )}
           </div>
@@ -851,28 +851,26 @@ export function CreateSiteForm() {
           {siteType === "vizitka" && vizitkaTier != null ? (
             vizitkaTier === "free" ? (
               <p className="mt-0.5 text-[11px] text-neutral-600">
-                {tr("Bepul —")}{" "}{pricing.freePublishDays} {tr("kunlik sinov")}
+                {tr("Bepul — {days} kunlik sinov", { days: pricing.freePublishDays })}
               </p>
             ) : (
               <p className="mt-0.5 text-[11px] text-neutral-600">
-                {vizitkaTier} {tr("oy —")}{" "}
-                {formatSom(priceByMonths[vizitkaTier], tr)}
+                {tr("{months} oy — {price}", { months: vizitkaTier, price: formatSom(priceByMonths[vizitkaTier], tr) })}
               </p>
             )
           ) : null}
           {siteType === "landing" && landingTier != null ? (
             landingTier === "free" ? (
               <p className="mt-0.5 text-[11px] text-neutral-600">
-                {tr("Bepul — shablon asosida ·")}{" "}{pricing.freePublishDays} {tr("kunlik sinov")}
+                {tr("Bepul — shablon asosida · {days} kunlik sinov", { days: pricing.freePublishDays })}
               </p>
             ) : landingTier === "ai" ? (
               <p className="mt-0.5 text-[11px] text-neutral-600">
-                {tr("AI bilan landing —")}{" "}{formatSom(LANDING_AI_STARTER_PRICE_SOM, tr)}
+                {tr("AI bilan landing — {price}", { price: formatSom(LANDING_AI_STARTER_PRICE_SOM, tr) })}
               </p>
             ) : (
               <p className="mt-0.5 text-[11px] text-neutral-600">
-                {landingTier} {tr("oy —")}{" "}
-                {formatSom(landingPriceByMonths[landingTier], tr)}
+                {tr("{months} oy — {price}", { months: landingTier, price: formatSom(landingPriceByMonths[landingTier], tr) })}
               </p>
             )
           ) : null}
@@ -1277,7 +1275,7 @@ function LandingPackagePicker({
             {selectedPkg.title} — {formatSom(selectedPkg.priceSom, tr)}
           </p>
           <p className="mt-1 text-xs text-neutral-600">
-            {tr("Bepul")}{" "}{pricing.freePublishDays} {tr("kun sinov bilan boshlang yoki paketni hozir to‘lang.")}
+            {tr("Bepul {days} kun sinov bilan boshlang yoki paketni hozir to‘lang.", { days: pricing.freePublishDays })}
           </p>
           <div className="mt-4 flex flex-col gap-2 sm:flex-row">
             <button
@@ -1847,8 +1845,8 @@ function LandingInfoComingSoonPlaceholder({
   const { tr } = useI18n();
   const blurLayers =
     variant === "ai"
-      ? tr("from-violet-100/70 via-white/50 to-violet-50/40")
-      : tr("from-neutral-100/85 via-white/45 to-neutral-200/55");
+      ? "from-violet-100/70 via-white/50 to-violet-50/40"
+      : "from-neutral-100/85 via-white/45 to-neutral-200/55";
 
   return (
     <div className="mt-8">

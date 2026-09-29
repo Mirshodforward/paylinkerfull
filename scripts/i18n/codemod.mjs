@@ -84,7 +84,7 @@ const ALLOW_CALLS = new Set([
   "setCopyStatus", "setPublishError", "setPublishMessage",
 ]);
 const ALLOW_NEW = new Set(["Error", "ApiError", "TypeError", "RangeError"]);
-const TW = /\b(flex|grid|rounded|text-|bg-|border|px-|py-|p-\d|m-\d|h-\d|w-\d|items-|gap-|mt-|mb-|inline|hidden|shadow|ring-|hover:|transition|font-|tracking|leading|min-|max-|shrink|absolute|relative|z-\d|overflow|opacity|space-|justify|object-|truncate|tabular|uppercase|sr-only|pointer|sm:|lg:|md:|xl:|focus:|disabled:|group-)/;
+const TW = /\b(from-|via-|to-|flex|grid|rounded|text-|bg-|border|px-|py-|p-\d|m-\d|h-\d|w-\d|items-|gap-|mt-|mb-|inline|hidden|shadow|ring-|hover:|transition|font-|tracking|leading|min-|max-|shrink|absolute|relative|z-\d|overflow|opacity|space-|justify|object-|truncate|tabular|uppercase|sr-only|pointer|sm:|lg:|md:|xl:|focus:|disabled:|group-)/;
 // Faqat id sifatida ishlatilishi EHTIMOLI YO'Q kichik harfli o'zbekcha so'zlar
 const UZ_WORDS = new Set(["bugun", "kecha", "hozir", "yo'q", "yo‘q", "yoʻq", "so'm", "so‘m", "soʻm", "bepul", "tayyor", "kutilmoqda", "yuklanmoqda", "saqlanmoqda", "muvaffaqiyatli", "xato", "xatolik"]);
 

@@ -217,7 +217,7 @@ export function ImageUpload({
             {tr("Rasmni shu yerga tashlang yoki tanlang")}
           </span>
           <span className="text-xs text-neutral-500">
-            {tr("JPG, PNG —")}{" "}{formatBytes(MAX_IMAGE_BYTES)} {tr("gacha")}
+            {tr("JPG, PNG — {size} gacha", { size: formatBytes(MAX_IMAGE_BYTES) })}
           </span>
         </button>
       )}

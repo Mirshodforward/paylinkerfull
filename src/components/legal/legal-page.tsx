@@ -48,7 +48,7 @@ export function LegalPage({ doc, current }: { doc: Bilingual; current: string })
                     : "text-[color:var(--muted-foreground)] hover:text-brand-700",
                 )}
               >
-                {l === "uz" ? tr("O'zbekcha") : tr("Русский")}
+                {l === "uz" ? "O'zbekcha" : "Русский"}
               </button>
             ))}
           </div>

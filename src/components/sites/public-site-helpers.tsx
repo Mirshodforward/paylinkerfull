@@ -41,7 +41,7 @@ export async function NotFoundPublic({ slug }: { slug?: string }) {
               href="/"
               className="pl-gradient inline-flex h-11 w-full items-center justify-center rounded-[var(--radius-control)] px-5 text-sm font-semibold text-white shadow-[var(--shadow-brand)] transition hover:brightness-[1.06] sm:w-auto"
             >
-              {BRAND_NAME} {tr("haqida")}
+              {tr("{brand} haqida", { brand: BRAND_NAME })}
             </Link>
             <Link
               href="/dashboard/sites/new"
