@@ -1,12 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { makeTr, type Tr } from "@/lib/i18n/tr";
+import { makeTr } from "@/lib/i18n/tr";
+import type { Lang } from "@/lib/i18n/config";
 
 const inputBase =
   "mt-1.5 w-full rounded-xl border border-[#20140c]/10 bg-[var(--c-bg)]/60 px-3.5 py-2.5 text-sm text-[#20140c] outline-none transition-[border-color,background-color,box-shadow] duration-200 placeholder:text-[#a08c75] focus:border-[var(--c-p-solid)] focus:bg-white focus:ring-2 focus:ring-[var(--c-p-tint)]";
 
-export function DemoContactForm({ tr = makeTr("uz") }: { tr?: Tr }) {
+export function DemoContactForm({ lang = "uz" }: { lang?: Lang }) {
+  // Server komponentdan funksiya emas, faqat til kodi keladi (RSC serializatsiya)
+  const tr = makeTr(lang);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [telegram, setTelegram] = useState("");

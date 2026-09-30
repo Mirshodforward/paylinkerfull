@@ -8,7 +8,7 @@ import {
   getLandingTheme,
 } from "@/lib/landings/themes";
 import { DemoContactForm } from "./demo-contact-form";
-import { contentTr } from "@/lib/i18n/detect";
+import { detectContentLang } from "@/lib/i18n/detect";
 import { makeTr, type Tr } from "@/lib/i18n/tr";
 
 type Props = {
@@ -221,7 +221,8 @@ export function DemoChoyxonaSite({
   themeId,
 }: Props) {
   // Shablon yorliqlari sayt kontenti tilida (ko'ruvchi cookie'siga bog'lanmaydi)
-  const tr = contentTr(content.brandName, content.heroTitle, content.aboutLead, content.contactSubtitle);
+  const lang = detectContentLang(content.brandName, content.heroTitle, content.aboutLead, content.contactSubtitle);
+  const tr = makeTr(lang);
   const blk = content.blocks;
   const bullets = [...content.aboutBullets];
   while (bullets.length < 4) bullets.push("");
@@ -803,7 +804,7 @@ export function DemoChoyxonaSite({
                 <h3 className={`${titleFontClassName} mb-4 text-[20px] font-bold text-[#20140c] sm:mb-5 sm:text-[22px]`}>
                   {tr("Murojaat qoldiring")}
                 </h3>
-                <DemoContactForm tr={tr} />
+                <DemoContactForm lang={lang} />
               </div>
             </div>
           </div>
