@@ -8,6 +8,8 @@ import {
   getLandingTheme,
 } from "@/lib/landings/themes";
 import { DemoContactForm } from "./demo-contact-form";
+import { contentTr } from "@/lib/i18n/detect";
+import { makeTr, type Tr } from "@/lib/i18n/tr";
 
 type Props = {
   content: DemoChoyxonaContent;
@@ -155,11 +157,13 @@ function IconCheck(props: { className?: string }) {
 
 function PreviewEditWrap(props: {
   editId: string;
+  tr?: Tr;
   onRequestEdit?: (fieldId: string) => void;
   children: React.ReactNode;
   className?: string;
 }) {
   const { editId, onRequestEdit, children, className } = props;
+  const editLabel = (props.tr ?? makeTr("uz"))("Tahrirlash");
   if (!onRequestEdit) return <>{children}</>;
   return (
     <div className={["group relative", className].filter(Boolean).join(" ")}>
@@ -171,8 +175,8 @@ function PreviewEditWrap(props: {
       <div className="pointer-events-none absolute right-1.5 top-1.5 z-[21] opacity-0 transition-opacity max-lg:pointer-events-auto max-lg:opacity-100 group-hover:opacity-100 lg:opacity-0 lg:group-hover:pointer-events-auto lg:group-hover:opacity-100">
         <button
           type="button"
-          aria-label="Tahrirlash"
-          title="Tahrirlash"
+          aria-label={editLabel}
+          title={editLabel}
           className="pointer-events-auto flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-[#20140c] text-white shadow-md hover:bg-black lg:h-auto lg:w-auto lg:min-h-0 lg:px-2 lg:py-1 lg:text-[11px] lg:font-bold"
           onClick={(e) => {
             e.preventDefault();
@@ -216,6 +220,8 @@ export function DemoChoyxonaSite({
   hideNavCtaOnMobile,
   themeId,
 }: Props) {
+  // Shablon yorliqlari sayt kontenti tilida (ko'ruvchi cookie'siga bog'lanmaydi)
+  const tr = contentTr(content.brandName, content.heroTitle, content.aboutLead, content.contactSubtitle);
   const blk = content.blocks;
   const bullets = [...content.aboutBullets];
   while (bullets.length < 4) bullets.push("");
@@ -256,7 +262,7 @@ export function DemoChoyxonaSite({
           <div className="mx-auto flex h-16 w-full max-w-[1180px] items-center justify-between gap-3 px-[calc(5px+min(18px,4vw))] sm:h-[72px] sm:gap-6">
             <div className="flex min-w-0 flex-1 items-center gap-2.5">
               {content.logoUrl.trim() ? (
-                <PreviewEditWrap editId="logourl" onRequestEdit={onRequestEdit} className="shrink-0">
+                <PreviewEditWrap tr={tr} editId="logourl" onRequestEdit={onRequestEdit} className="shrink-0">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={content.logoUrl}
@@ -278,7 +284,7 @@ export function DemoChoyxonaSite({
                   {(content.brandName || "C").trim().charAt(0).toUpperCase()}
                 </span>
               )}
-              <PreviewEditWrap
+              <PreviewEditWrap tr={tr}
                 editId="brandName"
                 onRequestEdit={onRequestEdit}
                 className="min-w-0"
@@ -310,17 +316,17 @@ export function DemoChoyxonaSite({
                 className="choy-anim-fade-up absolute right-0 top-[calc(100%+8px)] min-w-[min(100vw-2rem,260px)] overflow-hidden rounded-2xl border border-[#20140c]/10 bg-[var(--c-bg)] py-2 shadow-[0_20px_50px_rgba(32,20,12,.18)]"
               >
                 {blk.hero && (
-                  <PreviewEditWrap editId="heroTitle" onRequestEdit={onRequestEdit}>
+                  <PreviewEditWrap tr={tr} editId="heroTitle" onRequestEdit={onRequestEdit}>
                     <a
                       href="#home"
                       className="block px-4 py-3 text-[15px] font-bold text-[#4b3828] transition-colors hover:bg-[var(--c-p-tint)] hover:text-[var(--c-p-strong)]"
                     >
-                      Bosh sahifa
+                      {tr("Bosh sahifa")}
                     </a>
                   </PreviewEditWrap>
                 )}
                 {blk.about && (
-                  <PreviewEditWrap editId="navAbout" onRequestEdit={onRequestEdit}>
+                  <PreviewEditWrap tr={tr} editId="navAbout" onRequestEdit={onRequestEdit}>
                     <a
                       href="#about"
                       className="block px-4 py-3 text-[15px] font-bold text-[#4b3828] transition-colors hover:bg-[var(--c-p-tint)] hover:text-[var(--c-p-strong)]"
@@ -330,7 +336,7 @@ export function DemoChoyxonaSite({
                   </PreviewEditWrap>
                 )}
                 {blk.faq && (
-                  <PreviewEditWrap editId="navFaq" onRequestEdit={onRequestEdit}>
+                  <PreviewEditWrap tr={tr} editId="navFaq" onRequestEdit={onRequestEdit}>
                     <a
                       href="#faq"
                       className="block px-4 py-3 text-[15px] font-bold text-[#4b3828] transition-colors hover:bg-[var(--c-p-tint)] hover:text-[var(--c-p-strong)]"
@@ -340,7 +346,7 @@ export function DemoChoyxonaSite({
                   </PreviewEditWrap>
                 )}
                 {blk.contact && (
-                  <PreviewEditWrap editId="navContact" onRequestEdit={onRequestEdit}>
+                  <PreviewEditWrap tr={tr} editId="navContact" onRequestEdit={onRequestEdit}>
                     <a
                       href="#contact"
                       className="block px-4 py-3 text-[15px] font-bold text-[#4b3828] transition-colors hover:bg-[var(--c-p-tint)] hover:text-[var(--c-p-strong)]"
@@ -355,28 +361,28 @@ export function DemoChoyxonaSite({
             {/* Desktop menyu */}
             <div className="hidden items-center gap-7 text-[15px] font-bold text-[#4b3828] md:flex">
               {blk.hero && (
-                <PreviewEditWrap editId="heroTitle" onRequestEdit={onRequestEdit}>
+                <PreviewEditWrap tr={tr} editId="heroTitle" onRequestEdit={onRequestEdit}>
                   <a href="#home" className="relative transition-colors hover:text-[var(--c-p-solid)]">
-                    Bosh sahifa
+                    {tr("Bosh sahifa")}
                   </a>
                 </PreviewEditWrap>
               )}
               {blk.about && (
-                <PreviewEditWrap editId="navAbout" onRequestEdit={onRequestEdit}>
+                <PreviewEditWrap tr={tr} editId="navAbout" onRequestEdit={onRequestEdit}>
                   <a href="#about" className="transition-colors hover:text-[var(--c-p-solid)]">
                     {content.navAbout}
                   </a>
                 </PreviewEditWrap>
               )}
               {blk.faq && (
-                <PreviewEditWrap editId="navFaq" onRequestEdit={onRequestEdit}>
+                <PreviewEditWrap tr={tr} editId="navFaq" onRequestEdit={onRequestEdit}>
                   <a href="#faq" className="transition-colors hover:text-[var(--c-p-solid)]">
                     {content.navFaq}
                   </a>
                 </PreviewEditWrap>
               )}
               {blk.contact && (
-                <PreviewEditWrap editId="navContact" onRequestEdit={onRequestEdit}>
+                <PreviewEditWrap tr={tr} editId="navContact" onRequestEdit={onRequestEdit}>
                   <a href="#contact" className="transition-colors hover:text-[var(--c-p-solid)]">
                     {content.navContact}
                   </a>
@@ -393,7 +399,7 @@ export function DemoChoyxonaSite({
                   .filter(Boolean)
                   .join(" ")}
               >
-                <PreviewEditWrap
+                <PreviewEditWrap tr={tr}
                   editId="navCta"
                   onRequestEdit={onRequestEdit}
                   className="inline-flex"
@@ -442,7 +448,7 @@ export function DemoChoyxonaSite({
 
           <div className="mx-auto grid w-full max-w-[1180px] items-center gap-10 px-[calc(5px+min(18px,4vw))] lg:grid-cols-[1.05fr_.95fr] lg:gap-14">
             <div className="text-center lg:text-left">
-              <PreviewEditWrap editId="heroTitle" onRequestEdit={onRequestEdit}>
+              <PreviewEditWrap tr={tr} editId="heroTitle" onRequestEdit={onRequestEdit}>
                 <h1
                   className={`${titleFontClassName} choy-anim-fade-up mb-6 text-balance text-[clamp(34px,7vw,76px)] font-extrabold leading-[1.04] tracking-[-1.2px] text-[#20140c]`}
                   style={{ animationDelay: "60ms" }}
@@ -452,7 +458,7 @@ export function DemoChoyxonaSite({
               </PreviewEditWrap>
 
               {content.heroLead.trim() ? (
-                <PreviewEditWrap
+                <PreviewEditWrap tr={tr}
                   editId="description"
                   onRequestEdit={onRequestEdit}
                   className="choy-anim-fade-up mx-auto mb-8 block max-w-2xl lg:mx-0"
@@ -468,7 +474,7 @@ export function DemoChoyxonaSite({
                   className="choy-anim-fade-up flex flex-wrap items-center justify-center gap-3 lg:justify-start"
                   style={{ animationDelay: "140ms" }}
                 >
-                  <PreviewEditWrap
+                  <PreviewEditWrap tr={tr}
                     editId="heroCta"
                     onRequestEdit={onRequestEdit}
                     className="inline-block"
@@ -502,7 +508,7 @@ export function DemoChoyxonaSite({
               )}
             </div>
 
-            <PreviewEditWrap editId="heroImageUrl" onRequestEdit={onRequestEdit}>
+            <PreviewEditWrap tr={tr} editId="heroImageUrl" onRequestEdit={onRequestEdit}>
               <div className="choy-anim-zoom-in relative">
                 <div
                   aria-hidden
@@ -533,7 +539,7 @@ export function DemoChoyxonaSite({
           className="relative border-t border-[#20140c]/5 bg-white/55 py-16 sm:py-24"
         >
           <div className="mx-auto grid w-full max-w-[1180px] items-center gap-10 px-[calc(5px+min(18px,4vw))] lg:grid-cols-2 lg:gap-16">
-            <PreviewEditWrap
+            <PreviewEditWrap tr={tr}
               editId="aboutImageUrl"
               onRequestEdit={onRequestEdit}
               className="order-2 lg:order-1"
@@ -559,7 +565,7 @@ export function DemoChoyxonaSite({
             </PreviewEditWrap>
 
             <div className="order-1 lg:order-2">
-              <PreviewEditWrap
+              <PreviewEditWrap tr={tr}
                 editId="aboutBadge"
                 onRequestEdit={onRequestEdit}
                 className="mb-3 inline-block"
@@ -568,7 +574,7 @@ export function DemoChoyxonaSite({
                   {content.aboutBadge}
                 </div>
               </PreviewEditWrap>
-              <PreviewEditWrap editId="aboutTitle" onRequestEdit={onRequestEdit}>
+              <PreviewEditWrap tr={tr} editId="aboutTitle" onRequestEdit={onRequestEdit}>
                 <h2
                   className={`${titleFontClassName} choy-anim-fade-up mb-4 text-balance text-3xl font-bold tracking-tight text-[#20140c] sm:text-[40px] sm:leading-[1.1]`}
                   style={{ animationDelay: "60ms" }}
@@ -576,7 +582,7 @@ export function DemoChoyxonaSite({
                   {content.aboutTitle}
                 </h2>
               </PreviewEditWrap>
-              <PreviewEditWrap editId="aboutLead" onRequestEdit={onRequestEdit}>
+              <PreviewEditWrap tr={tr} editId="aboutLead" onRequestEdit={onRequestEdit}>
                 <p
                   className="choy-anim-fade-up mb-7 text-pretty text-[17px] leading-relaxed text-[#755f4b] sm:text-lg"
                   style={{ animationDelay: "120ms" }}
@@ -586,7 +592,7 @@ export function DemoChoyxonaSite({
               </PreviewEditWrap>
               <ul className="grid gap-3">
                 {bullets.slice(0, 4).map((line, i) => (
-                  <PreviewEditWrap
+                  <PreviewEditWrap tr={tr}
                     key={i}
                     editId={`aboutBullet${i + 1}`}
                     onRequestEdit={onRequestEdit}
@@ -616,7 +622,7 @@ export function DemoChoyxonaSite({
         >
           <div className="mx-auto w-full max-w-[1180px] px-[calc(5px+min(18px,4vw))]">
             <div className="mx-auto mb-10 max-w-2xl text-center">
-              <PreviewEditWrap
+              <PreviewEditWrap tr={tr}
                 editId="faqBadge"
                 onRequestEdit={onRequestEdit}
                 className="mb-3 inline-block"
@@ -625,7 +631,7 @@ export function DemoChoyxonaSite({
                   {content.faqBadge}
                 </div>
               </PreviewEditWrap>
-              <PreviewEditWrap editId="faqTitle" onRequestEdit={onRequestEdit}>
+              <PreviewEditWrap tr={tr} editId="faqTitle" onRequestEdit={onRequestEdit}>
                 <h2
                   className={`${titleFontClassName} choy-anim-fade-up text-balance text-3xl font-bold tracking-tight text-[#20140c] sm:text-[40px] sm:leading-[1.1]`}
                   style={{ animationDelay: "60ms" }}
@@ -636,7 +642,7 @@ export function DemoChoyxonaSite({
             </div>
             <div className="mx-auto grid max-w-[900px] gap-3">
               {faqList.slice(0, 4).map((item, i) => (
-                <PreviewEditWrap
+                <PreviewEditWrap tr={tr}
                   key={i}
                   editId={`faq${i + 1}Q`}
                   onRequestEdit={onRequestEdit}
@@ -682,7 +688,7 @@ export function DemoChoyxonaSite({
         >
           <div className="mx-auto w-full max-w-[1180px] px-[calc(5px+min(18px,4vw))]">
             <div className="mx-auto mb-10 max-w-2xl text-center">
-              <PreviewEditWrap
+              <PreviewEditWrap tr={tr}
                 editId="contactBadge"
                 onRequestEdit={onRequestEdit}
                 className="mb-3 inline-block"
@@ -691,7 +697,7 @@ export function DemoChoyxonaSite({
                   {content.contactBadge}
                 </div>
               </PreviewEditWrap>
-              <PreviewEditWrap editId="contactTitle" onRequestEdit={onRequestEdit}>
+              <PreviewEditWrap tr={tr} editId="contactTitle" onRequestEdit={onRequestEdit}>
                 <h2
                   className={`${titleFontClassName} choy-anim-fade-up text-balance text-3xl font-bold tracking-tight text-[#20140c] sm:text-[40px] sm:leading-[1.1]`}
                   style={{ animationDelay: "60ms" }}
@@ -699,7 +705,7 @@ export function DemoChoyxonaSite({
                   {content.contactTitle}
                 </h2>
               </PreviewEditWrap>
-              <PreviewEditWrap
+              <PreviewEditWrap tr={tr}
                 editId="contactSubtitle"
                 onRequestEdit={onRequestEdit}
                 className="mt-3 block"
@@ -724,14 +730,14 @@ export function DemoChoyxonaSite({
                       "radial-gradient(circle, color-mix(in srgb, var(--c-p-solid) 18%, transparent), transparent 70%)",
                   }}
                 />
-                <PreviewEditWrap editId="contactInfoTitle" onRequestEdit={onRequestEdit}>
+                <PreviewEditWrap tr={tr} editId="contactInfoTitle" onRequestEdit={onRequestEdit}>
                   <h3 className={`${titleFontClassName} text-[20px] font-bold text-[#20140c] sm:text-[22px]`}>
                     {content.contactInfoTitle}
                   </h3>
                 </PreviewEditWrap>
 
                 <div className="mt-5 space-y-3 text-sm sm:mt-6 sm:space-y-3.5">
-                  <PreviewEditWrap editId="address" onRequestEdit={onRequestEdit}>
+                  <PreviewEditWrap tr={tr} editId="address" onRequestEdit={onRequestEdit}>
                     <ContactRow
                       label={content.addressLabel}
                       icon={<IconPin className="h-5 w-5" />}
@@ -740,7 +746,7 @@ export function DemoChoyxonaSite({
                     </ContactRow>
                   </PreviewEditWrap>
 
-                  <PreviewEditWrap editId="phoneDisplay" onRequestEdit={onRequestEdit}>
+                  <PreviewEditWrap tr={tr} editId="phoneDisplay" onRequestEdit={onRequestEdit}>
                     <ContactRow
                       label={content.phoneLabel}
                       icon={<IconPhone className="h-5 w-5" />}
@@ -754,7 +760,7 @@ export function DemoChoyxonaSite({
                     </ContactRow>
                   </PreviewEditWrap>
 
-                  <PreviewEditWrap editId="telegramDisplay" onRequestEdit={onRequestEdit}>
+                  <PreviewEditWrap tr={tr} editId="telegramDisplay" onRequestEdit={onRequestEdit}>
                     <ContactRow
                       label={content.telegramLabel}
                       icon={<IconTelegram className="h-5 w-5" />}
@@ -770,7 +776,7 @@ export function DemoChoyxonaSite({
                     </ContactRow>
                   </PreviewEditWrap>
 
-                  <PreviewEditWrap editId="hours" onRequestEdit={onRequestEdit}>
+                  <PreviewEditWrap tr={tr} editId="hours" onRequestEdit={onRequestEdit}>
                     <ContactRow
                       label={content.hoursLabel}
                       icon={<IconClock className="h-5 w-5" />}
@@ -795,9 +801,9 @@ export function DemoChoyxonaSite({
                   }}
                 />
                 <h3 className={`${titleFontClassName} mb-4 text-[20px] font-bold text-[#20140c] sm:mb-5 sm:text-[22px]`}>
-                  Murojaat qoldiring
+                  {tr("Murojaat qoldiring")}
                 </h3>
-                <DemoContactForm />
+                <DemoContactForm tr={tr} />
               </div>
             </div>
           </div>
@@ -832,7 +838,7 @@ export function DemoChoyxonaSite({
           <div className="mx-auto flex w-full max-w-[1180px] flex-col items-center gap-6 px-[calc(5px+min(18px,4vw))] text-center">
             <div className="flex items-center gap-3">
               {content.logoUrl.trim() ? (
-                <PreviewEditWrap
+                <PreviewEditWrap tr={tr}
                   editId="logourl"
                   onRequestEdit={onRequestEdit}
                   className="shrink-0"
@@ -891,7 +897,7 @@ export function DemoChoyxonaSite({
               </div>
             )}
 
-            <PreviewEditWrap
+            <PreviewEditWrap tr={tr}
               editId="footerCopyrightSuffix"
               onRequestEdit={onRequestEdit}
               className="inline-block"

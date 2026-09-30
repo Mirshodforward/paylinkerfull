@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { makeTr, type Tr } from "@/lib/i18n/tr";
 
 const inputBase =
   "mt-1.5 w-full rounded-xl border border-[#20140c]/10 bg-[var(--c-bg)]/60 px-3.5 py-2.5 text-sm text-[#20140c] outline-none transition-[border-color,background-color,box-shadow] duration-200 placeholder:text-[#a08c75] focus:border-[var(--c-p-solid)] focus:bg-white focus:ring-2 focus:ring-[var(--c-p-tint)]";
 
-export function DemoContactForm() {
+export function DemoContactForm({ tr = makeTr("uz") }: { tr?: Tr }) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [telegram, setTelegram] = useState("");
@@ -40,17 +41,17 @@ export function DemoContactForm() {
           </svg>
         </div>
         <p className="text-base font-bold text-emerald-900">
-          Rahmat! So‘rovingiz qabul qilindi.
+          {tr("Rahmat! So‘rovingiz qabul qilindi.")}
         </p>
         <p className="mt-1 text-[13px] text-emerald-800">
-          Tez orada siz bilan bog‘lanamiz.
+          {tr("Tez orada siz bilan bog‘lanamiz.")}
         </p>
         <button
           type="button"
           onClick={() => setDone(false)}
           className="mt-5 inline-flex h-10 items-center justify-center rounded-full border border-emerald-200 bg-white/80 px-4 text-xs font-bold text-emerald-900 transition-colors hover:bg-white"
         >
-          Yana yuborish
+          {tr("Yana yuborish")}
         </button>
       </div>
     );
@@ -61,19 +62,19 @@ export function DemoContactForm() {
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block text-sm">
           <span className="text-[12px] font-extrabold uppercase tracking-[0.1em] text-[var(--c-p-strong)]">
-            Ism
+            {tr("Ism")}
           </span>
           <input
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
             className={inputBase}
-            placeholder="Ismingiz"
+            placeholder={tr("Ismingiz")}
           />
         </label>
         <label className="block text-sm">
           <span className="text-[12px] font-extrabold uppercase tracking-[0.1em] text-[var(--c-p-strong)]">
-            Telefon
+            {tr("Telefon")}
           </span>
           <input
             required
@@ -87,13 +88,13 @@ export function DemoContactForm() {
       </div>
       <label className="block text-sm">
         <span className="text-[12px] font-extrabold uppercase tracking-[0.1em] text-[var(--c-p-strong)]">
-          Telegram
+          {tr("Telegram")}
         </span>
         <input
           value={telegram}
           onChange={(e) => setTelegram(e.target.value)}
           className={inputBase}
-          placeholder="@username yoki username"
+          placeholder={tr("@username yoki username")}
           autoCapitalize="none"
           autoCorrect="off"
           spellCheck={false}
@@ -101,14 +102,14 @@ export function DemoContactForm() {
       </label>
       <label className="block text-sm">
         <span className="text-[12px] font-extrabold uppercase tracking-[0.1em] text-[var(--c-p-strong)]">
-          Xabar
+          {tr("Xabar")}
         </span>
         <textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           rows={4}
           className={`${inputBase} resize-y leading-relaxed`}
-          placeholder="Savol yoki band qilish vaqti…"
+          placeholder={tr("Savol yoki band qilish vaqti…")}
         />
       </label>
       <button
@@ -120,7 +121,7 @@ export function DemoContactForm() {
           boxShadow: "0 14px 30px var(--c-p-glow)",
         }}
       >
-        Yuborish
+        {tr("Yuborish")}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"

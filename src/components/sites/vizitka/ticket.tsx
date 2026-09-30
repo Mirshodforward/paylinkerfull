@@ -1,4 +1,5 @@
 import { ColorTheme, VizitkaContent } from "@/lib/store/types";
+import { contentTr } from "@/lib/i18n/detect";
 import { SocialGlyph, buildSocialHref } from "../social-icons";
 import { telHref, PaylinkerBrandLink } from "./shared";
 import { PatternLayer } from "../patterns";
@@ -7,6 +8,7 @@ import { MapEmbed } from "../map-embed";
 type Props = { content: VizitkaContent; theme: ColorTheme };
 
 export function VizitkaTicket({ content, theme }: Props) {
+  const tr = contentTr(content.businessName, content.tagline, content.description, content.address);
   const socials = content.social.filter((s) => s.value.trim());
 
   return (
@@ -58,7 +60,7 @@ export function VizitkaTicket({ content, theme }: Props) {
 
         {content.address?.trim() || content.mapsUrl?.trim() ? (
           <p className="text-center text-xs text-neutral-600">
-            {content.address || "Xarita havolasi"}
+            {content.address || tr("Xarita havolasi")}
           </p>
         ) : null}
         {content.hoursLine ? (

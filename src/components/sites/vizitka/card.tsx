@@ -1,4 +1,5 @@
 import { ColorTheme, VizitkaContent } from "@/lib/store/types";
+import { contentTr } from "@/lib/i18n/detect";
 import {
   Avatar,
   ClockIcon,
@@ -14,6 +15,7 @@ import { MapEmbed } from "../map-embed";
 type Props = { content: VizitkaContent; theme: ColorTheme };
 
 export function VizitkaCard({ content, theme }: Props) {
+  const tr = contentTr(content.businessName, content.tagline, content.description, content.address);
   const socials = content.social.filter((s) => s.value.trim());
 
   return (
@@ -69,7 +71,7 @@ export function VizitkaCard({ content, theme }: Props) {
                 <span style={{ color: theme.primary }}>
                   <PinIcon />
                 </span>
-                <span>{content.address || "Xarita / lokatsiya"}</span>
+                <span>{content.address || tr("Xarita / lokatsiya")}</span>
               </a>
             </li>
           ) : null}

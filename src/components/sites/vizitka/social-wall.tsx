@@ -37,7 +37,7 @@ export function VizitkaSocialWall({ content, theme }: Props) {
   } else if (content.mapsUrl?.trim()) {
     tiles.push({
       label: tr("Manzil"),
-      value: "Xarita",
+      value: tr("Xarita"),
       href: mapsHref(content),
       icon: <PinIcon />,
     });

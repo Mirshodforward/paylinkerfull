@@ -72,7 +72,125 @@ const RU_PATTERNS: Array<[RegExp, (m: RegExpMatchArray) => string]> = [
   ],
 ];
 
+/**
+ * class-validator standart (inglizcha) xabarlari — ikkala tilga.
+ * DTO maydon nomlari foydalanuvchiga tushunarli nom bilan almashtiriladi.
+ */
+type Bi = { uz: string; ru: string };
+const CV_FIELDS: Record<string, Bi> = {
+  phone: { uz: 'Telefon raqam', ru: 'Номер телефона' },
+  contactNumber: { uz: 'Telefon raqam', ru: 'Номер телефона' },
+  code: { uz: 'Kod', ru: 'Код' },
+  token: { uz: 'Havola', ru: 'Ссылка' },
+  refreshToken: { uz: 'Sessiya', ru: 'Сессия' },
+  name: { uz: 'Nom', ru: 'Название' },
+  headline: { uz: 'Sarlavha', ru: 'Заголовок' },
+  shortDescription: { uz: 'Qisqa tavsif', ru: 'Краткое описание' },
+  description: { uz: 'Tavsif', ru: 'Описание' },
+  message: { uz: 'Xabar', ru: 'Сообщение' },
+  address: { uz: 'Manzil', ru: 'Адрес' },
+  mapLink: { uz: 'Xarita havolasi', ru: 'Ссылка на карту' },
+  workHour: { uz: 'Ish vaqti', ru: 'Время работы' },
+  logoUrl: { uz: 'Logotip', ru: 'Логотип' },
+  photoUrl: { uz: 'Rasm', ru: 'Изображение' },
+  category: { uz: 'Kategoriya', ru: 'Категория' },
+  templateId: { uz: 'Shablon', ru: 'Шаблон' },
+  patternId: { uz: 'Naqsh', ru: 'Узор' },
+  colorThemeId: { uz: 'Rang mavzusi', ru: 'Цветовая тема' },
+  theme: { uz: 'Mavzu', ru: 'Тема' },
+  plan: { uz: 'Tarif', ru: 'Тариф' },
+  months: { uz: 'Oylar soni', ru: 'Количество месяцев' },
+  subscriptionMonths: { uz: 'Obuna muddati', ru: 'Срок подписки' },
+  amount: { uz: 'Summa', ru: 'Сумма' },
+  balance: { uz: 'Balans', ru: 'Баланс' },
+  status: { uz: 'Holat', ru: 'Статус' },
+  extendByDays: { uz: 'Uzaytirish kunlari', ru: 'Дни продления' },
+  freePublishDays: { uz: 'Bepul kunlar', ru: 'Бесплатные дни' },
+  expiredAt: { uz: 'Tugash sanasi', ru: 'Дата окончания' },
+};
+const fieldName = (raw: string, lang: ApiLang): string =>
+  CV_FIELDS[raw]?.[lang] ?? raw;
+
+const CV_PATTERNS: Array<[RegExp, (m: RegExpMatchArray, lang: ApiLang) => string]> = [
+  [
+    /^(\w+) must be longer than or equal to (\d+) and shorter than or equal to (\d+) characters$/,
+    (m, l) =>
+      m[2] === m[3]
+        ? l === 'ru'
+          ? `${fieldName(m[1], l)}: ровно ${m[2]} символов`
+          : `${fieldName(m[1], l)}: aynan ${m[2]} ta belgi`
+        : l === 'ru'
+          ? `${fieldName(m[1], l)}: от ${m[2]} до ${m[3]} символов`
+          : `${fieldName(m[1], l)}: ${m[2]} dan ${m[3]} gacha belgi`,
+  ],
+  [
+    /^(\w+) must be longer than or equal to (\d+) characters$/,
+    (m, l) =>
+      l === 'ru'
+        ? `${fieldName(m[1], l)}: минимум ${m[2]} символов`
+        : `${fieldName(m[1], l)}: kamida ${m[2]} ta belgi`,
+  ],
+  [
+    /^(\w+) must be shorter than or equal to (\d+) characters$/,
+    (m, l) =>
+      l === 'ru'
+        ? `${fieldName(m[1], l)}: не более ${m[2]} символов`
+        : `${fieldName(m[1], l)}: ko‘pi bilan ${m[2]} ta belgi`,
+  ],
+  [
+    /^(\w+) must be a string$/,
+    (m, l) => (l === 'ru' ? `${fieldName(m[1], l)}: должно быть текстом` : `${fieldName(m[1], l)}: matn bo‘lishi kerak`),
+  ],
+  [
+    /^(\w+) should not be empty$/,
+    (m, l) => (l === 'ru' ? `${fieldName(m[1], l)}: не должно быть пустым` : `${fieldName(m[1], l)}: bo‘sh bo‘lmasligi kerak`),
+  ],
+  [
+    /^(\w+) must be an integer number$/,
+    (m, l) => (l === 'ru' ? `${fieldName(m[1], l)}: должно быть целым числом` : `${fieldName(m[1], l)}: butun son bo‘lishi kerak`),
+  ],
+  [
+    /^(\w+) must be a number conforming to the specified constraints$/,
+    (m, l) => (l === 'ru' ? `${fieldName(m[1], l)}: должно быть числом` : `${fieldName(m[1], l)}: son bo‘lishi kerak`),
+  ],
+  [
+    /^(\w+) must be a boolean value$/,
+    (m, l) => (l === 'ru' ? `${fieldName(m[1], l)}: должно быть да/нет` : `${fieldName(m[1], l)}: ha/yo‘q bo‘lishi kerak`),
+  ],
+  [
+    /^(\w+) must not be less than (-?\d+)$/,
+    (m, l) => (l === 'ru' ? `${fieldName(m[1], l)}: не менее ${m[2]}` : `${fieldName(m[1], l)}: kamida ${m[2]}`),
+  ],
+  [
+    /^(\w+) must not be greater than (-?\d+)$/,
+    (m, l) => (l === 'ru' ? `${fieldName(m[1], l)}: не более ${m[2]}` : `${fieldName(m[1], l)}: ko‘pi bilan ${m[2]}`),
+  ],
+  [
+    /^(\w+) must be one of the following values: (.*)$/,
+    (m, l) =>
+      l === 'ru'
+        ? `${fieldName(m[1], l)}: допустимые значения — ${m[2]}`
+        : `${fieldName(m[1], l)}: ruxsat etilgan qiymatlar — ${m[2]}`,
+  ],
+  [
+    /^(\w+) must match .+ regular expression$/,
+    (m, l) => (l === 'ru' ? `${fieldName(m[1], l)}: неверный формат` : `${fieldName(m[1], l)}: format noto‘g‘ri`),
+  ],
+  [
+    /^(\w+) must be a valid ISO 8601 date string$/,
+    (m, l) => (l === 'ru' ? `${fieldName(m[1], l)}: неверный формат даты` : `${fieldName(m[1], l)}: sana formati noto‘g‘ri`),
+  ],
+  [
+    /^property (\w+) should not exist$/,
+    (m, l) => (l === 'ru' ? `Недопустимое поле: ${m[1]}` : `Ruxsat etilmagan maydon: ${m[1]}`),
+  ],
+];
+
 export function translateMessage(msg: string, lang: ApiLang): string {
+  for (const [re, fn] of CV_PATTERNS) {
+    const m = msg.match(re);
+    if (m) return fn(m, lang);
+  }
   if (lang !== 'ru') return msg;
   const hit = RU_MESSAGES[msg];
   if (hit) return hit;
